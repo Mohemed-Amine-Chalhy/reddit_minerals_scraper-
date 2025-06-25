@@ -102,7 +102,7 @@ You need to create a file at `configs/subreddit_mapping.json` that maps each min
 ---
 
 ## 📌 Notes
-* Reddit API has rate limits — the script includes a `time.sleep(1)` to prevent hitting them too fast.
+
 * Ensure your `subreddit_mapping.json` is well-formatted and includes relevant, active subreddits.
 
 ---
