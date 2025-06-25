@@ -1,6 +1,6 @@
 # 🧠 Reddit Scraper for Metals-related Public Opinion Mining
 
-This Python script extracts **Reddit posts and comments** related to various **metals and minerals** from specified subreddits using the [PRAW](https://praw.readthedocs.io/) API. It is designed to **collect public opinions** for use in environmental, economic, and social analyses related to the mining and impact of these minerals.
+This Python script extracts **Reddit posts and comments** related to various **metals and minerals** from specified subreddits using the [PRAW](https://praw.readthedocs.io/) API.
 
 ---
 
