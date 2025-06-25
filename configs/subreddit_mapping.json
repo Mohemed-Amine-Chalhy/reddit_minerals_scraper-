@@ -1,0 +1,106 @@
+{
+    "cobalt": [
+      "DemocraticRepublicOfTheCongo", "DRC",
+      "Indonesia", "Australia", "Russia", "Philippines", "Canada", "Cuba", "Madagascar",
+      "cobalt", "mining",
+      "congo", "democraticrepublicofthecongo", "Indonesia", "Australia", "Russia", "Canada", "Philippines", "Madagascar",
+      "environment", "geology", "worldnews", "climate"
+    ],
+    "lithium": [
+      "Australia", "Chile", "China", "Argentina", "Brazil", "Zimbabwe", "Portugal", "Bolivia", "Canada", "Namibia",
+      "lithium", "LithiumAmerica", "LithiumIon", "mining",
+      "Australia", "Chile", "China", "Argentina", "Brazil", "Zimbabwe", "Portugal", "Bolivia", "Canada", "Namibia",
+      "environment", "geology", "worldnews", "technology"
+    ],
+    "copper": [
+      "Chile", "Peru", "China", "DemocraticRepublicOfTheCongo", "USA",
+      "copper", "CopperMining", "mining",
+      "Chile", "Peru", "China", "DemocraticRepublicOfTheCongo", "USA",
+      "environment", "geology", "worldnews", "economics"
+    ],
+    "iron ore": [
+      "Australia", "Brazil", "China", "India",
+      "ironore", "mining",
+      "Australia", "Brazil", "China", "India",
+      "environment", "geology", "worldnews", "economics"
+    ],
+    "graphite": [
+      "China", "Mozambique", "Brazil", "Canada", "Madagascar",
+      "graphite", "GraphiteCommunity", "mining",
+      "China", "Mozambique", "Brazil", "Canada", "Madagascar",
+      "environment", "geology", "worldnews", "technology"
+    ],
+    "manganese": [
+      "SouthAfrica", "Australia", "China", "Gabon", "Brazil",
+      "manganese", "mining",
+      "SouthAfrica", "Australia", "China", "Gabon", "Brazil",
+      "environment", "geology", "worldnews", "economics"
+    ],
+    "molybdenum": [
+      "China", "USA", "Chile", "Peru",
+      "molybdenum", "mining",
+      "China", "USA", "Chile", "Peru",
+      "environment", "geology", "worldnews", "economics"
+    ],
+    "nickel": [
+      "Indonesia", "Philippines", "Russia", "Australia", "Canada",
+      "nickel", "NickelMining", "mining",
+      "Indonesia", "Philippines", "Russia", "Australia", "Canada",
+      "environment", "geology", "worldnews", "economics"
+    ],
+    "palladium": [
+      "Russia", "SouthAfrica", "Canada", "USA",
+      "palladium", "PlatinumPalladium", "mining",
+      "Russia", "SouthAfrica", "Canada", "USA",
+      "environment", "geology", "worldnews", "economics"
+    ],
+    "platinum": [
+      "SouthAfrica", "Russia", "Zimbabwe", "Canada", "USA",
+      "platinum", "PlatinumMining", "mining",
+      "SouthAfrica", "Russia", "Zimbabwe", "Canada", "USA",
+      "environment", "geology", "worldnews", "economics"
+    ],
+    "zinc": [
+      "China", "Peru", "Australia", "USA",
+      "zinc", "ZincMining", "mining",
+      "China", "Peru", "Australia", "USA",
+      "environment", "geology", "worldnews", "economics"
+    ],
+    "gold": [
+      "China", "Australia", "Russia", "USA", "Canada",
+      "gold", "GoldMining", "mining",
+      "China", "Australia", "Russia", "USA", "Canada",
+      "environment", "geology", "worldnews", "economics"
+    ],
+    "silver": [
+      "Mexico", "Peru", "China", "Russia", "Poland",
+      "silver", "SilverMining", "mining",
+      "Mexico", "Peru", "China", "Russia", "Poland",
+      "environment", "geology", "worldnews", "economics"
+    ],
+    "lead": [
+      "China", "Australia", "USA", "Peru",
+      "lead", "LeadMining", "mining",
+      "China", "Australia", "USA", "Peru",
+      "environment", "geology", "worldnews", "economics"
+    ],
+    "tungsten": [
+      "China", "Vietnam", "Russia", "Portugal",
+      "tungsten", "Tungsten", "metallurgy",
+      "China", "Vietnam", "Russia", "Portugal",
+      "environment", "geology", "worldnews", "economics"
+    ],
+    "tantalum": [
+      "DemocraticRepublicOfTheCongo", "Rwanda", "Mozambique", "Australia",
+      "tantalum", "mining",
+      "DemocraticRepublicOfTheCongo", "Rwanda", "Mozambique", "Australia",
+      "environment", "geology", "worldnews", "economics"
+    ],
+    "natural gas": [
+      "USA", "Russia", "Qatar", "Australia", "Canada",
+      "NaturalGas", "energy", "GasIndustry", "Commodities",
+      "USA", "Russia", "Qatar", "Australia", "Canada",
+      "environment", "worldnews", "economics"
+    ]
+  }
+  
