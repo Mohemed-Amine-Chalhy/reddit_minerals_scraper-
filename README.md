@@ -31,7 +31,7 @@ This Python script extracts **Reddit posts and comments** related to various **m
 
 ```
 .
-├── main_scraper.py               # This script (provided above)
+├── scrape2.py               
 ├── configs/
 │   └── subreddit_mapping.json    # Mapping of minerals to subreddits
 ├── data/
