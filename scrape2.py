@@ -6,10 +6,11 @@ import json
 import os
 import time
 
-client_id = 'XXX'
-client_secret = 'XXX'
-username = 'XXX'
-password = 'XXX'
+
+client_id = 'wSsnfwGHoQBdUyYb1nPjLg'
+client_secret = '2H1JM43tPBTjJHBMF7E05oIHOG8tAg'
+username = 'SufficientMenu6638'
+password = 'mt8qzquL6w6_47W'
 
 reddit = praw.Reddit(
     client_id=client_id,
