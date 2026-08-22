@@ -60,6 +60,7 @@ def _check_artifact(*, uv: Path, artifact: Path, work_directory: Path) -> None:
         environment=environment,
     )
     _run([str(cli), "--version"], cwd=work_directory, environment=environment)
+    _run([str(cli), "demo"], cwd=work_directory, environment=environment)
     _run([str(cli), "validate-config"], cwd=work_directory, environment=environment)
     _run(
         [

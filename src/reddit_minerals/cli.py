@@ -6,6 +6,7 @@ import argparse
 import json
 import logging
 import signal
+import tempfile
 from collections.abc import Callable, Mapping, Sequence
 from datetime import timedelta
 from pathlib import Path
@@ -23,6 +24,7 @@ from reddit_minerals.config import (
     AppSettings,
     load_subreddit_mapping,
 )
+from reddit_minerals.demo import DemoArtifactLifecycle, DemoSummary, run_offline_demo
 from reddit_minerals.errors import (
     BatchOperationError,
     ConfigurationError,
@@ -61,6 +63,23 @@ def build_parser() -> argparse.ArgumentParser:
         help="Override RMS_SUBREDDIT_MAPPING_PATH for this invocation.",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
+
+    demo = subparsers.add_parser(
+        "demo",
+        help="Run the complete pipeline offline with deterministic synthetic data.",
+        description=(
+            "Run collection, schema-validated analysis, SQLite storage, and JSONL export "
+            "offline with deterministic synthetic data."
+        ),
+    )
+    demo.add_argument(
+        "--output-dir",
+        type=_path_argument,
+        help=(
+            "Retain artifacts in a unique child of this directory; by default an "
+            "isolated temporary workspace is removed after the command."
+        ),
+    )
 
     validate = subparsers.add_parser(
         "validate-config", help="Validate settings and the subreddit mapping offline."
@@ -213,6 +232,15 @@ def _run(argv: list[str] | None) -> int:
 
 
 def _dispatch(args: argparse.Namespace, settings: AppSettings) -> int:
+    if args.command == "demo":
+        # Successful service operations log per item at INFO. Keep the portfolio
+        # demo focused on its single machine-readable summary while preserving
+        # warning and error visibility.
+        configure_logging("WARNING")
+        demo_summary = _execute_demo(args.output_dir, settings=settings)
+        _print_json(demo_summary.model_dump(mode="json"), pretty=True)
+        return 0
+
     if args.command == "validate-config":
         mapping_report = load_subreddit_mapping(settings.subreddit_mapping_path)
         if "reddit" in args.require:
@@ -373,6 +401,33 @@ def _dispatch(args: argparse.Namespace, settings: AppSettings) -> int:
         return 0
 
     raise AssertionError(f"Unhandled command: {args.command}")
+
+
+def _execute_demo(output_dir: Path | None, *, settings: AppSettings) -> DemoSummary:
+    """Create an isolated workspace and run the credential-free demo inside it."""
+
+    if output_dir is None:
+        with tempfile.TemporaryDirectory(prefix="reddit-minerals-demo-") as temporary:
+            return run_offline_demo(
+                Path(temporary),
+                lifecycle=DemoArtifactLifecycle.REMOVED_AFTER_COMMAND,
+                protected_database_path=settings.database_path,
+            )
+
+    output_root = output_dir.resolve()
+    if output_root == settings.database_path.resolve():
+        raise ConfigurationError(
+            "Demo output directory must not be the configured application database path"
+        )
+    if output_root.exists() and not output_root.is_dir():
+        raise ValueError(f"Demo output directory is not a directory: {output_root}")
+    output_root.mkdir(parents=True, exist_ok=True)
+    workspace = Path(tempfile.mkdtemp(prefix="reddit-minerals-demo-", dir=output_root))
+    return run_offline_demo(
+        workspace,
+        lifecycle=DemoArtifactLifecycle.RETAINED,
+        protected_database_path=settings.database_path,
+    )
 
 
 def _execute_scrape(
