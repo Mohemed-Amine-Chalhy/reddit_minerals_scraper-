@@ -75,9 +75,12 @@ def main() -> int:
             failures.append(f"{key} must contain an obvious placeholder")
 
     if failures:
-        print("Environment template validation failed:")
-        for failure in failures:
-            print(f"- {failure}")
+        # Do not print parser details derived from a credential-shaped file.
+        # The validator needs only a failing exit code in hooks/CI, and keeping
+        # all template-derived text out of logs gives secret scanners a simple,
+        # auditable guarantee.
+        print(f"Environment template validation failed with {len(failures)} issue(s).")
+        print("Check key names, placeholders, duplicates, and KEY=VALUE structure.")
         return 1
 
     print(f"Validated {len(values)} environment variable names; values were not displayed.")

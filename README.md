@@ -20,7 +20,7 @@ maintainable data product. Maintained by
 | --- | --- |
 | Reliability | Idempotent upserts, explicit work states, resumable batches, atomic exports, durable deletion tombstones, and crash reconciliation |
 | Concurrency | One tracked writer per database plus optimistic revision checks that reject stale in-flight analysis results |
-| Quality | 259 deterministic offline tests, 95.64% branch coverage, strict mypy, Ruff, and pre-commit/pre-push gates |
+| Quality | 260 deterministic offline tests, 95.64% branch coverage, strict mypy, Ruff, and pre-commit/pre-push gates |
 | Portability | Python 3.12 and 3.13 exercised on Linux and Windows in CI |
 | Delivery | Locked `uv` environment, wheel and source-distribution install tests, pinned CI actions, and a non-root container |
 | Security | Secret scanning, CodeQL, dependency/container audits, parameterized SQL, bounded untrusted input, and content-safe logs |
