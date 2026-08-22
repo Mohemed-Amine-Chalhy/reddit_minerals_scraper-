@@ -19,6 +19,7 @@ COPY pyproject.toml uv.lock README.md ./
 RUN uv sync --locked --no-default-groups --group build --no-install-project
 
 COPY src ./src
+COPY configs ./configs
 RUN uv sync --locked --no-default-groups --group build --no-editable --no-build-isolation
 
 FROM ${PYTHON_IMAGE} AS runtime
