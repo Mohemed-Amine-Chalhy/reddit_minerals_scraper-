@@ -1,0 +1,14 @@
+* text=auto eol=lf
+
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.parquet binary
+*.db binary
+*.sqlite binary
+*.sqlite3 binary
