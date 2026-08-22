@@ -1,9 +1,31 @@
 # Reddit Minerals Pipeline
 
-A typed, resumable batch pipeline for collecting approved public Reddit content
-about minerals and running schema-validated analysis over it. SQLite is the
-canonical store; JSON or JSONL exports and optional notebooks support downstream
-research.
+[![CI](https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-/actions/workflows/ci.yml/badge.svg)](https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-/actions/workflows/codeql.yml/badge.svg)](https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-/actions/workflows/codeql.yml)
+![Python 3.12 and 3.13](https://img.shields.io/badge/Python-3.12%20%7C%203.13-3776AB?logo=python&logoColor=white)
+
+A production-oriented, typed, resumable batch pipeline for collecting approved
+public Reddit content about minerals and running schema-validated analysis over
+it. SQLite is the canonical store; JSON or JSONL exports and optional notebooks
+support downstream research.
+
+## Project context
+
+This project originated as part of my internship at
+[Mines Nancy](https://mines-nancy.univ-lorraine.fr/en/). I evolved the initial
+research prototype into a software-engineering-focused system that demonstrates:
+
+- clean, typed Python architecture with explicit provider boundaries;
+- transactional SQLite storage, migrations, deletion propagation, and
+  concurrency controls;
+- reproducible environments, offline tests, automated quality gates, packaging,
+  and container delivery;
+- practical security, privacy, observability, and operations documentation.
+
+The repository is maintained by
+[Mohamed Amine Chalhy](https://github.com/Mohemed-Amine-Chalhy). The current tree
+contains source code, public configuration, documentation, and output-free
+notebooks—not internship-confidential datasets or Reddit user profiles.
 
 This software does **not** grant permission to collect or reuse Reddit data.
 Before using it, obtain any required Reddit approval, comply with Reddit's terms
@@ -148,6 +170,7 @@ JSON data can be imported with the documented migration command.
 - [Legacy migration](docs/migration.md)
 - [Troubleshooting](docs/troubleshooting.md)
 - [Contributing](CONTRIBUTING.md) and [security policy](SECURITY.md)
+- [Citation metadata](CITATION.cff)
 
 ## Development checks
 

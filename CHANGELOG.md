@@ -24,6 +24,8 @@ All notable changes will be documented here. The format follows
 - Immutable digests for the Python and `uv` container bases, with automated
   dependency-update coverage.
 - Parameterized, output-free analysis notebooks.
+- Public Mines Nancy internship context, maintainer attribution, and citation
+  metadata for the portfolio and research-facing repository.
 
 ### Changed
 
