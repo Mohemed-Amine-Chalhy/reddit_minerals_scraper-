@@ -1,0 +1,123 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Python ${{ matrix.python-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.12", "3.13"]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@94527f2e458b27549849d47d273a16bec83a01e9 # v7
+        with:
+          version: "0.12.1"
+          enable-cache: true
+          python-version: ${{ matrix.python-version }}
+
+      - name: Synchronize locked environment
+        run: uv sync --locked
+
+      - name: Validate lock file
+        run: uv lock --check
+
+      - name: Run pre-commit quality and secret checks
+        if: runner.os == 'Linux' && matrix.python-version == '3.12'
+        run: uv run --locked pre-commit run --all-files --show-diff-on-failure
+
+      - name: Run strict type checking
+        if: runner.os == 'Linux' && matrix.python-version == '3.12'
+        run: uv run --locked mypy src/reddit_minerals
+
+      - name: Run offline tests
+        run: uv run --locked pytest
+
+      - name: Run Linux smoke test
+        if: runner.os == 'Linux'
+        run: bash scripts/smoke.sh
+
+      - name: Run Windows smoke test
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./scripts/smoke.ps1
+
+      - name: Audit installed dependencies
+        if: runner.os == 'Linux' && matrix.python-version == '3.12'
+        run: uv run --locked pip-audit --progress-spinner=off
+
+      - name: Build source and wheel distributions
+        if: runner.os == 'Linux' && matrix.python-version == '3.12'
+        run: uv build --no-build-isolation --out-dir dist
+
+      - name: Install and smoke-test wheel and source distribution
+        if: runner.os == 'Linux' && matrix.python-version == '3.12'
+        run: uv run --locked python scripts/check_artifacts.py
+
+      - name: Upload distributions
+        if: runner.os == 'Linux' && matrix.python-version == '3.12'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: python-distributions
+          path: dist/
+          if-no-files-found: error
+
+  container:
+    name: Build non-root container
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+
+      - name: Build container without publishing
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: .
+          push: false
+          load: true
+          tags: reddit-minerals-scraper:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Exercise container entrypoint
+        run: docker run --rm --read-only reddit-minerals-scraper:ci --help
+
+      - name: Verify non-root runtime identity
+        run: >-
+          docker run --rm --entrypoint python reddit-minerals-scraper:ci
+          -c "import os; assert os.getuid() == 10001, os.getuid()"
+
+      - name: Scan container for actionable vulnerabilities
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # 0.35.0
+        with:
+          image-ref: reddit-minerals-scraper:ci
+          scanners: vuln
+          vuln-type: os,library
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"

@@ -1,0 +1,185 @@
+[build-system]
+requires = ["hatchling==1.31.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "reddit-minerals-scraper"
+version = "0.1.0"
+description = "A resilient pipeline for collecting and analysing mineral discussions on Reddit."
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Typing :: Typed",
+]
+dependencies = [
+  "google-genai>=1.30,<2",
+  "praw>=8,<9",
+  "pydantic>=2.11,<3",
+  "pydantic-settings>=2.10,<3",
+]
+
+[project.urls]
+Repository = "https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-"
+Issues = "https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-/issues"
+
+[project.scripts]
+reddit-minerals = "reddit_minerals.cli:main"
+
+[dependency-groups]
+build = [
+  "hatchling==1.31.0",
+]
+dev = [
+  "detect-secrets>=1.5,<2",
+  "mypy>=1.17,<2",
+  "nbformat>=5.10,<6",
+  "nbstripout>=0.8,<1",
+  "pip-audit>=2.9,<3",
+  "pre-commit>=4.3,<5",
+  "pre-commit-hooks>=5,<7",
+  "pytest>=8.4,<10",
+  "pytest-cov>=6.2,<8",
+  "ruff>=0.12,<1",
+]
+notebooks = [
+  "ipykernel>=6.30,<8",
+  "jupyterlab>=4.4,<5",
+  "matplotlib>=3.10,<4",
+  "pandas>=2.3,<4",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/reddit_minerals"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"configs/subreddit_mapping.json" = "reddit_minerals/defaults/subreddit_mapping.json"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/src",
+  "/tests",
+  "/configs",
+  "/docs",
+  "/notebooks",
+  "/scripts",
+  "/.dockerignore",
+  "/.editorconfig",
+  "/.env.example",
+  "/.gitattributes",
+  "/.gitignore",
+  "/.pre-commit-config.yaml",
+  "/.python-version",
+  "/CHANGELOG.md",
+  "/CONTRIBUTING.md",
+  "/Dockerfile",
+  "/SECURITY.md",
+  "/README.md",
+  "/pyproject.toml",
+  "/uv.lock",
+]
+
+[tool.uv]
+default-groups = ["build", "dev"]
+required-version = ">=0.8.15,<0.13"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = [
+  ".git",
+  ".mypy_cache",
+  ".pytest_cache",
+  ".ruff_cache",
+  ".venv",
+  "build",
+  "data",
+  "dist",
+]
+
+[tool.ruff.lint]
+select = [
+  "B",
+  "C4",
+  "DTZ",
+  "E",
+  "F",
+  "I",
+  "LOG",
+  "PIE",
+  "PT",
+  "RSE",
+  "RUF",
+  "S",
+  "SIM",
+  "UP",
+]
+ignore = [
+  "E501",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["reddit_minerals"]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/**/*.py" = ["S603"]
+"tests/**/*.py" = ["S101", "S105", "S106", "S108"]
+
+[tool.ruff.format]
+docstring-code-format = true
+line-ending = "lf"
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ["pydantic.mypy"]
+files = ["src/reddit_minerals"]
+strict = true
+warn_unreachable = true
+show_error_codes = true
+show_error_context = true
+pretty = true
+
+[[tool.mypy.overrides]]
+module = ["praw", "praw.*"]
+ignore_missing_imports = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
+[tool.pytest.ini_options]
+minversion = "8.4"
+testpaths = ["tests"]
+addopts = [
+  "--strict-config",
+  "--strict-markers",
+  "--cov=reddit_minerals",
+  "--cov-branch",
+  "--cov-report=term-missing:skip-covered",
+  "--cov-report=xml",
+  "--cov-fail-under=85",
+]
+filterwarnings = ["error"]
+markers = [
+  "integration: exercises multiple components without live external services",
+  "smoke: provides a fast offline end-to-end confidence check",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["reddit_minerals"]
+
+[tool.coverage.report]
+exclude_also = [
+  "if TYPE_CHECKING:",
+  "if __name__ == .__main__.:",
+  "raise NotImplementedError",
+]
+show_missing = true
+skip_covered = true
