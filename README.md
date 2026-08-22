@@ -1,115 +1,174 @@
-# Reddit Scraper for Metals-related Public Opinion Mining
+# Reddit Minerals Pipeline
 
-This Python script extracts **Reddit posts and comments** related to various **metals and minerals** from specified subreddits using the [PRAW](https://praw.readthedocs.io/) API.
+A typed, resumable batch pipeline for collecting approved public Reddit content
+about minerals and running schema-validated analysis over it. SQLite is the
+canonical store; JSON or JSONL exports and optional notebooks support downstream
+research.
 
----
+This software does **not** grant permission to collect or reuse Reddit data.
+Before using it, obtain any required Reddit approval, comply with Reddit's terms
+and policies, and document a lawful purpose, retention period, and deletion
+process. Model-generated labels are estimates and must not be treated as facts
+about people or as representative public-opinion measurements.
 
-## 📦 Features
+## What it provides
 
-* 🔍 Searches Reddit for posts mentioning a specific mineral across selected subreddits.
-* 🧵 Extracts all top-level and nested comments for each post.
-* 🧠 Designed for **text analysis**, with clean and structured output.
-* ♻️ Avoids duplicates by tracking previously processed posts and comments.
-* 💾 Saves data incrementally to allow resuming.
-* 📈 Generates a per-mineral summary report with metadata.
+- Read-only Reddit application authentication; no username or password flow.
+- Bounded post and comment collection with explicit mineral selection.
+- SQLite transactions, refresh windows, resumable work states, and idempotent
+  record updates.
+- Separate relevance, enrichment, and reputation-analysis stages.
+- Pydantic validation for configuration, collected records, and AI responses.
+- UTC timestamps, structured content-safe logs, bounded retries, and non-zero
+  exit codes on failures.
+- Config validation, dry runs, status reporting, versioned exports, legacy-data
+  migration, and content deletion.
+- Reproducible setup, strict typing, tests, pre-commit hooks, CI, and a non-root
+  container image.
 
----
+## Requirements
 
-## 🛠️ Requirements
+- Python 3.12 or 3.13 (the deployment baseline and bootstrap default are 3.12)
+- [`uv`](https://docs.astral.sh/uv/) for the supported local workflow
+- A Reddit API application and approval appropriate to the intended use
+- A Gemini API key and explicit evaluated model identifier only for analysis commands
 
-* Python 3.7+
-* Reddit API credentials (via [Reddit App](https://www.reddit.com/prefs/apps))
-* Python packages:
+Do not paste secrets into source files, notebooks, command history, logs, issue
+reports, or committed `.env` files.
 
-  ```bash
-  pip install praw requests
-  ```
+## Quick start
 
----
+From the repository root, prepare the locked environment:
 
-## 📁 Project Structure
-
-```
-.
-├── scrape2.py               
-├── configs/
-│   └── subreddit_mapping.json    # Mapping of minerals to subreddits
-├── data/
-│   └── <mineral_name>/           # Folder per mineral with posts/comments
-│       ├── posts.json
-│       ├── comments.json
-│       ├── summary.json
-│       └── progress.json
-└── README.md
-```
-
----
-
-## 🧩 Input: Subreddit Mapping
-
-You need to create a file at `configs/subreddit_mapping.json` that maps each mineral to relevant subreddits. Example:
-
-```json
-{
-  "bauxite": ["mining", "environment", "geology"],
-  "lithium": ["electricvehicles", "batteries", "renewableenergy"]
-}
+```powershell
+.\scripts\bootstrap.ps1
 ```
 
----
+```bash
+./scripts/bootstrap.sh
+```
 
-## 🚀 How to Use
+Copy `.env.example` to `.env` and provide the credentials needed by the commands
+you intend to run. Reddit collection needs:
 
-1. **Set your Reddit API credentials** inside `main_scraper.py`:
+```dotenv
+RMS_REDDIT_CLIENT_ID=replace-me
+RMS_REDDIT_CLIENT_SECRET=replace-me
+RMS_REDDIT_USER_AGENT=script:reddit-minerals-scraper:<version> (by u/<account>)
+```
 
-   ```python
-   client_id = 'YOUR_CLIENT_ID'
-   client_secret = 'YOUR_CLIENT_SECRET'
-   username = 'YOUR_REDDIT_USERNAME'
-   password = 'YOUR_REDDIT_PASSWORD'
-   ```
+AI analysis additionally needs:
 
-2. **Run the script**:
+```dotenv
+RMS_GEMINI_API_KEY=replace-me
+RMS_GEMINI_MODEL=replace-with-an-evaluated-model-id
+```
 
-   ```bash
-   python main_scraper.py
-   ```
+Validate local configuration without contacting either provider:
 
-3. The script will:
+```shell
+uv run reddit-minerals validate-config
+```
 
-   * Search each mineral in the associated subreddits.
-   * Collect all matching posts and comments.
-   * Store data in `data/<mineral>/`.
-   * Track progress so it can resume later without duplicating work.
+Preview a bounded scrape, then run it:
 
----
+```shell
+uv run reddit-minerals scrape --mineral gold --max-posts 10 --max-comments 25 --dry-run
+uv run reddit-minerals scrape --mineral gold --max-posts 10 --max-comments 25
+```
 
-## 🧠 Output Example
+Run analyses and inspect progress:
 
-* `posts.json`: List of all collected posts with metadata (ID, title, body, score, etc.).
-* `comments.json`: List of all comments with nested structure and levels.
-* `progress.json`: Stores already processed post IDs for incremental scraping.
-* `summary.json`: Contains metadata like total posts, comments, and breakdown by subreddit.
+```shell
+uv run reddit-minerals relevance --mineral gold --limit 100
+uv run reddit-minerals enrich --mineral gold --limit 100
+uv run reddit-minerals reputation --mineral gold --limit 100
+uv run reddit-minerals status
+```
 
----
+Export a research dataset:
 
-## ✅ Benefits
+```shell
+uv run reddit-minerals export --mineral gold --format jsonl --output exports/gold.jsonl
+```
 
-* Great for **NLP and sentiment analysis** on public opinion.
-* Flexible architecture supports many minerals and subreddits.
-* Lightweight and restartable.
+Exports never replace an existing destination unless `--overwrite` is explicit,
+and they always refuse the live database and its SQLite/operation sidecars. Use
+`uv run reddit-minerals --version` to record the application version alongside
+an exported research artifact.
 
----
+Every networked command is bounded by configuration and CLI limits. Start with a
+small canary, inspect its status and cost, then increase limits deliberately.
 
-## 📌 Notes
+## Command overview
 
-* Ensure your `subreddit_mapping.json` is well-formatted and includes relevant, active subreddits.
+| Command | Purpose | Provider access |
+| --- | --- | --- |
+| `validate-config` | Validate settings and subreddit mapping | None |
+| `scrape` | Collect or refresh posts and comments | Reddit |
+| `relevance` | Classify mineral relevance | Gemini |
+| `enrich` | Extract sentiment, themes, stance, and concerns | Gemini |
+| `reputation` | Estimate documented content-level indicators | Gemini |
+| `status` | Report record, work-state, and run counts | None |
+| `export` | Write a JSON or JSONL snapshot | None |
+| `delete-content` | Preview or delete a post/comment and derivatives | None |
+| `migrate-legacy` | Preview or import legacy JSON-array files | None |
 
----
+Use `uv run reddit-minerals COMMAND --help` as the authoritative option
+reference. See [configuration](docs/configuration.md) for all environment
+variables.
 
+## Repository layout
 
-## 👨‍💻 Author
+```text
+src/reddit_minerals/   Application package and CLI
+tests/                 Unit and offline integration tests
+configs/               Validated mineral-to-subreddit mapping
+scripts/               Idempotent setup, checks, and smoke tests
+notebooks/             Optional output-free exploration notebooks
+docs/                  Architecture, governance, and operations guides
+data/                  Local SQLite state; ignored by Git
+exports/               Generated datasets; ignored by Git
+```
 
-This project was developed by `Mohamed Amine CHALHY` for data collection and analysis related to public discourse around mineral extraction.
+The credential-bearing prototype scripts and output-bearing exploratory
+notebooks were removed. Only the package CLI is a supported entry point; legacy
+JSON data can be imported with the documented migration command.
 
----
+## Documentation
+
+- [Documentation index](docs/README.md)
+- [Architecture and data flow](docs/architecture.md)
+- [Configuration reference](docs/configuration.md)
+- [Data model and migrations](docs/data-model.md)
+- [Methodology and evaluation](docs/methodology.md)
+- [Privacy, retention, deletion, and compliance](docs/privacy-compliance.md)
+- [Operations runbook](docs/operations.md)
+- [Deployment and rollback](docs/deployment.md)
+- [Legacy migration](docs/migration.md)
+- [Troubleshooting](docs/troubleshooting.md)
+- [Contributing](CONTRIBUTING.md) and [security policy](SECURITY.md)
+
+## Development checks
+
+Run the same quality gate used by CI:
+
+```powershell
+.\scripts\check.ps1
+```
+
+```bash
+./scripts/check.sh
+```
+
+Tests are offline by default and must not make live Reddit or Gemini calls. The
+full check also builds, installs, and exercises both the wheel and source
+distribution from outside the repository.
+
+## Licensing status
+
+No project license has been selected yet. Until the repository owner adds an
+approved `LICENSE` file, copyright law reserves redistribution and modification
+rights; public visibility alone is not permission. See
+[the licensing decision record](docs/licensing.md). Contributions should not add
+a license without explicit owner approval.

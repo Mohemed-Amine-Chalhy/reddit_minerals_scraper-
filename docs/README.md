@@ -1,0 +1,46 @@
+# Documentation
+
+Use this index to find the operating contract for the Reddit Minerals Pipeline.
+The CLI help and validated models are authoritative when documentation and code
+disagree; fix the documentation in the same change.
+
+## For users
+
+- [Configuration](configuration.md): environment variables, credentials, limits,
+  paths, and safe defaults.
+- [Legacy migration](migration.md): previewing and importing the old per-mineral
+  JSON-array layout.
+- [Troubleshooting](troubleshooting.md): common setup, provider, database, and
+  analysis failures.
+- [Notebooks](../notebooks/README.md): optional export exploration.
+
+## For reviewers and researchers
+
+- [Architecture](architecture.md): components, trust boundaries, data flow, and
+  failure semantics.
+- [Data model](data-model.md): canonical records, work states, analyses, exports,
+  migrations, and deletion propagation.
+- [Methodology](methodology.md): sampling limits, model-derived fields,
+  evaluation protocol, and interpretation constraints.
+- [Analysis evaluation template](evaluation-template.md): versioned quality,
+  safety, latency, token, cost, and canary release evidence.
+- [Privacy and compliance](privacy-compliance.md): approval gate, minimization,
+  retention, deletion, incident handling, and operator responsibilities.
+
+## For operators and maintainers
+
+- [Operations runbook](operations.md): preflight, canaries, scheduling,
+  monitoring, backups, restoration, deletion, and incidents.
+- [Deployment and rollback](deployment.md): local and container rollout,
+  verification, releases, and recovery.
+- [Licensing decision record](licensing.md): owner choices required before a
+  distributable release.
+- [Contributing](../CONTRIBUTING.md), [security](../SECURITY.md), and
+  [changelog](../CHANGELOG.md).
+
+## Documentation maintenance
+
+Review these documents whenever a CLI flag, environment variable, database
+schema, provider, prompt/schema version, retention rule, or deployment mechanism
+changes. Examples must use placeholders and synthetic identifiers; never paste
+production output into documentation.

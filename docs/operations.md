@@ -1,0 +1,219 @@
+# Operations runbook
+
+## Ownership and prerequisites
+
+Every production deployment needs named owners for the research purpose, Reddit
+approval, privacy/compliance, application operations, provider billing, security
+incidents, and content-deletion requests. The operator must be able to stop the
+scheduler and revoke both provider credentials without repository access.
+
+Before the first run, complete the approval record in
+`privacy-compliance.md`, configure retention, and test deletion and restore in a
+non-production environment.
+
+## Preflight
+
+From the deployed version and working directory:
+
+```shell
+reddit-minerals validate-config
+reddit-minerals status --json
+```
+
+Confirm:
+
+- configuration points to the intended database and mapping;
+- the safe summary reports only configured/not-configured states, never values;
+- Reddit approval and provider terms are current;
+- free disk space exceeds expected database, temporary export, and backup size;
+- no other process writes the same SQLite file;
+- provider quotas, Gemini model, analysis threshold, limits, log destination, and
+  retention match the approved deployment record;
+- the previous run did not leave unexplained partial or failed work.
+
+## First-run canary
+
+Use one mineral and low bounds:
+
+```shell
+reddit-minerals scrape --mineral gold --max-posts 2 --max-comments 5 --dry-run
+reddit-minerals scrape --mineral gold --max-posts 2 --max-comments 5
+reddit-minerals status
+reddit-minerals relevance --mineral gold --limit 2
+reddit-minerals enrich --mineral gold --limit 2
+reddit-minerals reputation --mineral gold --limit 2
+reddit-minerals status --json
+reddit-minerals export --mineral gold --format jsonl --output exports/canary.jsonl --overwrite
+```
+
+Inspect counts, statuses, latency, provider usage, model identifier, token/cost
+data, and a policy-approved sample of results. Remove the canary export after the
+review. Do not increase limits until failures and costs are understood.
+
+## Scheduling
+
+Run commands as separate scheduled jobs so collection, analysis, and export have
+independent limits and alerts. Allow only one writer against a database at a time;
+tracked CLI commands enforce this and fail rather than overlap. `status` is
+read-only and may run while a tracked command owns the lock. A typical order is:
+
+1. `validate-config`;
+2. bounded `scrape`;
+3. bounded `relevance`;
+4. bounded `enrich`;
+5. bounded `reputation`;
+6. `status --json` and alert evaluation;
+7. an approved export, if required;
+8. retention/deletion processing and backup.
+
+Use the scheduler's secret injection, working-directory, timeout, concurrency,
+and retry controls. Scheduler retries must not create an unbounded loop around
+the application's own bounded provider retries. Prefer the application's resume
+semantics over overlapping jobs.
+
+The operation timeout is a cooperative run-wide budget: the application stops
+starting provider work and bounds its own retry backoff once that budget expires.
+It cannot interrupt an already in-flight provider call. In particular, PRAW may
+perform finite internal HTTP retries or a Reddit rate-limit sleep before control
+returns to the application; each individual HTTP request is bounded by
+`RMS_REDDIT_REQUEST_TIMEOUT_SECONDS`, but one PRAW operation can span more than
+one such window. Gemini calls are bounded by `RMS_GEMINI_REQUEST_TIMEOUT_SECONDS`.
+Set the scheduler timeout above the operation budget with enough reviewed margin
+for those provider-library waits so the application can close its run record and
+transaction before the scheduler sends its final termination signal.
+
+## Expected output and exit behavior
+
+Pretty-printed JSON command summaries go to standard output. Structured JSON logs
+go to standard error and contain timestamps, levels, logger names, event messages,
+identifiers, statuses, timings, and counts—not content or credential values.
+`status --json` is the machine-readable status interface.
+
+An exit status of zero means the command completed its control flow; operators
+must still review reported per-item failures after a partial success. A batch
+that selected work but completed no provider operation exits non-zero instead of
+reporting false success. Other non-zero statuses cover command-level
+configuration, validation, provider initialization, deadline, storage, or
+unexpected failure. Alert on both non-zero exits and failure/blocked counts
+exceeding the deployment's baseline.
+
+Analysis summaries also report `stale_discarded`. This is a concurrency safety
+signal: the provider returned after its source, configuration, or relevance
+dependency changed, so the result was not written. A later run reselects current
+work. Investigate repeated values as overlapping writers or an unstable refresh
+schedule.
+
+## Monitoring
+
+Capture and trend:
+
+- run status and duration by command;
+- discovered/completed/skipped/failed posts and stored comments;
+- work items by state and age;
+- analyses selected, completed, blocked, retryable, and permanent failures;
+- analysis results discarded because their source/configuration/dependency changed;
+- run counts by status, including automatically reconciled interrupted runs;
+- active database schema version and retained post/comment tombstone counts;
+- schema-invalid responses and provider error categories;
+- p50/p95 latency and request/token counts by analysis kind/model;
+- estimated cost against daily and monthly budgets;
+- database size, free disk, backup age, and restore-test age;
+- deletions requested, completed, overdue, and awaiting backup expiry.
+
+Example alert conditions must be tuned from an approved canary: any authentication
+failure, database-integrity failure, unexpected model change, secret-scanner
+finding, overdue deletion, repeated non-zero exit, growing retryable backlog, or
+cost/disk threshold breach should stop or page rather than silently expand work.
+
+## Interruption and resumption
+
+On `Ctrl+C`, scheduler timeout, host restart, or provider outage, do not edit the
+database or mark rows complete manually. Confirm that no process is still active,
+run `status`, investigate any `partial` or failure states, then rerun the same
+bounded command. `status` deliberately leaves a potentially active `running` row
+unchanged. The next tracked writer first acquires the released cross-process lock,
+then changes audit rows left `running` by an uncatchable exit to failed
+`InterruptedRun` rows before doing new work. Complete content and analyses are
+skipped unless stale or `--force` is explicitly used.
+
+Use `--force` only to reprocess after a documented prompt/model/schema correction.
+It increases provider use and replaces the current analysis identity.
+
+## Backups
+
+SQLite backups must be consistent and encrypted at rest. Either stop the writer
+and copy the database, or use SQLite's online backup facility. Do not copy an
+actively changing database with an ordinary file copy.
+
+After backup, verify on a separate path:
+
+```shell
+sqlite3 backup/reddit_minerals.sqlite3 "PRAGMA integrity_check; PRAGMA foreign_key_check; PRAGMA user_version;"
+```
+
+Expected output starts with `ok`, no foreign-key rows, and the supported schema
+version. Record backup time, source version, checksum, encryption/key reference,
+expiry, and restore-test result without storing content in the runbook.
+
+Test restoration periodically in an isolated directory: restore the backup,
+point `RMS_DATABASE_PATH` at it, run `status --json`, perform integrity checks,
+and run an offline export. Never restore over the live file while a job runs.
+
+## Provider incidents
+
+### Authentication or authorization
+
+Stop networked stages. Confirm the configured/not-configured summary, approval
+status, application registration, model availability, and account/project scope.
+Never print a secret to test it. Rotate it if exposure is possible.
+
+### Rate limiting or outage
+
+Keep limits fixed or lower them. Let only explicitly retryable failures use
+bounded backoff. Pause the scheduler when the retryable backlog or cost grows;
+resume after provider recovery and quota confirmation.
+
+### Schema or safety failures
+
+Do not coerce invalid output or substitute neutral results. Preserve the distinct
+failure/blocked state, stop the affected analysis stage if the rate exceeds its
+approved baseline, retain only safe metadata, and evaluate the model/prompt/schema
+change offline before retrying.
+
+## Database incident
+
+If integrity checks fail or an unsupported schema is reported:
+
+1. stop all writers and exports;
+2. preserve the affected file read-only for investigation under data policy;
+3. capture application version, file size, integrity output, and last successful
+   run—never raw rows in a ticket;
+4. restore the most recent verified backup to a new path;
+5. point a staging process at the restored copy and verify status/export;
+6. promote only after root cause and lost-work window are documented.
+
+Do not use ad hoc `UPDATE`, `.recover`, or schema-version edits on the sole copy.
+
+## Content deletion
+
+Follow the end-to-end procedure in `privacy-compliance.md`. Always preview the
+stable ID and affected counts before deletion. A successful database transaction
+does not remove prior exports, notebooks, provider logs, or backups; track those
+copies to completion or approved expiry.
+
+## Credential incident
+
+Follow `SECURITY.md`: revoke/rotate first, stop jobs, inspect scope, purge Git
+history and artifacts when applicable, re-clone, review usage/billing, and add a
+safe regression detection rule. Editing the current source is not remediation.
+
+## Routine maintenance
+
+- Review Reddit and Gemini policy/terms and the approval scope before releases.
+- Apply reviewed dependency updates and re-run offline tests/evaluation.
+- Rotate credentials and review access lists.
+- Re-evaluate the subreddit mapping and sampling rationale.
+- Test database restore and content deletion.
+- Review failed/blocked backlogs and expired exports/backups.
+- Compare the deployed image/package digest and model identifier to the approved
+  release record.
