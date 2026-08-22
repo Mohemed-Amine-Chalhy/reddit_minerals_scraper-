@@ -9,5 +9,5 @@ if ! command -v uv >/dev/null 2>&1; then
   exit 1
 fi
 
-uv run --locked python -c "import reddit_minerals; import reddit_minerals.cli"
-uv run --locked reddit-minerals --help
+uv run --locked --no-build-isolation python -c "import reddit_minerals; import reddit_minerals.cli"
+uv run --locked --no-build-isolation reddit-minerals --help

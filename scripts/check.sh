@@ -10,10 +10,10 @@ if ! command -v uv >/dev/null 2>&1; then
 fi
 
 uv lock --check
-uv run --locked pre-commit run --all-files --show-diff-on-failure
-uv run --locked mypy src/reddit_minerals
-uv run --locked pytest
-uv run --locked pip-audit --progress-spinner=off
+uv run --locked --no-build-isolation pre-commit run --all-files --show-diff-on-failure
+uv run --locked --no-build-isolation mypy src/reddit_minerals
+uv run --locked --no-build-isolation pytest
+uv run --locked --no-build-isolation pip-audit --progress-spinner=off
 uv build --no-build-isolation --out-dir dist
-uv run --locked python scripts/check_artifacts.py
+uv run --locked --no-build-isolation python scripts/check_artifacts.py
 bash scripts/smoke.sh

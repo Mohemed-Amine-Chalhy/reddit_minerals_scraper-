@@ -5,16 +5,22 @@ build-backend = "hatchling.build"
 [project]
 name = "reddit-minerals-scraper"
 version = "0.1.0"
-description = "A resilient pipeline for collecting and analysing mineral discussions on Reddit."
+description = "A production-oriented pipeline for reproducible analysis of mineral discussions on Reddit."
 readme = "README.md"
+authors = [
+  { name = "Mohamed Amine Chalhy" },
+]
+keywords = ["data-engineering", "nlp", "pydantic", "reddit", "research", "sqlite"]
 requires-python = ">=3.12,<3.14"
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Environment :: Console",
+  "Intended Audience :: Science/Research",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Information Analysis",
   "Typing :: Typed",
 ]
 dependencies = [
@@ -27,12 +33,14 @@ dependencies = [
 [project.urls]
 Repository = "https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-"
 Issues = "https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-/issues"
+Documentation = "https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-/tree/main/docs"
 
 [project.scripts]
 reddit-minerals = "reddit_minerals.cli:main"
 
 [dependency-groups]
 build = [
+  "editables>=0.5,<1",
   "hatchling==1.31.0",
 ]
 dev = [
@@ -76,6 +84,7 @@ include = [
   "/.pre-commit-config.yaml",
   "/.python-version",
   "/CHANGELOG.md",
+  "/CITATION.cff",
   "/CONTRIBUTING.md",
   "/Dockerfile",
   "/SECURITY.md",

@@ -11,8 +11,8 @@ fi
 
 uv python install 3.12
 uv sync --locked
-uv run --locked python scripts/validate_env_example.py
-uv run --locked pre-commit install --install-hooks --hook-type pre-commit --hook-type pre-push
+uv run --locked --no-build-isolation python scripts/validate_env_example.py
+uv run --locked --no-build-isolation pre-commit install --install-hooks --hook-type pre-commit --hook-type pre-push
 
 if [[ ! -f .env ]]; then
   cp .env.example .env

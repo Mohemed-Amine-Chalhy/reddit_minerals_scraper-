@@ -27,8 +27,8 @@ Push-Location $RepositoryRoot
 try {
     Invoke-External uv python install 3.12
     Invoke-External uv sync --locked
-    Invoke-External uv run --locked python scripts/validate_env_example.py
-    Invoke-External uv run --locked pre-commit install --install-hooks --hook-type pre-commit --hook-type pre-push
+    Invoke-External uv run --locked --no-build-isolation python scripts/validate_env_example.py
+    Invoke-External uv run --locked --no-build-isolation pre-commit install --install-hooks --hook-type pre-commit --hook-type pre-push
 
     if (-not (Test-Path -LiteralPath ".env")) {
         Copy-Item -LiteralPath ".env.example" -Destination ".env"

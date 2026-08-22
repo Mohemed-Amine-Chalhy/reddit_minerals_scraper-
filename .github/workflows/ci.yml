@@ -43,14 +43,14 @@ jobs:
 
       - name: Run pre-commit quality and secret checks
         if: runner.os == 'Linux' && matrix.python-version == '3.12'
-        run: uv run --locked pre-commit run --all-files --show-diff-on-failure
+        run: uv run --locked --no-build-isolation pre-commit run --all-files --show-diff-on-failure
 
       - name: Run strict type checking
         if: runner.os == 'Linux' && matrix.python-version == '3.12'
-        run: uv run --locked mypy src/reddit_minerals
+        run: uv run --locked --no-build-isolation mypy src/reddit_minerals
 
       - name: Run offline tests
-        run: uv run --locked pytest
+        run: uv run --locked --no-build-isolation pytest
 
       - name: Run Linux smoke test
         if: runner.os == 'Linux'
@@ -63,7 +63,7 @@ jobs:
 
       - name: Audit installed dependencies
         if: runner.os == 'Linux' && matrix.python-version == '3.12'
-        run: uv run --locked pip-audit --progress-spinner=off
+        run: uv run --locked --no-build-isolation pip-audit --progress-spinner=off
 
       - name: Build source and wheel distributions
         if: runner.os == 'Linux' && matrix.python-version == '3.12'
@@ -71,7 +71,7 @@ jobs:
 
       - name: Install and smoke-test wheel and source distribution
         if: runner.os == 'Linux' && matrix.python-version == '3.12'
-        run: uv run --locked python scripts/check_artifacts.py
+        run: uv run --locked --no-build-isolation python scripts/check_artifacts.py
 
       - name: Upload distributions
         if: runner.os == 'Linux' && matrix.python-version == '3.12'

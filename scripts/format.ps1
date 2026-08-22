@@ -5,11 +5,11 @@ $ErrorActionPreference = "Stop"
 $RepositoryRoot = Split-Path -Parent $PSScriptRoot
 Push-Location $RepositoryRoot
 try {
-    & uv run --locked ruff check --fix .
+    & uv run --locked --no-build-isolation ruff check --fix .
     if ($LASTEXITCODE -ne 0) {
         throw "Ruff could not fix every lint violation."
     }
-    & uv run --locked ruff format .
+    & uv run --locked --no-build-isolation ruff format .
     if ($LASTEXITCODE -ne 0) {
         throw "Ruff formatting failed."
     }
