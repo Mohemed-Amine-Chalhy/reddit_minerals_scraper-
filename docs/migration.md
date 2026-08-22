@@ -89,18 +89,18 @@ reddit-minerals status --json
 reddit-minerals export --format jsonl --output exports/migration-check.jsonl
 ```
 
-Compare reported counts with the approved dry run, inspect foreign-key and
-integrity checks, and review a small policy-approved sample. Re-importing the same
+Compare reported counts with the dry run, inspect foreign-key and integrity
+checks, and review a small sanitized sample. Re-importing the same
 valid post/comment IDs updates canonical records and preserves unique mineral
 associations rather than creating duplicate content; nevertheless, always use a
 backup because corrected legacy values can replace prior snapshots.
 
-Delete the verification export under the project's retention rules after review.
+Remove the verification export after review.
 
 ## After migration
 
-- Keep the legacy directory isolated and read-only only for the approved rollback
-  period, then delete it according to retention policy.
+- Keep the legacy directory isolated and read-only only for the rollback window,
+  then remove it safely.
 - Run new relevance, enrichment, and reputation commands with low limits and a
   pinned, evaluated model.
 - Do not copy old analysis JSON into SQLite or mark it complete manually.

@@ -16,7 +16,7 @@ posts and comments. Availability, Reddit ranking/search behavior, moderation,
 deletions, language, time of collection, refresh windows, and inaccessible
 comments all affect the sample.
 
-Every published analysis should report:
+Every reproducible analysis should report:
 
 - exact code version and run date range;
 - mapping version and rationale for every included subreddit;
@@ -25,7 +25,7 @@ Every published analysis should report:
 - discovered, stored, partial, failed, blocked, deleted, and analyzed counts;
 - missingness and exclusions;
 - model, prompt, schema, threshold, and evaluation versions;
-- known API or policy constraints.
+- known API and sampling constraints.
 
 Counts from selected subreddits must not be extrapolated to Reddit or a national
 population without an independently valid sampling design.
@@ -70,7 +70,8 @@ fields.
 ## Evaluation dataset
 
 Before relying on an analysis stage, create a versioned, human-labeled evaluation
-set with synthetic or policy-approved sanitized content. It should be stratified
+set with synthetic or sanitized content that can be safely redistributed. It
+should be stratified
 across minerals, post/comment types, languages in scope, short/long text,
 ambiguous examples, deleted/unavailable markers, each controlled label, and
 prompt-injection attempts.
@@ -93,19 +94,19 @@ Record at minimum:
 - prompt-injection resistance on adversarial cases;
 - p50/p95 latency, input/output tokens, and cost per successful item;
 - subgroup/slice results by mineral, subreddit category, content kind, language,
-  and length where legally and statistically appropriate.
+  and length where statistically meaningful.
 
 Do not publish only an overall average. Small slices should be marked unstable,
 not over-interpreted.
 
-## Release gate
+## Evaluation criteria
 
 This repository does not claim an accuracy level until an evaluation report is
-checked in or linked. Before a production rollout, the research owner must define
-minimum metrics and maximum regression tolerances for the actual use case. A
-model, prompt, schema, truncation, context, or threshold change triggers the same
-evaluation. Fail the rollout if schema validity, safety behavior, required quality,
-or cost bounds regress beyond the recorded tolerance.
+checked in or linked. Before relying on model output, define minimum metrics and
+maximum regression tolerances for the actual use case. A model, prompt, schema,
+truncation, context, or threshold change triggers the same evaluation. Reject the
+change if schema validity, adversarial behavior, required quality, or cost bounds
+regress beyond the recorded tolerance.
 
 An evaluation report should include:
 
@@ -114,21 +115,20 @@ Evaluation version:
 Code commit:
 Provider/model:
 Prompt and schema versions:
-Dataset source, consent/approval, size, and slices:
+Dataset source, sanitization status, size, and slices:
 Reviewer rubric and agreement:
 Metrics with confidence intervals:
 Blocked/error rates:
 Latency/token/cost summary:
 Known failures and examples (sanitized):
-Approved use and prohibited interpretations:
-Reviewer and approval date:
+Intended use and prohibited interpretations:
+Reviewer and evaluation date:
 ```
 
 ## Human review and publication
 
-Inspect sampled inputs and outputs before publication, subject to the approved
-data-handling environment. Report uncertainty, missingness, model and sampling
-bias, and changes over time. Aggregate counts should suppress or combine very
-small groups when they could expose individuals. Never quote or republish Reddit
-content merely because the scraper can retrieve it; verify permissions and
-quotation requirements independently.
+Inspect sampled inputs and outputs before publication. Report uncertainty,
+missingness, model and sampling bias, and changes over time. Aggregate counts
+should suppress or combine very small groups when they could expose individuals.
+Do not treat provider access as evidence that a dataset or quotation is suitable
+for redistribution.

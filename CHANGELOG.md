@@ -26,6 +26,10 @@ All notable changes will be documented here. The format follows
 - Parameterized, output-free analysis notebooks.
 - Public Mines Nancy internship context, maintainer attribution, and citation
   metadata for the portfolio and research-facing repository.
+- Concise engineering-focused data-safety guarantees covering collection,
+  secrets, untrusted inputs, exports, and deletion.
+- A deterministic `reddit-minerals demo` command that exercises the real scrape,
+  analysis, SQLite, and export pipeline without credentials or network access.
 
 ### Changed
 
@@ -41,6 +45,8 @@ All notable changes will be documented here. The format follows
   provider-input character bound), transactional compare-and-save analysis
   persistence, lock-owned interrupted-run reconciliation, a cross-process tracked
   writer lock, and an export/deletion barrier through final publication.
+- Made the container builder include packaged configuration before installing the
+  project, matching the wheel's force-included default mapping.
 
 ### Security
 
@@ -60,5 +66,5 @@ All notable changes will be documented here. The format follows
 ## Release process
 
 Before creating the first versioned section, complete the release checklist in
-`docs/deployment.md`, select a license explicitly, replace this placeholder with
-the release date, and add comparison links when a canonical remote is known.
+`docs/deployment.md`, replace this placeholder with the release date, and add
+comparison links when a canonical remote is known.

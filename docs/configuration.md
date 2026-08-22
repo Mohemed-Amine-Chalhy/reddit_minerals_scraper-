@@ -31,8 +31,8 @@ root or use absolute paths.
 | `RMS_REDDIT_CLIENT_SECRET` | none | `scrape` |
 | `RMS_REDDIT_USER_AGENT` | none | `scrape` |
 
-Use a read-only script/application registration approved for the intended use.
-The user agent should identify the application, version, and a reachable Reddit
+Use a read-only script/application registration. The user agent should identify
+the application, version, and a reachable Reddit
 account, for example `script:reddit-minerals-scraper:0.1.0 (by u/account)`. This project
 does not need or accept a Reddit username/password login flow.
 
@@ -61,7 +61,7 @@ and record it as a methodology change before rollout.
 
 CLI `--max-posts`, `--max-comments`, and `--limit` should normally be lower than
 or equal to deployment defaults for canaries. Raising a bound affects time,
-provider quota, storage, privacy exposure, and model cost.
+provider quota, storage, data exposure, and model cost.
 
 ## Retry policy
 
@@ -124,7 +124,7 @@ The mapping is bounded to 1,000,000 encoded bytes, 500 minerals, 128 characters
 per mineral name, 100 configured subreddit entries per mineral, and 10,000
 configured entries in total. These are parser/resource safety ceilings, not
 recommended collection sizes; production mappings should be much smaller and
-individually approved.
+reviewed deliberately.
 
 Validate after every edit:
 

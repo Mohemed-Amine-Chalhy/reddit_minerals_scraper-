@@ -1,15 +1,12 @@
 # Operations runbook
 
-## Ownership and prerequisites
+## Runtime prerequisites
 
-Every production deployment needs named owners for the research purpose, Reddit
-approval, privacy/compliance, application operations, provider billing, security
-incidents, and content-deletion requests. The operator must be able to stop the
-scheduler and revoke both provider credentials without repository access.
-
-Before the first run, complete the approval record in
-`privacy-compliance.md`, configure retention, and test deletion and restore in a
-non-production environment.
+The operator must be able to stop the scheduler, revoke both provider
+credentials, inspect provider usage, and restore the database without repository
+access. Before the first live run, configure explicit limits, timeouts, logging,
+backups, and alerts, then test interruption, deletion, and restore behavior in an
+isolated environment.
 
 ## Preflight
 
@@ -24,11 +21,10 @@ Confirm:
 
 - configuration points to the intended database and mapping;
 - the safe summary reports only configured/not-configured states, never values;
-- Reddit approval and provider terms are current;
 - free disk space exceeds expected database, temporary export, and backup size;
 - no other process writes the same SQLite file;
-- provider quotas, Gemini model, analysis threshold, limits, log destination, and
-  retention match the approved deployment record;
+- provider quotas, Gemini model, analysis threshold, limits, and log destination
+  match the intended deployment;
 - the previous run did not leave unexplained partial or failed work.
 
 ## First-run canary
@@ -47,7 +43,7 @@ reddit-minerals export --mineral gold --format jsonl --output exports/canary.jso
 ```
 
 Inspect counts, statuses, latency, provider usage, model identifier, token/cost
-data, and a policy-approved sample of results. Remove the canary export after the
+data, and a small sanitized sample of results. Remove the canary export after the
 review. Do not increase limits until failures and costs are understood.
 
 ## Scheduling
@@ -63,8 +59,8 @@ read-only and may run while a tracked command owns the lock. A typical order is:
 4. bounded `enrich`;
 5. bounded `reputation`;
 6. `status --json` and alert evaluation;
-7. an approved export, if required;
-8. retention/deletion processing and backup.
+7. an export, if required;
+8. backup and deletion processing.
 
 Use the scheduler's secret injection, working-directory, timeout, concurrency,
 and retry controls. Scheduler retries must not create an unbounded loop around
@@ -118,12 +114,12 @@ Capture and trend:
 - p50/p95 latency and request/token counts by analysis kind/model;
 - estimated cost against daily and monthly budgets;
 - database size, free disk, backup age, and restore-test age;
-- deletions requested, completed, overdue, and awaiting backup expiry.
+- deletion results and retained tombstone counts.
 
-Example alert conditions must be tuned from an approved canary: any authentication
+Example alert conditions must be tuned from a bounded canary: any authentication
 failure, database-integrity failure, unexpected model change, secret-scanner
-finding, overdue deletion, repeated non-zero exit, growing retryable backlog, or
-cost/disk threshold breach should stop or page rather than silently expand work.
+finding, repeated non-zero exit, growing retryable backlog, or cost/disk threshold
+breach should stop or page rather than silently expand work.
 
 ## Interruption and resumption
 
@@ -163,9 +159,9 @@ and run an offline export. Never restore over the live file while a job runs.
 
 ### Authentication or authorization
 
-Stop networked stages. Confirm the configured/not-configured summary, approval
-status, application registration, model availability, and account/project scope.
-Never print a secret to test it. Rotate it if exposure is possible.
+Stop networked stages. Confirm the configured/not-configured summary,
+application registration, model availability, and account/project scope. Never
+print a secret to test it. Rotate it if exposure is possible.
 
 ### Rate limiting or outage
 
@@ -177,7 +173,7 @@ resume after provider recovery and quota confirmation.
 
 Do not coerce invalid output or substitute neutral results. Preserve the distinct
 failure/blocked state, stop the affected analysis stage if the rate exceeds its
-approved baseline, retain only safe metadata, and evaluate the model/prompt/schema
+expected baseline, retain only safe metadata, and evaluate the model/prompt/schema
 change offline before retrying.
 
 ## Database incident
@@ -185,7 +181,7 @@ change offline before retrying.
 If integrity checks fail or an unsupported schema is reported:
 
 1. stop all writers and exports;
-2. preserve the affected file read-only for investigation under data policy;
+2. preserve the affected file read-only for investigation;
 3. capture application version, file size, integrity output, and last successful
    run—never raw rows in a ticket;
 4. restore the most recent verified backup to a new path;
@@ -196,10 +192,10 @@ Do not use ad hoc `UPDATE`, `.recover`, or schema-version edits on the sole copy
 
 ## Content deletion
 
-Follow the end-to-end procedure in `privacy-compliance.md`. Always preview the
-stable ID and affected counts before deletion. A successful database transaction
-does not remove prior exports, notebooks, provider logs, or backups; track those
-copies to completion or approved expiry.
+Always preview the stable ID and affected counts before deletion. A successful
+database transaction does not remove prior exports, notebooks, provider logs, or
+backups; remove or regenerate those copies separately. See `data-safety.md` for
+the enforced database behavior.
 
 ## Credential incident
 
@@ -209,11 +205,10 @@ safe regression detection rule. Editing the current source is not remediation.
 
 ## Routine maintenance
 
-- Review Reddit and Gemini policy/terms and the approval scope before releases.
 - Apply reviewed dependency updates and re-run offline tests/evaluation.
 - Rotate credentials and review access lists.
 - Re-evaluate the subreddit mapping and sampling rationale.
 - Test database restore and content deletion.
-- Review failed/blocked backlogs and expired exports/backups.
-- Compare the deployed image/package digest and model identifier to the approved
-  release record.
+- Review failed/blocked backlogs and old exports/backups.
+- Compare the deployed image/package digest and model identifier to the release
+  record.

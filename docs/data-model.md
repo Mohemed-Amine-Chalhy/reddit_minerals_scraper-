@@ -44,8 +44,8 @@
 | `permalink` | string | Reddit-relative or canonical link. |
 | `fetched_at` | UTC datetime | Most recent successful fetch time. |
 
-Author usernames are intentionally absent. Adding them requires an approved,
-documented necessity and privacy review.
+Author usernames are intentionally absent because the pipeline does not need
+them for content-level analysis.
 
 ### Mineral association
 
@@ -163,15 +163,15 @@ additive fields but reject a new unsupported major schema version. Exports may
 contain Reddit text and remain sensitive even though the source was public; Git
 ignores them by default.
 
-## Schema migration policy
+## Schema migrations
 
 1. Back up the database and verify the backup can be opened.
 2. Stop all writers.
 3. Run the new version against a copy or staging database first.
 4. Let the application apply ordered, transactional forward migrations.
 5. Verify schema version, foreign-key integrity, row counts, and a status query.
-6. Retain the pre-migration backup according to the rollback window and data
-   policy, then securely remove it.
+6. Retain the pre-migration backup for the rollback window, then remove it
+   safely.
 
 Each migration change needs an upgrade test from the previous supported schema.
 SQLite migrations that cannot be reversed in place use restore-based rollback.
@@ -197,5 +197,5 @@ legacy migration from re-collecting that Reddit ID; retain tombstones for at
 least as long as any collection is active. Then locate and delete or regenerate
 every export,
 notebook-derived file, cache, log attachment, and backup copy within the
-documented policy. The database transaction cannot revoke files already copied
+known snapshot set. The database transaction cannot revoke files already copied
 elsewhere.

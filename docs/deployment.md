@@ -18,22 +18,19 @@ Before tagging or deploying:
 
 - all historical provider credentials are revoked and purged from reachable Git
   history and release artifacts;
-- Reddit approval and the compliance record cover the exact deployment;
-- the owner has resolved licensing before distribution;
 - `uv lock --check` and both platform check scripts pass;
 - formatting, lint, strict typing, tests/coverage, secret scan, dependency audit,
   notebook hygiene, package build, isolated wheel/source-distribution install
   tests, smoke test, container build/runtime checks, and the actionable
   high/critical container vulnerability scan are green;
-- the [analysis evaluation record](evaluation-template.md) meets its recorded
-  quality, safety, latency, and cost gates for the pinned model/prompt/schema;
+- analysis quality, schema validity, latency, and cost have been measured for the
+  pinned model/prompt/schema as described in `methodology.md`;
 - forward database migration and restore-based rollback have been rehearsed on a
   production-shaped copy;
 - a low-limit provider canary passes in staging;
-- retention, deletion, backup, alerts, incident contacts, and cost ceilings are
-  configured and tested;
+- deletion, backup, alerts, and cost ceilings are configured and tested;
 - package/image digests, database schema version, mapping checksum, and release
-  approvers are recorded.
+  commit are recorded.
 
 The Dockerfile pins its Python and `uv` bases by both readable tag and immutable
 registry digest. Review automated digest updates like dependency changes; never
@@ -114,23 +111,23 @@ model rollback separately.
 
 Stop writers. Restore the verified pre-migration backup to a new path, point the
 previous application version at that path, run integrity/status checks, then
-promote the restored path. Preserve the failed migrated database under the
-incident retention policy. Work completed after the backup may need a controlled
+promote the restored path. Preserve the failed migrated database as a diagnostic
+copy. Work completed after the backup may need a controlled
 recollection; never merge SQLite files manually.
 
 ### Prompt/model regression
 
 Stop only the affected analysis stages. Preserve raw canonical content, deploy
-the last approved model/prompt/schema, evaluate on the versioned set, then use a
+the last verified model/prompt/schema, evaluate on the versioned set, then use a
 documented bounded `--force` reprocessing run if invalid results must be replaced.
 Record the affected analysis identities and downstream exports requiring
 regeneration or withdrawal.
 
-### Security or compliance rollback
+### Security rollback
 
 Stop all networked work immediately, revoke relevant credentials, quarantine
-exports, and follow `SECURITY.md` and `privacy-compliance.md`. A normal code
-rollback is insufficient when approval or data handling is the issue.
+exports, and follow `SECURITY.md`. A normal code rollback is insufficient when a
+credential or data-handling boundary was compromised.
 
 ## Release record template
 
@@ -141,10 +138,9 @@ Python and lockfile checksum:
 Database schema version and pre-migration backup:
 Mapping checksum:
 Gemini model, prompt, schema, threshold, evaluation report:
-Reddit approval/compliance review reference:
 Canary bounds and result:
-Alerts, cost ceiling, retention, and deletion test:
+Alerts, cost ceiling, backup, and deletion test:
 Security/dependency scan result:
 Rollback version/digest and restore location:
-Approvers and timestamp:
+Release commit and timestamp:
 ```

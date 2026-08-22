@@ -19,8 +19,7 @@ through a private channel already published on their profile. Include:
 - suggested remediation, if known.
 
 Do not include working credentials, private datasets, or unnecessary Reddit
-content in the report. The maintainer should acknowledge receipt, agree on a
-disclosure timeline, and credit reporters who request attribution.
+content in the report.
 
 ## Credential incident response
 
@@ -53,14 +52,6 @@ Never assume deleting a line from the latest commit invalidates the credential.
   failure states.
 - Dependencies and container images are scanned and updated through reviewed
   changes.
-
-## Data incident response
-
-If prohibited, deleted, or personal content is retained unexpectedly, stop
-collection and exports, preserve only the minimum operational evidence, identify
-all raw and derived copies, execute the documented deletion workflow, assess
-notification obligations, and record corrective actions. See
-`docs/privacy-compliance.md` for the data inventory and deletion procedure.
 
 ## Historical-secret warning
 

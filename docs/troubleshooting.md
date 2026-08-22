@@ -40,13 +40,13 @@ mineral to a non-empty list, and use subreddit names of 2–64 letters, digits, 
 underscores. JSON comments and trailing commas are invalid. Duplicate names are
 removed within a mineral case-insensitively. Run `validate-config` after editing.
 
-Validation does not prove a community exists or is accessible. A valid but
-unapproved/restricted community remains an operational or compliance failure.
+Validation does not prove a community exists or is accessible. A syntactically
+valid but restricted community still fails at the provider boundary.
 
 ## Reddit authentication, 403, or 404 errors
 
-Confirm the application is approved for the use case, credentials belong to the
-same application, authentication is read-only application mode, and the user
+Confirm credentials belong to the intended application, authentication is
+read-only application mode, and the user
 agent is descriptive. A 403/404 can also mean a private, banned, quarantined,
 removed, or mistyped subreddit or content item. Do not bypass restrictions or
 switch identities to evade a limit.
@@ -72,7 +72,7 @@ the distinct status counts, provider safety policy, input eligibility, current
 model, prompt/schema version, and recent failure rate. Do not disable safety
 controls or parse malformed output with regular expressions. Reproduce using a
 sanitized evaluation case and roll back the analysis configuration if the release
-gate regressed.
+criteria regressed.
 
 ## Analysis selects zero items
 
@@ -148,7 +148,7 @@ scanner allowlist or baseline.
 
 ## A command exits non-zero but logs seem sparse
 
-Raise `RMS_LOG_LEVEL` only to `DEBUG` in an approved environment; debug logging is
+Raise `RMS_LOG_LEVEL` only to `DEBUG` in an isolated environment; debug logging is
 still required to omit content and secrets. Capture the application commit,
 command flags without secret values, error type, run ID, timestamp, and status
 snapshot. Re-run offline validation before repeating a provider operation.

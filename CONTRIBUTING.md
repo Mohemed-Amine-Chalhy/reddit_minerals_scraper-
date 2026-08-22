@@ -10,8 +10,6 @@ bounded provider use, data minimization, resumability, and offline testability.
   documents.
 - Confirm that any fixture is synthetic or irreversibly sanitized.
 - Read `SECURITY.md` before reporting a vulnerability.
-- Note that no license has been selected. Submitting a contribution does not
-  itself resolve the project's licensing status.
 
 ## Set up
 
@@ -58,9 +56,8 @@ exceptions require a comment explaining the invariant and a regression test.
   classification, summaries, and deletion behavior.
 - Integration tests use fake provider clients and temporary databases.
 - Contract fixtures contain sanitized provider response shapes only.
-- Live tests, when deliberately enabled by a maintainer, must use strict limits,
-  a non-production database, and an approved account. They do not run in pull
-  requests.
+- Live tests, when deliberately enabled by a maintainer, must use strict limits
+  and a non-production database. They do not run in pull requests.
 
 Tests must be deterministic: freeze time or random jitter when relevant and
 never depend on network access, execution order, or an existing local database.

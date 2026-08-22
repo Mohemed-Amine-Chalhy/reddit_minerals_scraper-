@@ -1,8 +1,8 @@
 # Documentation
 
-Use this index to find the operating contract for the Reddit Minerals Pipeline.
-The CLI help and validated models are authoritative when documentation and code
-disagree; fix the documentation in the same change.
+Use this index to explore the design and operating contract for the Reddit
+Minerals Pipeline. The CLI help and validated models are authoritative when
+documentation and code disagree; fix the documentation in the same change.
 
 ## For users
 
@@ -22,10 +22,8 @@ disagree; fix the documentation in the same change.
   migrations, and deletion propagation.
 - [Methodology](methodology.md): sampling limits, model-derived fields,
   evaluation protocol, and interpretation constraints.
-- [Analysis evaluation template](evaluation-template.md): versioned quality,
-  safety, latency, token, cost, and canary release evidence.
-- [Privacy and compliance](privacy-compliance.md): approval gate, minimization,
-  retention, deletion, incident handling, and operator responsibilities.
+- [Data-safety guarantees](data-safety.md): implemented collection, secret,
+  logging, untrusted-input, export, and deletion boundaries.
 
 ## For operators and maintainers
 
@@ -33,14 +31,12 @@ disagree; fix the documentation in the same change.
   monitoring, backups, restoration, deletion, and incidents.
 - [Deployment and rollback](deployment.md): local and container rollout,
   verification, releases, and recovery.
-- [Licensing decision record](licensing.md): owner choices required before a
-  distributable release.
 - [Contributing](../CONTRIBUTING.md), [security](../SECURITY.md), and
   [changelog](../CHANGELOG.md).
 
 ## Documentation maintenance
 
 Review these documents whenever a CLI flag, environment variable, database
-schema, provider, prompt/schema version, retention rule, or deployment mechanism
-changes. Examples must use placeholders and synthetic identifiers; never paste
-production output into documentation.
+schema, provider, prompt/schema version, or deployment mechanism changes.
+Examples must use placeholders and synthetic identifiers; never paste production
+output into documentation.
