@@ -15,9 +15,7 @@ describe('parseExportText', () => {
 
   it('reports the malformed JSONL line without echoing its content', () => {
     const text = `${JSON.stringify(DEMO_RECORDS[0])}\nnot-private-json`;
-    expect(() => parseExportText(text)).toThrowError(
-      new ImportValidationError('Line 2: invalid JSON.'),
-    );
+    expect(() => parseExportText(text)).toThrow(new ImportValidationError('Line 2: invalid JSON.'));
   });
 
   it('rejects empty and incompatible exports', () => {
