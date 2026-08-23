@@ -20,7 +20,7 @@ export const enrichmentResultSchema = z.object({
   sentiment: z.enum(['positive', 'negative', 'neutral', 'mixed']),
   keywords: z.array(z.string()),
   themes: z.array(z.string()),
-  concerns: z.record(z.number().min(0).max(1)),
+  concerns: z.record(z.string(), z.number().min(0).max(1)),
   mining_stance: z.enum(['pro-mining', 'anti-mining', 'neutral', 'mixed']),
   topic_classification: z.string().min(1),
   relevance_score: z.number().min(0).max(1),
@@ -48,7 +48,7 @@ const analysisMetadataSchema = z.object({
   input_tokens: z.number().int().nonnegative().nullable(),
   output_tokens: z.number().int().nonnegative().nullable(),
   latency_ms: z.number().int().nonnegative().nullable(),
-  updated_at: z.string().datetime({ offset: true }).nullable(),
+  updated_at: z.iso.datetime({ offset: true }).nullable(),
 });
 
 export const analysisBundleSchema = z
@@ -63,7 +63,7 @@ export const analysisBundleSchema = z
       .extend({ result: reputationResultSchema.nullable() })
       .optional(),
   })
-  .passthrough();
+  .loose();
 
 const postContentSchema = z
   .object({
@@ -71,15 +71,15 @@ const postContentSchema = z
     title: z.string(),
     selftext: z.string(),
     subreddit: z.string().min(1),
-    created_at: z.string().datetime({ offset: true }),
+    created_at: z.iso.datetime({ offset: true }),
     score: z.number().int(),
     num_comments: z.number().int().nonnegative(),
     upvote_ratio: z.number().min(0).max(1).nullable(),
     permalink: z.string(),
-    fetched_at: z.string().datetime({ offset: true }).nullable(),
+    fetched_at: z.iso.datetime({ offset: true }).nullable(),
     scrape_status: analysisStatusSchema.optional(),
   })
-  .passthrough();
+  .loose();
 
 const commentContentSchema = z
   .object({
@@ -88,13 +88,13 @@ const commentContentSchema = z
     parent_id: z.string().nullable(),
     body: z.string(),
     score: z.number().int(),
-    created_at: z.string().datetime({ offset: true }),
+    created_at: z.iso.datetime({ offset: true }),
     depth: z.number().int().nonnegative(),
     subreddit: z.string().min(1),
     permalink: z.string(),
-    fetched_at: z.string().datetime({ offset: true }).nullable(),
+    fetched_at: z.iso.datetime({ offset: true }).nullable(),
   })
-  .passthrough();
+  .loose();
 
 const recordBase = {
   export_schema_version: z.literal(1),
@@ -132,7 +132,7 @@ export const pipelineStageSchema = z.object({
 export const pipelineRunSchema = z.object({
   id: z.string().min(1),
   mineral: z.string().min(1),
-  started_at: z.string().datetime({ offset: true }),
+  started_at: z.iso.datetime({ offset: true }),
   status: z.enum(['complete', 'partial', 'failed']),
   stages: z.array(pipelineStageSchema),
 });
@@ -169,8 +169,8 @@ const sourceCountsSchema = z
 
 const publishedDateRangeSchema = z
   .object({
-    start: z.string().date(),
-    end: z.string().date(),
+    start: z.iso.date(),
+    end: z.iso.date(),
   })
   .strict();
 
@@ -182,14 +182,14 @@ export const apiDatasetSourceSchema = z
     dataset_description: z.string().min(1),
     owner_name: z.string().min(1).nullable(),
     dataset_ref: z.string().min(1).nullable(),
-    source_url: z.string().url().nullable(),
+    source_url: z.url().nullable(),
     dataset_version: z.string().min(1),
     archive_sha256: z
       .string()
       .regex(/^[A-Fa-f0-9]{64}$/u)
       .nullable(),
     license: z.string().min(1).nullable(),
-    published_at: z.string().datetime({ offset: true }).nullable(),
+    published_at: z.iso.datetime({ offset: true }).nullable(),
     source_note: z.string().min(1),
     full_counts: sourceCountsSchema,
     sample_counts: sourceCountsSchema,
@@ -237,9 +237,9 @@ const canonicalProvenanceSchema = z
     owner_name: z.string().min(1),
     dataset_ref: z.string().min(1),
     dataset_slug: z.string().min(1),
-    dataset_url: z.string().url(),
+    dataset_url: z.url(),
     dataset_version: z.number().int().positive(),
-    published_at: z.string().datetime({ offset: true }),
+    published_at: z.iso.datetime({ offset: true }),
     archive_sha256: z.string().regex(/^[A-Fa-f0-9]{64}$/u),
     license: z.string().min(1),
     published_totals: sourceCountsSchema,
@@ -261,7 +261,7 @@ export const apiMetaSchema = z
     synthetic: z.boolean(),
     public_sample: z.boolean(),
     read_only: z.literal(true),
-    generated_at: z.string().datetime({ offset: true }),
+    generated_at: z.iso.datetime({ offset: true }),
     minerals: z.array(z.string()),
     totals: z
       .object({
@@ -305,7 +305,7 @@ const apiRecordSummarySchema = z
     title: z.string().nullable(),
     body_preview: z.string(),
     subreddit: z.string().min(1),
-    created_at: z.string().datetime({ offset: true }),
+    created_at: z.iso.datetime({ offset: true }),
     score: z.number().int(),
     comment_count: z.number().int().nonnegative().nullable(),
     sentiment: apiSentimentSchema,
@@ -346,7 +346,7 @@ export const apiRecordDetailSchema = z
     title: z.string().nullable(),
     body: z.string(),
     subreddit: z.string().min(1),
-    created_at: z.string().datetime({ offset: true }),
+    created_at: z.iso.datetime({ offset: true }),
     score: z.number().int(),
     comment_count: z.number().int().nonnegative().nullable(),
     analysis: z
@@ -395,7 +395,7 @@ export const apiDatasetSnapshotSchema = z
     synthetic: z.boolean(),
     public_sample: z.boolean(),
     source: apiDatasetSourceSchema,
-    generated_at: z.string().datetime({ offset: true }),
+    generated_at: z.iso.datetime({ offset: true }),
     records: z.array(apiRecordDetailSchema).max(5_000),
   })
   .strict();
@@ -405,8 +405,8 @@ const apiRunSummarySchema = z
     id: z.string().min(1),
     command: z.enum(['scrape', 'relevance', 'enrichment', 'reputation', 'export']),
     status: z.enum(['succeeded', 'partial', 'failed']),
-    started_at: z.string().datetime({ offset: true }),
-    finished_at: z.string().datetime({ offset: true }),
+    started_at: z.iso.datetime({ offset: true }),
+    finished_at: z.iso.datetime({ offset: true }),
     processed: z.number().int().nonnegative(),
     failed: z.number().int().nonnegative(),
     duration_ms: z.number().int().nonnegative(),
@@ -438,7 +438,7 @@ const canonicalRecordDetailSchema = z
     title: z.string().nullable(),
     body: z.string(),
     subreddit: z.string().min(1),
-    created_at: z.string().datetime({ offset: true }),
+    created_at: z.iso.datetime({ offset: true }),
     score: z.number().int(),
     comment_count: z.number().int().nonnegative().nullable(),
     analysis: apiRecordDetailSchema.shape.analysis,
