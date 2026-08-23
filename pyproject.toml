@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling==1.31.0"]
+requires = ["hatchling==1.32.0"]
 build-backend = "hatchling.build"
 
 [project]
@@ -48,13 +48,13 @@ reddit-minerals = "reddit_minerals.cli:main"
 [dependency-groups]
 build = [
   "editables>=0.5,<1",
-  "hatchling==1.31.0",
+  "hatchling==1.32.0",
 ]
 dev = [
   "detect-secrets>=1.5,<2",
   "fastapi>=0.115,<1",
   "httpx>=0.28,<1",
-  "mypy>=1.17,<2",
+  "mypy>=1.17,<3",
   "nbformat>=5.10,<6",
   "nbstripout>=0.8,<1",
   "pip-audit>=2.9,<3",
