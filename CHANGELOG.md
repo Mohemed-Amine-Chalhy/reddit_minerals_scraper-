@@ -25,6 +25,10 @@ All notable changes will be documented here. The format follows
   pre-commit/pre-push gates.
 - A production SPA/API container target and a credential-free GitHub Pages
   deployment for the static portfolio demo.
+- An opt-in Live Reddit workspace backed by PRAW, with deployment-authenticated
+  idempotent job creation, per-job capability tokens, dynamic mineral/community
+  targets, bounded workers and queues, isolated marked SQLite state, progress,
+  cancellation, idle expiry, cleanup retry, and raw Explorer handoff.
 - A reproducible 71-second, captioned 1080p product walkthrough assembled only
   from reviewed application screenshots, with the MP4 published as a release
   asset rather than committed to source control.

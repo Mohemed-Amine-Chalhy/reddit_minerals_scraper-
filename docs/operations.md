@@ -46,6 +46,75 @@ Inspect counts, statuses, latency, provider usage, model identifier, token/cost
 data, and a small sanitized sample of results. Remove the canary export after the
 review. Do not increase limits until failures and costs are understood.
 
+For an operator-enabled FastAPI instance, exercise the live-job boundary with
+the repository canary. It uses server credentials unless one-run credentials are
+requested explicitly:
+
+```powershell
+.\scripts\live-reddit-canary.ps1 -Mineral gold -Subreddit mining
+```
+
+```bash
+./scripts/live-reddit-canary.sh --mineral gold --subreddit mining
+```
+
+Set the matching `RMS_LIVE_ACCESS_TOKEN` in the canary process environment. The
+script first reads non-secret capabilities, creates a two-post/five-comment job
+with that deployment token, retains both tokens only in process memory, polls to a terminal
+state, and verifies the snapshot without printing collected text. A `partial`
+terminal state is inspectable but is not a fully successful canary; review its
+safe error/count summary before proceeding.
+
+## Live-job operations
+
+Keep `RMS_LIVE_JOB_MAX_WORKERS=1` until provider behavior and host capacity have
+been measured. A larger pool increases simultaneous Reddit requests and SQLite
+storage. `RMS_LIVE_JOB_MAX_ACTIVE` separately caps all queued/running jobs and
+defaults to four. Keep `RMS_LIVE_JOB_ROOT` on a private local writable filesystem
+and out of application assets, Git worktrees, and synchronized folders.
+
+The manager holds an OS-level exclusive ownership lock on the job root. A second
+process or web worker pointed at the same root fails startup closed before it can
+purge or access job data. Operate live mode with one FastAPI process per root;
+separate processes require separate roots and have independent job/token state.
+
+Status values are `queued`, `running`, `cancel_requested`, `cancelled`,
+`succeeded`, `partial`, and `failed`. Cancellation is cooperative: a running
+PRAW request can finish before the worker stops scheduling work. Do not terminate
+the entire API or delete database sidecars to cancel one job. `DELETE` changes a
+queued job directly to cancelled, asks a running job to cancel, and immediately
+removes a terminal job's metadata and exact isolated directory. Later access to
+that terminal job returns `404`.
+
+A normal FastAPI shutdown requests cooperative cancellation and waits for active
+workers to finish provider calls and cleanup. PRAW HTTP connect/read inactivity
+is timeout-configured, but the thread worker cannot safely kill an arbitrary
+in-flight library operation. Set an external supervisor termination grace period
+from measured canaries, then allow the supervisor to force-stop a genuinely
+stuck process. A forced stop leaves marked work for startup orphan cleanup rather
+than a complete terminal audit trail.
+
+The manager's expiry sweeper purges terminal artifacts after
+`RMS_LIVE_JOB_RETENTION_SECONDS` even when no API request arrives; request-time
+cleanup also bounds the total tracked-job registry with
+`RMS_LIVE_JOB_MAX_RETAINED`, purging the oldest terminal work first. Treat expiry
+as a safety bound, not a backup policy.
+If a snapshot is a required research artifact, export it deliberately to managed
+storage before expiry and apply the same deletion, backup, and access controls as
+other collected content.
+
+Every live job directory carries a non-secret MineralLens ownership marker.
+After the root lock is acquired on startup, only marked exact 32-hex directories
+with no reachable in-memory job are treated as prior-process orphans and removed.
+Unmarked directories are left untouched, but unrelated data still does not
+belong in `RMS_LIVE_JOB_ROOT`.
+
+Every creation request requires the configured `X-Live-Access-Token`, and active
+jobs are server-bounded. On a multi-user deployment, also require identity-aware
+authentication, HTTPS, per-user rate controls, and authorization. The shared
+deployment token and opaque job token are bearer capabilities, not accounts or
+roles. Never log either token or provider credentials.
+
 ## Scheduling
 
 Run commands as separate scheduled jobs so collection, analysis, and export have
@@ -109,6 +178,8 @@ Capture and trend:
 - analyses selected, completed, blocked, retryable, and permanent failures;
 - analysis results discarded because their source/configuration/dependency changed;
 - run counts by status, including automatically reconciled interrupted runs;
+- queued/running live jobs, queue age, terminal outcomes, cancellations, and
+  retention cleanup failures;
 - active database schema version and retained post/comment tombstone counts;
 - schema-invalid responses and provider error categories;
 - p50/p95 latency and request/token counts by analysis kind/model;

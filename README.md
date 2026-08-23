@@ -58,13 +58,15 @@ Built and maintained by
 | --- | --- |
 | Command Center | Mineral-level KPIs, sentiment, stance, concerns, provenance, and recent activity |
 | Research Explorer | URL-backed search and filters, responsive records, local JSON/JSONL import, and analysis detail |
-| Pipeline | Collection-to-export stage visibility and an explicitly synthetic reliability replay |
+| Pipeline | Offline reliability replay plus optional bounded Live Reddit jobs on an operator-enabled backend |
 | Engineering | Internship case study, architecture, reliability decisions, test evidence, and implementation links |
 | FastAPI | Versioned read contracts, strict response models, bounded pagination, sanitized errors, and OpenAPI |
 
 The interface is responsive, keyboard operable, reduced-motion aware, and safe
 to run without provider credentials. A local compatible export is parsed in
-browser memory and is never uploaded to the API.
+browser memory and is never uploaded to the API. A trusted local or self-hosted
+FastAPI instance can additionally expose disabled-by-default, bounded Live
+Reddit jobs; the static Pages portfolio never accepts credentials.
 
 ## Engineering evidence
 
@@ -72,31 +74,34 @@ browser memory and is never uploaded to the API.
 | --- | --- |
 | Full stack | Strict TypeScript/React client, Zod boundary validation, typed FastAPI DTOs, and an injected read-repository seam |
 | Reliability | Idempotent upserts, explicit work states, resumable batches, bounded retries, atomic exports, and stale-result rejection |
-| Quality | 277 passing Python tests, 2 expected Windows symlink skips, 95.04% total Python coverage, 19 passing frontend tests, strict mypy, Ruff, ESLint, Vitest, and pre-commit/pre-push gates |
+| Quality | 310 passing Python tests, 2 expected Windows symlink skips, 92.40% total Python coverage, 41 passing frontend tests, strict mypy, Ruff, ESLint, Vitest, and pre-commit/pre-push gates |
 | Portability | Python 3.12/3.13 on Linux and Windows, pinned Node 24, locked `uv` and pnpm environments, and platform scripts |
 | Delivery | Static GitHub Pages demo, production SPA/API container target, non-root runtime, immutable base images, and health checks |
-| Security | Secret scanning, CodeQL for Python and JavaScript/TypeScript, dependency/container audits, bounded untrusted input, and content-safe logs |
+| Security | Authenticated live-job creation, secret scanning, CodeQL for Python and JavaScript/TypeScript, dependency/container audits, bounded untrusted input, and content-safe logs |
 
 ## Architecture
 
 ```mermaid
 flowchart LR
     VIEWER["Researcher / reviewer"] --> SPA["MineralLens React SPA"]
-    SPA -->|"validated /api/v1 DTOs"| API["FastAPI read adapter"]
+    SPA -->|"validated /api/v1 DTOs"| API["FastAPI adapter"]
     SPA -->|"browser-only import"| LOCAL["JSON / JSONL export"]
     API --> SAMPLE["Bundled public research sample"]
+    API -->|"access-gated job + opaque job token"| LIVE["Isolated live-job worker"]
 
     CLI["CLI / scheduler"] --> SERVICES["Scrape + analysis services"]
-    REDDIT["Reddit adapter"] --> SERVICES
+    REDDIT["PRAW Reddit adapter"] --> SERVICES
+    LIVE --> SERVICES
     GEMINI["Gemini adapter"] --> SERVICES
     OFFLINE["Synthetic adapters"] -. "same protocols" .-> SERVICES
     SERVICES --> DB[("Transactional SQLite")]
     DB --> LOCAL
 ```
 
-The web layer is an adapter, not a second analysis engine. Provider clients and
-synthetic clients implement the same narrow protocols; SQLite remains the
-canonical operational state; exported files and the UI are downstream views.
+The web layer is an adapter, not a second analysis engine. Live jobs reuse the
+same PRAW-backed scrape service against isolated, retained SQLite state. Provider
+clients and synthetic clients implement the same narrow protocols; SQLite
+remains canonical operational state; snapshots and the UI are downstream views.
 
 See [architecture and failure semantics](docs/architecture.md), the
 [web application contract](docs/web-app.md), and the
@@ -127,6 +132,14 @@ Open `http://127.0.0.1:5173`. Vite proxies `/api` to FastAPI on port `8000`.
 When the API is unavailable, the client falls back visibly to the same bundled,
 repository-safe public sample rather than hiding the delivery failure.
 
+To enable bounded Reddit collection from `/pipeline`, configure the three
+`RMS_REDDIT_*` application values, a fresh random `RMS_LIVE_ACCESS_TOKEN`, and
+set `RMS_LIVE_REDDIT_ENABLED=true` in the FastAPI environment. PRAW obtains
+OAuth access internally; no Reddit password or pre-generated bearer token is
+needed. Follow the
+[Live Reddit guide](docs/live-reddit.md) before enabling one-run browser
+credentials or exposing the backend beyond localhost.
+
 For a production-style local build:
 
 ```shell
@@ -153,9 +166,9 @@ inspection.
 
 ## Live-provider workflow
 
-Live collection and analysis remain deliberately explicit CLI operations. Copy
-`.env.example` to `.env`, provide only the credentials required for the command,
-and validate configuration without contacting a provider:
+Copy `.env.example` to `.env`, provide only the credentials required for the
+operation, and validate configuration without contacting a provider. The
+long-running pipeline remains available through explicit CLI commands:
 
 ```shell
 uv run reddit-minerals validate-config
@@ -172,6 +185,16 @@ Exports are snapshot-consistent and refuse to overwrite an existing destination
 unless `--overwrite` is explicit. Use `uv run reddit-minerals COMMAND --help`
 for the authoritative option reference.
 
+The web application can run collection-only jobs through the same service. Live
+mode is off by default, supports server-managed credentials and an independently
+gated one-run credential mode, applies hard request bounds, isolates each job's
+database, requires a separate deployment token to create work, uses opaque
+per-job access tokens, supports cooperative cancellation, and deletes retained
+artifacts on a bounded schedule. Start with the
+cross-platform low-limit canary documented in
+[docs/live-reddit.md](docs/live-reddit.md). Gemini analysis remains a separate,
+optional CLI operation and is never started silently by the browser.
+
 ## API surface
 
 | Route | Purpose |
@@ -184,9 +207,17 @@ for the authoritative option reference.
 | `GET /api/v1/records/{id}` | One record with analysis detail and source note |
 | `GET /api/v1/runs` | Read-only run summaries; empty for the public sample so history is never fabricated |
 | `GET /api/v1/config` | Non-secret UI capabilities and filter values |
+| `GET /api/v1/live/capabilities` | Disabled-by-default availability, credential modes, and safe job bounds |
+| `POST /api/v1/live/jobs` | Start one bounded, isolated job with the deployment access token |
+| `GET/DELETE /api/v1/live/jobs/{id}` | Poll progress or request cooperative cancellation with the job token |
+| `GET /api/v1/live/jobs/{id}/snapshot` | Load a successful or partial live result into the Explorer |
 
-The public adapter is GET-only and cannot construct Reddit/Gemini clients or
-start provider work. Its OpenAPI schema is available at `/api/v1/docs`.
+The public-sample and Pages experiences remain credential-free. FastAPI always
+registers the live contract so clients can discover disabled capabilities, but a
+disabled job start returns a sanitized `503` and cannot construct a provider.
+Creation requires the configured `X-Live-Access-Token`; every job-specific
+request after creation requires the distinct returned `X-Live-Job-Token`. The
+OpenAPI schema is available at `/api/v1/docs`.
 
 ## Development gates
 
@@ -233,6 +264,7 @@ notebooks/                   Optional output-free export exploration
 
 - [Documentation index](docs/README.md)
 - [Web application](docs/web-app.md)
+- [Live Reddit collection](docs/live-reddit.md)
 - [Public sample provenance and local imports](docs/demo-data.md)
 - [Architecture](docs/architecture.md)
 - [Data model](docs/data-model.md)

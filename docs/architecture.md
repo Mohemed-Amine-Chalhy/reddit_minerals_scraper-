@@ -2,19 +2,22 @@
 
 ## Scope
 
-The system combines a scheduled batch engine with a read-only web product. The
-engine collects a bounded set of public Reddit submissions and comments for
+The system combines a scheduled batch engine with a safe-by-default web product.
+The engine collects a bounded set of public Reddit submissions and comments for
 configured minerals, stores canonical records in SQLite, optionally requests
 structured analysis from Gemini, and exports snapshots for research. MineralLens
-adds a typed FastAPI presentation adapter and React interface. It is not a live
-social-listening stream or a population-representative survey system.
+adds a typed FastAPI adapter and React interface. An operator can enable bounded,
+on-demand Reddit jobs, but MineralLens is not a continuous social-listening
+stream or a population-representative survey system.
 
 ## Components
 
 ```text
-React SPA <---- /api/v1 ---- FastAPI read adapter ---- public-sample repository
-    |
-    +---- browser-only JSON / JSONL import
+React SPA <---- /api/v1 ---- FastAPI adapter ---- public-sample repository
+    |                              |
+    |                              +---- feature-gated live-job manager
+    |                                            |
+    +---- browser-only JSON / JSONL import       +---- isolated SQLite + snapshot
 
 CLI / scheduler
       |
@@ -42,14 +45,29 @@ scrape pipeline       analysis pipelines
 ### Web product
 
 `reddit_minerals.web.create_app()` constructs an import-safe FastAPI adapter
-over an injected `ReadRepository`. The public v1 API is GET-only, bounded, and
-strictly typed. Its default repository loads a deterministic 104-record,
-metadata-only sample derived from the owner’s public Kaggle dataset. It does not
-construct provider clients, read credentials, or mutate operational SQLite
-state. The packaged sample omits raw text, authors, and source identifiers; the
-repository exposes those absences rather than fabricating values. When built
-assets exist, FastAPI serves the React SPA without allowing its history fallback
-to shadow `/api` routes.
+over an injected `ReadRepository`. The public-sample API is GET-only, bounded,
+and strictly typed. Its default repository loads a deterministic 104-record,
+metadata-only sample derived from the owner’s public Kaggle dataset and never
+constructs providers. The packaged sample omits raw text, authors, and source
+identifiers; the repository exposes those absences rather than fabricating
+values. When built assets exist, FastAPI serves the React SPA without allowing
+its history fallback to shadow `/api` routes.
+
+An operator-controlled live-job manager is a separate adapter. Both live flags
+default to false. When enabled, it validates hard request bounds, issues an
+opaque per-job access token, requires a separate shared token for job creation,
+and reuses the PRAW scrape service against an isolated database. A bounded worker
+pool and active-queue cap own work; a manager sweeper expires terminal job state
+and artifacts by time, while request-time cleanup enforces count. Provided
+credentials are captured only in a job's in-memory work closure, never
+serialized. The resulting snapshot crosses the existing typed presentation
+boundary before the Explorer renders it.
+
+The manager is deliberately single-process and owns an OS-level exclusive lock
+on its job root. This prevents two FastAPI workers from purging or mutating the
+same isolated job state; a competing owner fails startup closed. Each owned job
+directory has a non-secret version marker, and recursive cleanup refuses
+unmarked directories even when their names resemble job IDs.
 
 The React client validates API and local-file boundaries with Zod. Compatible
 exports selected by the viewer remain in browser memory; invalid imports are
@@ -153,8 +171,14 @@ user. The application:
 - does not persist author names in the canonical models;
 - uses parameterized SQL and controlled export paths.
 
-Secrets cross only the environment-to-provider-client boundary. The safe settings
-summary exposes configured/not-configured booleans, never values.
+Server-managed secrets cross only the environment-to-provider-client boundary.
+Explicitly enabled one-run Reddit credentials cross HTTPS request parsing into a
+short-lived worker closure and the provider client. They do not enter URLs,
+browser storage, job metadata, SQLite, responses, or logs. The safe settings and
+capability summaries expose configured/not-configured booleans, never values.
+The deployment access token crosses only the live form or canary into the
+job-creation header and is constant-time compared; it is distinct from both
+Reddit credentials and the returned job token.
 
 ## Failure semantics
 
@@ -178,3 +202,7 @@ so changing truncation behavior requeues affected work.
 - Subreddit selection is researcher-defined and introduces sampling bias.
 - Provider output is model-dependent and requires a versioned evaluation before
   use in decisions or publication.
+- Deployment and live-job tokens are shared bearer capabilities, not user
+  accounts or roles. A multi-user deployment still needs HTTPS, identity-aware
+  access control, per-user request-rate controls, private job storage, and an
+  explicit retention policy.

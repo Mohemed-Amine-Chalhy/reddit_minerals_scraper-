@@ -31,6 +31,8 @@ flowchart LR
     SPA -->|"/api proxy in development"| API["FastAPI /api/v1 adapter"]
     API --> WEBREPO["Bundled public-sample repository"]
     API -. "maps shared domain concepts" .-> ENGINE["Python pipeline engine"]
+    API -->|"feature + access gated"| JOBS["Live Reddit job manager"]
+    JOBS --> ENGINE
     ENGINE --> SERVICES["Scrape and analysis services"]
     ENGINE --> STORE[("Transactional SQLite")]
     SPA -->|"explicit file selection"| IMPORT["Browser-only JSON / JSONL adapter"]
@@ -45,12 +47,14 @@ it translates safe, read-only presentation data into versioned HTTP response
 models and keeps HTTP concerns out of the services.
 
 The default API repository loads the immutable 104-record public sample from a
-packaged JSON resource. Endpoint handlers must not construct Reddit or Gemini
-clients, load credentials, or write to the pipeline database. Live collection
-and analysis remain CLI operations. The synthetic repository remains an
-injectable test seam, not the product default. If a future feature reads an
-operational database, it needs a separate, explicit read-only repository
-contract rather than direct SQL in route handlers.
+packaged JSON resource. Its presentation endpoints do not construct Reddit or
+Gemini clients, load credentials, or write to the pipeline database. An
+independently feature-gated live-job adapter can construct the existing PRAW
+client and scrape service against an isolated per-job database; it is disabled
+by default and never changes the public-sample repository. The synthetic
+repository remains an injectable test seam, not the product default. Operational
+data reaches the Explorer only through an explicit, typed snapshot adapter—not
+direct SQL in route handlers.
 
 Production responses larger than 1 KB are gzip-compressed. The bounded snapshot
 uses a weak content ETag plus a five-minute revalidation policy; content-hashed
@@ -59,7 +63,9 @@ frontend assets use a one-year immutable cache policy, while HTML remains
 
 ## HTTP contract
 
-All API routes are namespaced under `/api/v1`. The web surface is read-only:
+All API routes are namespaced under `/api/v1`. Public-sample routes are
+read-only. The live contract is always registered for capability discovery, but
+disabled job creation returns a sanitized `503` and constructs no provider:
 
 | Route | Purpose |
 | --- | --- |
@@ -71,6 +77,11 @@ All API routes are namespaced under `/api/v1`. The web surface is read-only:
 | `GET /api/v1/records/{id}` | One record with analysis and provenance details |
 | `GET /api/v1/runs` | Run summaries; intentionally empty for the public sample |
 | `GET /api/v1/config` | Non-secret display configuration and capabilities |
+| `GET /api/v1/live/capabilities` | Live availability, credential modes, and safe limits without secret values |
+| `POST /api/v1/live/jobs` | Authenticate creation, idempotently queue one bounded job, and echo its opaque job token |
+| `GET /api/v1/live/jobs/{id}` | Poll authenticated progress and terminal state |
+| `DELETE /api/v1/live/jobs/{id}` | Request cooperative cancellation or immediately remove terminal artifacts |
+| `GET /api/v1/live/jobs/{id}/snapshot` | Return an Explorer-compatible successful or partial result |
 
 The generated OpenAPI document is authoritative for query parameters and
 response fields. Responses remain deterministic for the default public-sample
@@ -99,7 +110,9 @@ The interface must always expose its active data source:
 - `Bundled public Kaggle research sample` for static/fallback delivery of the
   same canonical asset;
 - `Synthetic pipeline export` for a locally imported CLI demo export; or
-- `Local imported dataset` for any other user-selected file.
+- `Local imported dataset` for any other user-selected file; or
+- `Live Reddit job` for a snapshot collected explicitly through an enabled local
+  or self-hosted FastAPI backend.
 
 Public-sample labels and the missing-content explanation remain visible in
 dashboard, record-detail, screenshot, and walkthrough views. Released scores
@@ -125,6 +138,11 @@ The supported local configuration is intentionally small:
   probe; local and container builds default to the API-first repository.
 - FastAPI serves the SPA from `web/dist` when that directory is present; API
   routes always retain priority over the SPA fallback.
+- `RMS_LIVE_REDDIT_ENABLED=false` keeps live routes unavailable by default;
+  `RMS_LIVE_REDDIT_ALLOW_BYO_CREDENTIALS=false` independently keeps one-run
+  browser credential submission off.
+- Enabling live mode also requires a random `RMS_LIVE_ACCESS_TOKEN` of at least
+  32 characters; `RMS_LIVE_JOB_MAX_ACTIVE` caps queued/running jobs.
 
 Frontend environment variables are public build inputs. Never place Reddit,
 Gemini, database, or other credentials in a `VITE_*` variable or frontend
@@ -172,6 +190,14 @@ pnpm dev
 
 Open `http://127.0.0.1:5173`. The page should identify the default source as the
 public research sample and should work without provider credentials.
+
+With live mode enabled in FastAPI, `/pipeline` adds a **Live Reddit** source. It
+submits the deployment access token only in a header, creates and polls a bounded
+idempotent job, retains its distinct opaque job token only in page memory, and
+opens a completed snapshot in `/explorer` only after authenticated server cleanup
+succeeds. A transient cleanup failure retains the token and presents a retry. Follow
+[live-reddit.md](live-reddit.md) for credentials, flags, canary execution,
+cancellation, and retention behavior.
 
 ## Build and production-style local run
 
@@ -222,8 +248,11 @@ uv run pytest tests/web --no-cov
 The full repository checks remain authoritative for the Python engine. Web tests
 should cover route contracts, deterministic public-sample responses, absent raw
 content, empty public run history, SPA fallback, provider isolation, explicit
-synthetic replay, and browser-local import behavior. They must not make live
-Reddit or Gemini calls.
+synthetic replay, browser-local import behavior, disabled live routes, secret
+non-disclosure, creation authorization, idempotency, job-token isolation,
+cancellation, cleanup retry, idle expiry, and storage ownership. Automated
+tests must use injected fake providers and never make live Reddit or Gemini
+calls.
 
 ## Walkthrough and media
 
