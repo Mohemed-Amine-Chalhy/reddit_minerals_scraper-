@@ -475,7 +475,7 @@ export type PipelineRun = z.infer<typeof pipelineRunSchema>;
 export type ResearchRecord = z.infer<typeof researchRecordSchema>;
 
 export interface SnapshotProvenance {
-  readonly kind: 'public-research-sample' | 'synthetic-demo' | 'local-import';
+  readonly kind: 'public-research-sample' | 'synthetic-demo' | 'local-import' | 'live-reddit';
   readonly datasetLabel: string;
   readonly datasetDescription: string;
   readonly synthetic: boolean;
@@ -488,7 +488,7 @@ export interface SnapshotProvenance {
 export interface ResearchSnapshot {
   readonly records: readonly ResearchRecord[];
   readonly runs: readonly PipelineRun[];
-  readonly delivery: 'api' | 'bundled' | 'local';
+  readonly delivery: 'api' | 'bundled' | 'local' | 'live';
   readonly provenance: SnapshotProvenance;
   readonly notice?: string;
 }

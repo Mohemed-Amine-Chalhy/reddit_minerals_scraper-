@@ -21,6 +21,7 @@ export function RecordDetail({ record, onClose }: RecordDetailProps) {
   const enrichment = enrichmentFor(record);
   const relevance = record.analyses.relevance;
   const reputation = record.analyses.reputation;
+  const hasAnalysis = Object.keys(record.analyses).length > 0;
   useEffect(() => headingRef.current?.focus(), [record.content.id]);
 
   return (
@@ -60,6 +61,21 @@ export function RecordDetail({ record, onClose }: RecordDetailProps) {
       </div>
 
       <div className="analysis-stack">
+        {!hasAnalysis ? (
+          <section className="analysis-card raw-analysis-card">
+            <div className="analysis-heading">
+              <div>
+                <span className="analysis-index">00</span>
+                <h3>Raw collection only</h3>
+              </div>
+              <span className="raw-status">Not analyzed</span>
+            </div>
+            <p>
+              This record was collected from Reddit, but no sentiment, stance, topic, relevance, or
+              reputation result has been generated.
+            </p>
+          </section>
+        ) : null}
         {relevance ? (
           <section className="analysis-card">
             <div className="analysis-heading">
@@ -157,40 +173,42 @@ export function RecordDetail({ record, onClose }: RecordDetailProps) {
         ) : null}
       </div>
 
-      <section className="provenance-card">
-        <p className="eyebrow">Published analysis provenance</p>
-        <p className="detail-source-note">
-          Model, prompt, schema, and latency metadata were not included in this public release.
-        </p>
-        <dl>
-          <div>
-            <dt>Model</dt>
-            <dd>{record.analyses.enrichment?.model ?? 'not recorded'}</dd>
-          </div>
-          <div>
-            <dt>Prompt</dt>
-            <dd>{record.analyses.enrichment?.prompt_version ?? 'not recorded'}</dd>
-          </div>
-          <div>
-            <dt>Schema</dt>
-            <dd>
-              {record.analyses.enrichment?.schema_version === null ||
-              record.analyses.enrichment?.schema_version === undefined
-                ? 'not recorded'
-                : `v${record.analyses.enrichment.schema_version}`}
-            </dd>
-          </div>
-          <div>
-            <dt>Latency</dt>
-            <dd>
-              {record.analyses.enrichment?.latency_ms === null ||
-              record.analyses.enrichment?.latency_ms === undefined
-                ? 'not published'
-                : `${record.analyses.enrichment.latency_ms} ms`}
-            </dd>
-          </div>
-        </dl>
-      </section>
+      {hasAnalysis ? (
+        <section className="provenance-card">
+          <p className="eyebrow">Published analysis provenance</p>
+          <p className="detail-source-note">
+            Model, prompt, schema, and latency metadata were not included in this public release.
+          </p>
+          <dl>
+            <div>
+              <dt>Model</dt>
+              <dd>{record.analyses.enrichment?.model ?? 'not recorded'}</dd>
+            </div>
+            <div>
+              <dt>Prompt</dt>
+              <dd>{record.analyses.enrichment?.prompt_version ?? 'not recorded'}</dd>
+            </div>
+            <div>
+              <dt>Schema</dt>
+              <dd>
+                {record.analyses.enrichment?.schema_version === null ||
+                record.analyses.enrichment?.schema_version === undefined
+                  ? 'not recorded'
+                  : `v${record.analyses.enrichment.schema_version}`}
+              </dd>
+            </div>
+            <div>
+              <dt>Latency</dt>
+              <dd>
+                {record.analyses.enrichment?.latency_ms === null ||
+                record.analyses.enrichment?.latency_ms === undefined
+                  ? 'not published'
+                  : `${record.analyses.enrichment.latency_ms} ms`}
+              </dd>
+            </div>
+          </dl>
+        </section>
+      ) : null}
     </aside>
   );
 }

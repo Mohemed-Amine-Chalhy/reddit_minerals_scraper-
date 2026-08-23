@@ -74,6 +74,8 @@ export function ExplorerPage() {
   if (error || !snapshot)
     return <ErrorState message={error ?? 'No research snapshot was loaded.'} />;
 
+  const isLiveSnapshot = snapshot.delivery === 'live';
+
   function updateParam(key: keyof ExplorerFilters | 'sort', value: string) {
     const next = new URLSearchParams(searchParams);
     if (value) next.set(key, value);
@@ -105,7 +107,11 @@ export function ExplorerPage() {
       <PageHeader
         eyebrow="Schema-aware content explorer"
         title="Follow every signal back to its source record."
-        description="Search a deterministic sample of publicly released research metadata or inspect a compatible JSON/JSONL export locally. Filters remain in the URL, so a view can be shared or revisited."
+        description={
+          isLiveSnapshot
+            ? 'Inspect the raw records collected by your live Reddit job. Content is available for this in-memory session, while analysis fields remain empty until a separate validated analysis pipeline is run.'
+            : 'Search a deterministic sample of publicly released research metadata or inspect a compatible JSON/JSONL export locally. Filters remain in the URL, so a view can be shared or revisited.'
+        }
         actions={
           <>
             <label className="button primary file-button">
@@ -116,11 +122,15 @@ export function ExplorerPage() {
                 onChange={(event) => void handleImport(event)}
               />
             </label>
-            {snapshot.delivery === 'local' ? (
+            {snapshot.delivery === 'local' || snapshot.delivery === 'live' ? (
               <button
                 className="button secondary"
                 type="button"
-                onClick={() => void resetDataset()}
+                onClick={() => {
+                  setSelected(null);
+                  setSearchParams({}, { replace: true });
+                  void resetDataset();
+                }}
               >
                 Restore research sample
               </button>
@@ -131,17 +141,25 @@ export function ExplorerPage() {
 
       <div className={`source-banner source-${snapshot.delivery}`} role="status">
         <span className="source-icon" aria-hidden="true">
-          {snapshot.delivery === 'local' ? '↥' : snapshot.delivery === 'api' ? '⌁' : '◆'}
+          {snapshot.delivery === 'local'
+            ? '↥'
+            : snapshot.delivery === 'api'
+              ? '⌁'
+              : snapshot.delivery === 'live'
+                ? '●'
+                : '◆'}
         </span>
         <div>
           <strong>
             {snapshot.delivery === 'local'
               ? 'Local browser preview'
-              : snapshot.provenance.publicSample
-                ? snapshot.delivery === 'api'
-                  ? 'Public research sample · read-only API'
-                  : 'Bundled public Kaggle research sample'
-                : 'Synthetic regression fixture'}
+              : snapshot.delivery === 'live'
+                ? 'Live Reddit · raw collection'
+                : snapshot.provenance.publicSample
+                  ? snapshot.delivery === 'api'
+                    ? 'Public research sample · read-only API'
+                    : 'Bundled public Kaggle research sample'
+                  : 'Synthetic regression fixture'}
           </strong>
           <span>
             {snapshot.notice ?? `${snapshot.records.length} deterministic export records`}
@@ -302,7 +320,11 @@ export function ExplorerPage() {
                         </td>
                         <td data-label="Topic">{enrichment?.topic_classification ?? '—'}</td>
                         <td data-label="Signal">
-                          <StatusPill status={record.analyses.enrichment?.status ?? 'pending'} />
+                          {Object.keys(record.analyses).length ? (
+                            <StatusPill status={record.analyses.enrichment?.status ?? 'pending'} />
+                          ) : (
+                            <span className="raw-status">Not analyzed</span>
+                          )}
                         </td>
                         <td data-label="Date">{shortDate(record.content.created_at)}</td>
                         <td>

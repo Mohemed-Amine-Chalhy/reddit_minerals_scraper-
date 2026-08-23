@@ -21,6 +21,7 @@ interface ResearchContextValue {
   readonly loading: boolean;
   readonly error: string | null;
   readonly importFile: (file: File) => Promise<void>;
+  readonly useSnapshot: (snapshot: ResearchSnapshot) => void;
   readonly resetDataset: () => Promise<void>;
 }
 
@@ -90,9 +91,14 @@ export function ResearchProvider({
     setError(null);
   }, []);
 
+  const useSnapshot = useCallback((nextSnapshot: ResearchSnapshot) => {
+    setSnapshot(nextSnapshot);
+    setError(null);
+  }, []);
+
   const value = useMemo<ResearchContextValue>(
-    () => ({ snapshot, loading, error, importFile, resetDataset: load }),
-    [snapshot, loading, error, importFile, load],
+    () => ({ snapshot, loading, error, importFile, useSnapshot, resetDataset: load }),
+    [snapshot, loading, error, importFile, useSnapshot, load],
   );
   return <ResearchContext.Provider value={value}>{children}</ResearchContext.Provider>;
 }

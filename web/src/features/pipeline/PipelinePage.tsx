@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useResearch } from '../../app/research';
 import { ErrorState, LoadingState } from '../../components/LoadingState';
 import { PageHeader } from '../../components/PageHeader';
+import { LiveCollectionPanel } from '../live/LiveCollectionPanel';
+import { defaultLiveRedditClient, type LiveCapabilities } from '../live/api';
 import { buildReplayEvents, type ReplayScenario, type ReplayStage } from './replay';
 
 const stageLabels: Record<ReplayStage, string> = {
@@ -24,10 +26,22 @@ function formatRunDate(value: string): string {
 
 export function PipelinePage() {
   const { snapshot, loading, error } = useResearch();
+  const [collectionSource, setCollectionSource] = useState<'replay' | 'live'>('replay');
+  const [liveCapabilities, setLiveCapabilities] = useState<LiveCapabilities | null>(null);
   const [scenario, setScenario] = useState<ReplayScenario>('nominal');
   const [cursor, setCursor] = useState(-1);
   const [running, setRunning] = useState(false);
   const events = useMemo(() => buildReplayEvents(scenario), [scenario]);
+
+  useEffect(() => {
+    let active = true;
+    void defaultLiveRedditClient.capabilities().then((capabilities) => {
+      if (active && capabilities?.enabled) setLiveCapabilities(capabilities);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (!running) return;
@@ -67,12 +81,54 @@ export function PipelinePage() {
   return (
     <div className="page pipeline-page">
       <PageHeader
-        eyebrow="Deterministic execution replay"
-        title="Reliability is visible in the state transitions."
-        description="Replay a synthetic run through the same stages represented by the CLI. Scenarios illustrate bounded retry and optimistic stale-result rejection; they never contact providers."
+        eyebrow="Configurable collection pipeline"
+        title="Reliability is visible in every state transition."
+        description="Replay a deterministic execution path, or—when a live backend is explicitly enabled—launch a bounded Reddit collection through the same production service boundaries."
       />
 
-      <section className="pipeline-lab">
+      {liveCapabilities ? (
+        <section className="pipeline-source-switcher" aria-label="Pipeline data source">
+          <div>
+            <p className="eyebrow">Execution source</p>
+            <strong>Choose what the pipeline should run</strong>
+          </div>
+          <div className="source-options">
+            <button
+              type="button"
+              aria-pressed={collectionSource === 'replay'}
+              onClick={() => setCollectionSource('replay')}
+            >
+              <span aria-hidden="true">◆</span>
+              <span>
+                <strong>Research replay</strong>
+                <small>Offline · deterministic</small>
+              </span>
+            </button>
+            <button
+              type="button"
+              aria-pressed={collectionSource === 'live'}
+              onClick={() => {
+                resetReplay();
+                setCollectionSource('live');
+              }}
+            >
+              <span className="live-dot" aria-hidden="true" />
+              <span>
+                <strong>Live Reddit</strong>
+                <small>{liveCapabilities.library} · opt-in</small>
+              </span>
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {liveCapabilities ? (
+        <div hidden={collectionSource !== 'live'}>
+          <LiveCollectionPanel capabilities={liveCapabilities} />
+        </div>
+      ) : null}
+
+      <section className="pipeline-lab" hidden={collectionSource === 'live'}>
         <div className="lab-controls">
           <div>
             <p className="eyebrow">Replay configuration</p>
