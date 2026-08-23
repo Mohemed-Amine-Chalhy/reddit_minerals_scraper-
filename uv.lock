@@ -2156,8 +2156,10 @@ source = { editable = "." }
 dependencies = [
     { name = "google-genai" },
     { name = "praw" },
+    { name = "prawcore" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
+    { name = "requests" },
 ]
 
 [package.optional-dependencies]
@@ -2201,8 +2203,10 @@ requires-dist = [
     { name = "fastapi", marker = "extra == 'web'", specifier = ">=0.115,<1" },
     { name = "google-genai", specifier = ">=1.30,<3" },
     { name = "praw", specifier = ">=8,<9" },
+    { name = "prawcore", specifier = ">=4,<5" },
     { name = "pydantic", specifier = ">=2.11,<3" },
     { name = "pydantic-settings", specifier = ">=2.10,<3" },
+    { name = "requests", specifier = ">=2.32,<3" },
     { name = "uvicorn", extras = ["standard"], marker = "extra == 'web'", specifier = ">=0.34,<1" },
 ]
 provides-extras = ["web"]

@@ -6,6 +6,7 @@ import logging
 import math
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from datetime import timedelta
+from enum import StrEnum
 from functools import partial
 from time import monotonic, sleep
 
@@ -13,6 +14,7 @@ from pydantic import Field
 
 from reddit_minerals.clients.base import RedditClient
 from reddit_minerals.errors import (
+    BatchOperationError,
     BatchProviderFailureError,
     OperationDeadlineExceededError,
     ProviderError,
@@ -29,6 +31,17 @@ class ScrapeOperationDeadlineExceededError(OperationDeadlineExceededError, Timeo
     """Scrape deadline compatible with domain and built-in timeout handling."""
 
 
+class ScrapeCancelledError(BatchOperationError):
+    """A caller requested cooperative cancellation of an in-flight scrape."""
+
+
+class ScrapeProgressStage(StrEnum):
+    """Provider-level stage emitted to an optional progress observer."""
+
+    SEARCHING = "searching"
+    COLLECTING = "collecting"
+
+
 class ScrapeSummary(StrictModel):
     minerals: list[str]
     posts_discovered: int = Field(ge=0)
@@ -42,6 +55,19 @@ class ScrapeSummary(StrictModel):
     comment_associations_removed: int = Field(ge=0)
     searches_failed: int = Field(ge=0)
     dry_run: bool
+
+
+class ScrapeProgress(StrictModel):
+    """Non-sensitive progress emitted at bounded orchestration checkpoints."""
+
+    stage: ScrapeProgressStage
+    current_mineral: str
+    current_subreddit: str
+    minerals_total: int = Field(ge=1)
+    minerals_completed: int = Field(ge=0)
+    subreddits_total: int = Field(ge=1)
+    subreddits_completed: int = Field(ge=0)
+    summary: ScrapeSummary
 
 
 class ScrapeService:
@@ -88,6 +114,8 @@ class ScrapeService:
         time_filter: str,
         dry_run: bool,
         force: bool,
+        progress: Callable[[ScrapeProgress], None] | None = None,
+        cancel_requested: Callable[[], bool] | None = None,
     ) -> ScrapeSummary:
         _validate_run_arguments(
             mapping=mapping,
@@ -113,13 +141,35 @@ class ScrapeService:
             dry_run=dry_run,
         )
         successful_provider_operations = 0
+        minerals_completed = 0
+        subreddits_completed = 0
+        subreddits_total = sum(len(mapping[mineral]) for mineral in selected)
+
+        def emit(stage: ScrapeProgressStage, mineral: str, subreddit: str) -> None:
+            if progress is not None:
+                progress(
+                    ScrapeProgress(
+                        stage=stage,
+                        current_mineral=mineral,
+                        current_subreddit=subreddit,
+                        minerals_total=len(selected),
+                        minerals_completed=minerals_completed,
+                        subreddits_total=subreddits_total,
+                        subreddits_completed=subreddits_completed,
+                        summary=summary.model_copy(deep=True),
+                    )
+                )
 
         for mineral in selected:
             seen_posts: set[str] = set()
-            for subreddit in mapping[mineral]:
+            for subreddit_index, subreddit in enumerate(mapping[mineral]):
+                _raise_if_cancelled(cancel_requested, summary)
                 remaining = max_posts_per_mineral - len(seen_posts)
                 if remaining <= 0:
+                    subreddits_completed += len(mapping[mineral]) - subreddit_index
+                    emit(ScrapeProgressStage.SEARCHING, mineral, subreddit)
                     break
+                emit(ScrapeProgressStage.SEARCHING, mineral, subreddit)
                 try:
                     search = partial(
                         self._client.search_posts,
@@ -133,10 +183,12 @@ class ScrapeService:
                         partial(_materialize, search),
                         deadline=deadline,
                         summary=summary,
+                        cancel_requested=cancel_requested,
                     )
                     successful_provider_operations += 1
                 except ProviderError as exc:
                     _raise_if_expired(deadline, summary)
+                    _raise_if_cancelled(cancel_requested, summary)
                     summary.searches_failed += 1
                     logger.warning(
                         "subreddit search failed",
@@ -146,14 +198,18 @@ class ScrapeService:
                             "error_type": type(exc).__name__,
                         },
                     )
+                    subreddits_completed += 1
+                    emit(ScrapeProgressStage.SEARCHING, mineral, subreddit)
                     continue
 
                 for post in posts:
                     _raise_if_expired(deadline, summary)
+                    _raise_if_cancelled(cancel_requested, summary)
                     if post.id in seen_posts:
                         continue
                     seen_posts.add(post.id)
                     summary.posts_discovered += 1
+                    emit(ScrapeProgressStage.COLLECTING, mineral, subreddit)
                     decision = self._database.refresh_decision(
                         post.id, mineral, refresh_after, force=force
                     )
@@ -180,10 +236,12 @@ class ScrapeService:
                             partial(_materialize_comments, fetch_comments),
                             deadline=deadline,
                             summary=summary,
+                            cancel_requested=cancel_requested,
                         )
                         successful_provider_operations += 1
                     except ProviderError as exc:
                         _raise_if_expired(deadline, summary)
+                        _raise_if_cancelled(cancel_requested, summary)
                         state = (
                             WorkStatus.RETRYABLE_FAILURE
                             if exc.retryable
@@ -209,6 +267,7 @@ class ScrapeService:
                                 "error_type": type(exc).__name__,
                             },
                         )
+                        emit(ScrapeProgressStage.COLLECTING, mineral, subreddit)
                         continue
 
                     stored = self._database.store_scraped_post(
@@ -236,6 +295,13 @@ class ScrapeService:
                             "comment_associations_removed": (stored.comment_associations_removed),
                         },
                     )
+                    emit(ScrapeProgressStage.COLLECTING, mineral, subreddit)
+                subreddits_completed += 1
+                emit(ScrapeProgressStage.SEARCHING, mineral, subreddit)
+            minerals_completed += 1
+            if mapping[mineral]:
+                emit(ScrapeProgressStage.SEARCHING, mineral, mapping[mineral][-1])
+        _raise_if_cancelled(cancel_requested, summary)
         provider_failures = summary.searches_failed + summary.posts_failed
         if provider_failures > 0 and successful_provider_operations == 0:
             raise BatchProviderFailureError(
@@ -250,18 +316,25 @@ class ScrapeService:
         *,
         deadline: float,
         summary: ScrapeSummary,
+        cancel_requested: Callable[[], bool] | None,
     ) -> ResultT:
         def guarded_operation() -> ResultT:
+            _raise_if_cancelled(cancel_requested, summary)
             _raise_if_expired(deadline)
             result = operation(deadline)
+            _raise_if_cancelled(cancel_requested, summary)
             _raise_if_expired(deadline)
             return result
 
         def bounded_sleep(delay: float) -> None:
-            remaining = deadline - monotonic()
-            if remaining <= 0:
-                _raise_if_expired(deadline)
-            sleep(min(delay, remaining))
+            sleep_deadline = min(monotonic() + delay, deadline)
+            while True:
+                _raise_if_cancelled(cancel_requested, summary)
+                remaining = sleep_deadline - monotonic()
+                if remaining <= 0:
+                    break
+                sleep(min(0.1, remaining))
+            _raise_if_cancelled(cancel_requested, summary)
             _raise_if_expired(deadline)
 
         try:
@@ -342,3 +415,14 @@ def _raise_if_expired(deadline: float, summary: ScrapeSummary | None = None) -> 
                 summary=summary.model_dump(mode="json"),
             )
         raise TimeoutError("Reddit operation exceeded the configured timeout")
+
+
+def _raise_if_cancelled(
+    cancel_requested: Callable[[], bool] | None,
+    summary: ScrapeSummary,
+) -> None:
+    if cancel_requested is not None and cancel_requested():
+        raise ScrapeCancelledError(
+            "Reddit scrape was cancelled by the caller",
+            summary=summary.model_dump(mode="json"),
+        )

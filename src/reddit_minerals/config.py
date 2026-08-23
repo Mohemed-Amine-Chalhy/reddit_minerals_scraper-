@@ -29,6 +29,8 @@ MAX_MAPPING_MINERALS = 500
 MAX_MINERAL_NAME_CHARS = 128
 MAX_SUBREDDITS_PER_MINERAL = 100
 MAX_MAPPING_SUBREDDIT_ENTRIES = 10_000
+MIN_LIVE_ACCESS_TOKEN_CHARS = 32
+MAX_LIVE_ACCESS_TOKEN_CHARS = 512
 _PLACEHOLDER_MARKERS = (
     "replace-",
     "replace_",
@@ -59,6 +61,7 @@ class AppSettings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore",
         case_sensitive=False,
+        hide_input_in_errors=True,
     )
 
     database_path: Path = Path("data/reddit_minerals.sqlite3")
@@ -68,6 +71,21 @@ class AppSettings(BaseSettings):
     reddit_client_id: SecretStr | None = None
     reddit_client_secret: SecretStr | None = None
     reddit_user_agent: str | None = None
+
+    # Live collection is an explicit deployment capability.  Keeping it disabled
+    # by default preserves the static, read-only portfolio deployment while
+    # allowing an operator to opt a trusted FastAPI instance into Reddit access.
+    live_reddit_enabled: bool = False
+    live_reddit_allow_byo_credentials: bool = False
+    live_access_token: SecretStr | None = Field(
+        default=None,
+        max_length=MAX_LIVE_ACCESS_TOKEN_CHARS,
+    )
+    live_job_root: Path = Path("data/live_jobs")
+    live_job_max_workers: int = Field(default=1, ge=1, le=4)
+    live_job_max_active: int = Field(default=4, ge=1, le=16)
+    live_job_retention_seconds: int = Field(default=3_600, ge=1, le=86_400)
+    live_job_max_retained: int = Field(default=100, ge=1, le=1_000)
 
     gemini_api_key: SecretStr | None = None
     gemini_model: str | None = None
@@ -107,7 +125,36 @@ class AppSettings(BaseSettings):
             raise ValueError("Reddit request timeout must not exceed the total operation timeout")
         if self.gemini_request_timeout_seconds > self.operation_timeout_seconds:
             raise ValueError("Gemini request timeout must not exceed the total operation timeout")
+        if self.live_job_max_retained < self.live_job_max_active:
+            raise ValueError("Live retained-job limit must be at least the active-job limit")
+        if self.live_reddit_enabled:
+            token_setting = self.live_access_token
+            if token_setting is None:
+                raise ValueError(
+                    "RMS_LIVE_ACCESS_TOKEN is required when live Reddit collection is enabled"
+                )
+            token = token_setting.get_secret_value()
+            if len(token) < MIN_LIVE_ACCESS_TOKEN_CHARS or _looks_like_placeholder(token):
+                raise ValueError(
+                    "RMS_LIVE_ACCESS_TOKEN must be a non-placeholder secret with at least "
+                    f"{MIN_LIVE_ACCESS_TOKEN_CHARS} characters"
+                )
         return self
+
+    def require_live_access_token(self) -> str:
+        """Return the live-creation secret after defensive validation."""
+
+        token_setting = self.live_access_token
+        if token_setting is None:
+            raise ConfigurationError("Live job creation access is not configured")
+        token = token_setting.get_secret_value()
+        if (
+            len(token) < MIN_LIVE_ACCESS_TOKEN_CHARS
+            or len(token) > MAX_LIVE_ACCESS_TOKEN_CHARS
+            or _looks_like_placeholder(token)
+        ):
+            raise ConfigurationError("Live job creation access is not configured")
+        return token
 
     def require_reddit(self) -> tuple[str, str, str]:
         client_id_setting = self.reddit_client_id
@@ -193,6 +240,22 @@ class AppSettings(BaseSettings):
                 and not _looks_like_placeholder(self.gemini_model)
             ),
             "gemini_model": self.gemini_model,
+            "live_reddit": {
+                "enabled": self.live_reddit_enabled,
+                "allow_byo_credentials": self.live_reddit_allow_byo_credentials,
+                "access_token_configured": (
+                    self.live_access_token is not None
+                    and MIN_LIVE_ACCESS_TOKEN_CHARS
+                    <= len(self.live_access_token.get_secret_value())
+                    <= MAX_LIVE_ACCESS_TOKEN_CHARS
+                    and not _looks_like_placeholder(self.live_access_token.get_secret_value())
+                ),
+                "job_root": str(self.live_job_root),
+                "max_workers": self.live_job_max_workers,
+                "max_active": self.live_job_max_active,
+                "retention_seconds": self.live_job_retention_seconds,
+                "max_retained": self.live_job_max_retained,
+            },
             "bounds": {
                 "max_posts_per_mineral": self.max_posts_per_mineral,
                 "max_comments_per_post": self.max_comments_per_post,

@@ -378,7 +378,7 @@ def test_app_never_constructs_network_providers(monkeypatch: pytest.MonkeyPatch)
         assert _get(app, path).status_code == 200
 
 
-def test_openapi_contract_contains_only_read_operations() -> None:
+def test_openapi_contract_keeps_sample_reads_and_explicit_live_job_operations() -> None:
     response = _get(_synthetic_app(asset_root=Path("missing-web-assets")), "/api/v1/openapi.json")
 
     assert response.status_code == 200
@@ -387,13 +387,23 @@ def test_openapi_contract_contains_only_read_operations() -> None:
         "/api/v1/config",
         "/api/v1/dashboard",
         "/api/v1/health",
+        "/api/v1/live/capabilities",
+        "/api/v1/live/jobs",
+        "/api/v1/live/jobs/{job_id}",
+        "/api/v1/live/jobs/{job_id}/snapshot",
         "/api/v1/meta",
         "/api/v1/records",
         "/api/v1/records/{record_id}",
         "/api/v1/runs",
         "/api/v1/snapshot",
     }
-    assert all(set(operations) == {"get"} for operations in paths.values())
+    assert set(paths["/api/v1/live/jobs"]) == {"post"}
+    assert set(paths["/api/v1/live/jobs/{job_id}"]) == {"get", "delete"}
+    assert all(
+        set(operations) == {"get"}
+        for path, operations in paths.items()
+        if path not in {"/api/v1/live/jobs", "/api/v1/live/jobs/{job_id}"}
+    )
 
 
 def test_spa_assets_are_optional_and_never_shadow_api_routes(tmp_path: Path) -> None:

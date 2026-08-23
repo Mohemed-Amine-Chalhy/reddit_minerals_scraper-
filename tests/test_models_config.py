@@ -32,6 +32,7 @@ from reddit_minerals.models import (
 
 _REDDIT_TEST_VALUE = "valid-test-reddit-value"
 _GEMINI_TEST_VALUE = "valid-test-gemini-value"
+_LIVE_ACCESS_TEST_VALUE = "unit-live-access-token-0123456789abcdef"
 
 
 def test_records_normalize_dates_and_strip_boundary_strings() -> None:
@@ -177,6 +178,57 @@ def test_settings_normalize_log_level_and_reject_invalid_bounds() -> None:
         AppSettings(max_retries=0)
     with pytest.raises(ValidationError):
         AppSettings(relevance_threshold=float("nan"))
+    with pytest.raises(ValidationError):
+        AppSettings(live_job_max_workers=0)
+    with pytest.raises(ValidationError):
+        AppSettings(live_job_retention_seconds=0)
+    with pytest.raises(ValidationError):
+        AppSettings(live_job_max_retained=0)
+    with pytest.raises(ValidationError):
+        AppSettings(live_job_max_active=0)
+    with pytest.raises(ValidationError):
+        AppSettings(live_job_max_active=17)
+    with pytest.raises(ValidationError, match="retained-job limit"):
+        AppSettings(live_job_max_active=5, live_job_max_retained=4)
+
+
+@pytest.mark.parametrize(
+    "token",
+    [None, "too-short", "replace-with-at-least-32-random-characters"],
+)
+def test_live_collection_requires_a_strong_non_placeholder_access_token(
+    token: str | None,
+) -> None:
+    with pytest.raises(ValidationError, match="RMS_LIVE_ACCESS_TOKEN") as captured:
+        AppSettings(live_reddit_enabled=True, live_access_token=token)
+    assert token is None or token not in str(captured.value)
+
+
+def test_live_access_token_has_a_sanitized_upper_bound() -> None:
+    oversized = "s" * 513
+    with pytest.raises(ValidationError) as captured:
+        AppSettings(live_access_token=oversized)
+    assert oversized not in str(captured.value)
+
+
+def test_live_access_token_is_secret_and_never_summarized() -> None:
+    settings = AppSettings(
+        live_reddit_enabled=True,
+        live_access_token=_LIVE_ACCESS_TEST_VALUE,
+    )
+    assert settings.require_live_access_token() == _LIVE_ACCESS_TEST_VALUE
+    rendered = repr(settings) + json.dumps(settings.safe_summary())
+    assert _LIVE_ACCESS_TEST_VALUE not in rendered
+    assert settings.safe_summary()["live_reddit"] == {
+        "enabled": True,
+        "allow_byo_credentials": False,
+        "access_token_configured": True,
+        "job_root": str(Path("data/live_jobs")),
+        "max_workers": 1,
+        "max_active": 4,
+        "retention_seconds": 3_600,
+        "max_retained": 100,
+    }
 
 
 @pytest.mark.parametrize(

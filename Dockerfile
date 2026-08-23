@@ -49,6 +49,7 @@ ENV PATH="/app/.venv/bin:${PATH}" \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     RMS_DATABASE_PATH=/data/reddit_minerals.sqlite3 \
+    RMS_LIVE_JOB_ROOT=/data/live_jobs \
     RMS_SUBREDDIT_MAPPING_PATH=/app/configs/subreddit_mapping.json
 
 RUN groupadd --gid 10001 reddit-minerals \
@@ -63,6 +64,7 @@ COPY --chown=reddit-minerals:reddit-minerals configs/subreddit_mapping.json /app
 
 USER reddit-minerals
 STOPSIGNAL SIGTERM
+VOLUME ["/data"]
 
 FROM runtime-base AS web-runtime
 
@@ -81,7 +83,5 @@ CMD ["reddit_minerals.web.app:create_app", "--factory", "--host", "0.0.0.0", "--
 FROM runtime-base AS runtime
 
 COPY --from=builder --chown=reddit-minerals:reddit-minerals /app/.venv /app/.venv
-
-VOLUME ["/data"]
 ENTRYPOINT ["reddit-minerals"]
 CMD ["--help"]
