@@ -1,0 +1,4431 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "kind": "public-research-sample",
+    "dataset_label": "Reddit Mining Stance · public research sample",
+    "dataset_description": "A deterministic, repository-safe sample of the public dataset collected with this research tool. It contains released metadata and model-derived labels, not original Reddit text or authors.",
+    "owner_name": "Mohamed Amine Chalhy",
+    "dataset_ref": "mohamedaminechalhy/reddit-mining-stance",
+    "dataset_slug": "reddit-mining-stance",
+    "dataset_url": "https://www.kaggle.com/datasets/mohamedaminechalhy/reddit-mining-stance",
+    "dataset_version": 2,
+    "published_at": "2025-09-28T16:47:03.01Z",
+    "archive_sha256": "3A299CEC89CB091E9AD9E8F4158FD264A761C92BD9CA5B37B94924D99C3D7407",
+    "license": "MIT",
+    "published_totals": {
+      "minerals": 26,
+      "posts": 15779,
+      "comments": 1026784,
+      "records": 1042563
+    },
+    "published_date_range": {
+      "start": "2008-02-19",
+      "end": "2025-08-27"
+    },
+    "sample_totals": {
+      "minerals": 26,
+      "posts": 52,
+      "comments": 52,
+      "records": 104
+    },
+    "sample_method": "For each of 26 minerals, select the highest-scoring qualifying post and the most recent distinct qualifying post, then pair each with its highest-scoring qualifying direct reply. Ties use timestamp and source ID before IDs are hashed.",
+    "raw_text_included": false,
+    "authors_included": false,
+    "source_note": "Derived from the public Kaggle dataset version 2. The public release omits raw Reddit text and author fields; this sample preserves that boundary and replaces source identifiers with deterministic repository-local hashes. Labels are model-derived research signals, not ground-truth annotations. Exact released metadata can remain linkable, so these hashes are not an anonymization claim."
+  },
+  "records": [
+    {
+      "id": "kg-comment-15fae3f79f7fa8c399c6",
+      "kind": "comment",
+      "parent_id": "kg-post-16deaff9a8c6e00dfe7a",
+      "mineral": "electric car",
+      "topic_label": "technical",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "evcharging",
+      "created_at": "2025-08-26T17:25:16Z",
+      "score": 5,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "UL 2251",
+            "UL 2252",
+            "certification",
+            "charging inlets",
+            "plugs",
+            "adapters",
+            "electric vehicle coupler"
+          ],
+          "themes": [
+            "product certification",
+            "safety standards",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-16deaff9a8c6e00dfe7a",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "electric car",
+      "topic_label": "technical",
+      "title": "Electric Car post analysis · technical",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "evcharging",
+      "created_at": "2025-08-26T17:21:27Z",
+      "score": 3,
+      "comment_count": 7,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 75.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "Lectron",
+            "Tesla",
+            "J1772",
+            "UL 2251",
+            "adapter",
+            "electric vehicle",
+            "charging",
+            "safety",
+            "certification",
+            "SGS"
+          ],
+          "themes": [
+            "Product Certification",
+            "Electrical Safety",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-484e86249cc16a4b2f61",
+      "kind": "comment",
+      "parent_id": "kg-post-b40a6823582ba506dba4",
+      "mineral": "renewable energy",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "climate",
+      "created_at": "2025-08-25T19:40:21Z",
+      "score": 7,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "renewable energy",
+            "artificial intelligence",
+            "energy demand",
+            "power",
+            "economic growth"
+          ],
+          "themes": [
+            "energy costs",
+            "AI impact on energy",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-b40a6823582ba506dba4",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "renewable energy",
+      "topic_label": "economic",
+      "title": "Renewable Energy post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "climate",
+      "created_at": "2025-08-25T13:51:21Z",
+      "score": 281,
+      "comment_count": 8,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 90.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "renewable energy",
+            "Donald Trump",
+            "project cancellations",
+            "$19bn",
+            "stifled growth",
+            "artificial intelligence",
+            "energy demand"
+          ],
+          "themes": [
+            "renewable energy policy",
+            "economic impact",
+            "economic"
+          ],
+          "concerns": [
+            {
+              "name": "government policy",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-3241b0272fa064a40471",
+      "kind": "comment",
+      "parent_id": "kg-post-f0e1dc18e79b46cdc66b",
+      "mineral": "rare earth",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2025-08-23T10:54:41Z",
+      "score": 1,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "pro-mining",
+          "keywords": [
+            "investment",
+            "TMC",
+            "critical metals",
+            "national security",
+            "government investment"
+          ],
+          "themes": [
+            "economic opportunity",
+            "geopolitical strategy",
+            "economic"
+          ],
+          "concerns": [
+            {
+              "name": "economic benefits",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-f0e1dc18e79b46cdc66b",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "rare earth",
+      "topic_label": "mining-related",
+      "title": "Rare Earth post analysis · mining-related",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2025-08-23T10:35:36Z",
+      "score": 21,
+      "comment_count": 2,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 95.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "China",
+            "rare earth",
+            "rules",
+            "controls",
+            "minerals",
+            "imported"
+          ],
+          "themes": [
+            "government regulation",
+            "rare earth mining",
+            "mining-related"
+          ],
+          "concerns": [
+            {
+              "name": "government policy",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-863a05f397dcdc095d96",
+      "kind": "comment",
+      "parent_id": "kg-post-2497f27e0d7a19e686d8",
+      "mineral": "hydrogen energy",
+      "topic_label": "technical",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "AskEngineers",
+      "created_at": "2025-08-15T13:11:37Z",
+      "score": 58,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "hydrogen",
+            "energy",
+            "electricity",
+            "shipping"
+          ],
+          "themes": [
+            "energy transport",
+            "hydrogen production",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-2497f27e0d7a19e686d8",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "hydrogen energy",
+      "topic_label": "technical",
+      "title": "Hydrogen Energy post analysis · technical",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "AskEngineers",
+      "created_at": "2025-08-15T13:08:25Z",
+      "score": 2,
+      "comment_count": 99,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 75.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "hydrogen",
+            "energy",
+            "electrolysis",
+            "pumping",
+            "gas pipes"
+          ],
+          "themes": [
+            "energy transportation",
+            "hydrogen energy efficiency",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-4f4402b6d0646819ca7b",
+      "kind": "comment",
+      "parent_id": "kg-post-1e2fe61c1f4287e7d7ca",
+      "mineral": "iron",
+      "topic_label": "social",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "mining",
+      "created_at": "2025-07-11T12:53:58Z",
+      "score": 17,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "Kal",
+            "FIFO",
+            "mining town",
+            "hick",
+            "aggressive",
+            "drinking",
+            "unemployment",
+            "work",
+            "shifts",
+            "donga"
+          ],
+          "themes": [
+            "lifestyle in mining town",
+            "work culture",
+            "social"
+          ],
+          "concerns": [
+            {
+              "name": "working conditions",
+              "score": 0.2
+            },
+            {
+              "name": "economic benefits",
+              "score": 0.1
+            },
+            {
+              "name": "local employment",
+              "score": 0.1
+            },
+            {
+              "name": "safety regulations",
+              "score": 0.1
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-1e2fe61c1f4287e7d7ca",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "iron",
+      "topic_label": "economic",
+      "title": "Iron post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "mining",
+      "created_at": "2025-07-11T11:54:02Z",
+      "score": 3,
+      "comment_count": 31,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "iron ore",
+            "gold fields",
+            "Pilbara",
+            "Kalgoorlie",
+            "job opportunity"
+          ],
+          "themes": [
+            "employment opportunities",
+            "mining industry comparison",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-61f0ac7d544b97d6dcb2",
+      "kind": "comment",
+      "parent_id": "kg-post-dc346e60fab4b63bbf47",
+      "mineral": "platinum",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Platinum",
+      "created_at": "2025-07-01T01:05:47Z",
+      "score": 4,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "dollar",
+            "devaluation",
+            "platinum",
+            "mining",
+            "half"
+          ],
+          "themes": [
+            "economic",
+            "currency"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-9e3458168d2d2efb7f6d",
+      "kind": "comment",
+      "parent_id": "kg-post-8f967f50c10ad42db0da",
+      "mineral": "silver",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Silver",
+      "created_at": "2025-07-01T00:39:58Z",
+      "score": 5,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "neutral",
+          "keywords": [
+            "Sterling",
+            "silver",
+            "melt",
+            "grams",
+            "plated"
+          ],
+          "themes": [
+            "silver value",
+            "profitability",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-8f967f50c10ad42db0da",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "silver",
+      "topic_label": "economic",
+      "title": "Silver post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Silver",
+      "created_at": "2025-07-01T00:33:04Z",
+      "score": 31,
+      "comment_count": 13,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 90.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "silver",
+            "price",
+            "deal",
+            "grams"
+          ],
+          "themes": [
+            "silver purchase",
+            "price negotiation",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-dc346e60fab4b63bbf47",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "platinum",
+      "topic_label": "economic",
+      "title": "Platinum post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Platinum",
+      "created_at": "2025-06-30T21:12:34Z",
+      "score": 10,
+      "comment_count": 3,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 95.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "neutral",
+          "keywords": [
+            "platinum",
+            "rally",
+            "gold",
+            "price",
+            "investment"
+          ],
+          "themes": [
+            "platinum price increase",
+            "market analysis",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-0463cbe688077e9f8ac7",
+      "kind": "comment",
+      "parent_id": "kg-post-8a5d04bdbfe71001c8ea",
+      "mineral": "gold",
+      "topic_label": "other",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "mining",
+      "created_at": "2025-06-30T02:18:18Z",
+      "score": 30,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "gold mining",
+            "crackheads"
+          ],
+          "themes": [
+            "substance abuse",
+            "gold mining",
+            "other"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-8a5d04bdbfe71001c8ea",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "gold",
+      "topic_label": "technical",
+      "title": "Gold post analysis · technical",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "mining",
+      "created_at": "2025-06-30T01:32:42Z",
+      "score": 0,
+      "comment_count": 7,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "neutral",
+          "keywords": [
+            "gold",
+            "extraction",
+            "phones",
+            "laptops",
+            "recycling",
+            "scientists"
+          ],
+          "themes": [
+            "resource recovery",
+            "technology",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-e5fa4ff40b767b072bff",
+      "kind": "comment",
+      "parent_id": "kg-post-bdd3e8c20bc8062b31ce",
+      "mineral": "lithium",
+      "topic_label": "mining-related",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "LithiumAmerica",
+      "created_at": "2025-06-29T17:47:49Z",
+      "score": 3,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "lithium",
+            "mining"
+          ],
+          "themes": [
+            "mining",
+            "definition",
+            "mining-related"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-bdd3e8c20bc8062b31ce",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "lithium",
+      "topic_label": "mining-related",
+      "title": "Lithium post analysis · mining-related",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "LithiumAmerica",
+      "created_at": "2025-06-29T15:24:25Z",
+      "score": 14,
+      "comment_count": 3,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 95.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "Lithium Americas Corp",
+            "Thacker Pass",
+            "Lithium Nevada LLC",
+            "subsidiary",
+            "joint venture",
+            "GM"
+          ],
+          "themes": [
+            "corporate structure",
+            "legal entities",
+            "mining-related"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-c11c873f86d2420f974d",
+      "kind": "comment",
+      "parent_id": "kg-post-59b4d186f32120671d85",
+      "mineral": "copper",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Copper",
+      "created_at": "2025-06-28T22:32:24Z",
+      "score": 3,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "neutral",
+          "keywords": [
+            "copper",
+            "copper bars",
+            "JM bullion",
+            "investment",
+            "scrap yards",
+            "scrap"
+          ],
+          "themes": [
+            "copper investment",
+            "purchasing copper",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-59b4d186f32120671d85",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "copper",
+      "topic_label": "economic",
+      "title": "Copper post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Copper",
+      "created_at": "2025-06-28T21:54:04Z",
+      "score": 122,
+      "comment_count": 3,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 30.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "neutral",
+          "keywords": [
+            "copper",
+            "JM Bullion",
+            "10oz bar",
+            "purchase",
+            "metal"
+          ],
+          "themes": [
+            "personal purchase",
+            "metal investment",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-20a2a0eafecfe0463617",
+      "kind": "comment",
+      "parent_id": "kg-post-f493c2eaa9fa61b38170",
+      "mineral": "natural gas",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "energy",
+      "created_at": "2025-06-27T19:46:02Z",
+      "score": 33,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "natural gas",
+            "gas turbines",
+            "batteries",
+            "capitalism",
+            "incentive"
+          ],
+          "themes": [
+            "energy production",
+            "economic incentives",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-f493c2eaa9fa61b38170",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "natural gas",
+      "topic_label": "economic",
+      "title": "Natural Gas post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "energy",
+      "created_at": "2025-06-27T17:47:36Z",
+      "score": 183,
+      "comment_count": 116,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "natural gas",
+            "fossil fuels",
+            "peakers",
+            "electricity prices",
+            "grid",
+            "solar generation",
+            "demand",
+            "New York"
+          ],
+          "themes": [
+            "energy prices",
+            "electricity grid",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-461744b83b3066caa17c",
+      "kind": "comment",
+      "parent_id": "kg-post-144c912906b3fba0a7bd",
+      "mineral": "palladium",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "palladium",
+      "created_at": "2025-06-26T07:41:23Z",
+      "score": 1,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "palladium",
+            "platinum",
+            "illiquid",
+            "investors",
+            "market",
+            "collapse"
+          ],
+          "themes": [
+            "market analysis",
+            "commodity prices",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-144c912906b3fba0a7bd",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "palladium",
+      "topic_label": "economic",
+      "title": "Palladium post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "palladium",
+      "created_at": "2025-06-26T03:03:46Z",
+      "score": 2,
+      "comment_count": 2,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 90.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "palladium",
+            "pd",
+            "price",
+            "jump",
+            "increase"
+          ],
+          "themes": [
+            "palladium price fluctuation",
+            "market analysis",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-d006c18909a5a4a885d3",
+      "kind": "comment",
+      "parent_id": "kg-post-af9dfb6b2942f4c462c6",
+      "mineral": "iron ore",
+      "topic_label": "mining-related",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "australia",
+      "created_at": "2025-06-24T06:51:02Z",
+      "score": 94,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "mine",
+            "approved",
+            "shocked"
+          ],
+          "themes": [
+            "mining approval",
+            "surprise",
+            "mining-related"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-af9dfb6b2942f4c462c6",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "iron ore",
+      "topic_label": "mining expansion",
+      "title": "Iron Ore post analysis · mining expansion",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "australia",
+      "created_at": "2025-06-24T06:36:09Z",
+      "score": 129,
+      "comment_count": 63,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 95.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "pro-mining",
+          "keywords": [
+            "Rio Tinto",
+            "Hancock",
+            "Pilbara",
+            "iron ore",
+            "expansion",
+            "$2.5b"
+          ],
+          "themes": [
+            "Mining expansion",
+            "Economic development"
+          ],
+          "concerns": [
+            {
+              "name": "economic benefits",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-a07b8c39cc3aa797c153",
+      "kind": "comment",
+      "parent_id": "kg-post-a1687457090cfb5c3946",
+      "mineral": "cobalt",
+      "topic_label": "mining-related",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "canada",
+      "created_at": "2025-06-21T20:10:10Z",
+      "score": 15,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "cobalt",
+            "mining",
+            "updates",
+            "hope"
+          ],
+          "themes": [
+            "cobalt mining",
+            "future prospects",
+            "mining-related"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-a1687457090cfb5c3946",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "cobalt",
+      "topic_label": "economic development",
+      "title": "Cobalt post analysis · economic development",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "canada",
+      "created_at": "2025-06-21T18:38:57Z",
+      "score": 77,
+      "comment_count": 3,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 95.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "pro-mining",
+          "keywords": [
+            "cobalt",
+            "refinery",
+            "North America",
+            "Electra",
+            "mining"
+          ],
+          "themes": [
+            "economic development",
+            "resource extraction"
+          ],
+          "concerns": [
+            {
+              "name": "economic benefits",
+              "score": 0.5
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-f54f9560689856ef3b5d",
+      "kind": "comment",
+      "parent_id": "kg-post-fa0919b82d33bd7024a7",
+      "mineral": "nickel",
+      "topic_label": "mining-related",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Philippines",
+      "created_at": "2025-06-15T08:50:21Z",
+      "score": 14,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "nickel",
+            "mining",
+            "alloys",
+            "steel",
+            "batteries",
+            "illegal mining",
+            "regulation",
+            "balance"
+          ],
+          "themes": [
+            "nickel mining necessity",
+            "mining regulation",
+            "mining-related"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-fa0919b82d33bd7024a7",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "nickel",
+      "topic_label": "environmental",
+      "title": "Nickel post analysis · environmental",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Philippines",
+      "created_at": "2025-06-15T05:59:07Z",
+      "score": 194,
+      "comment_count": 31,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "nickel mining",
+            "Sierra Madre Mountains",
+            "Dilasag Aurora",
+            "Dinapigue",
+            "deforestation"
+          ],
+          "themes": [
+            "environmental destruction",
+            "mining concerns",
+            "environmental"
+          ],
+          "concerns": [
+            {
+              "name": "deforestation",
+              "score": 0.8
+            },
+            {
+              "name": "environment",
+              "score": 0.8
+            },
+            {
+              "name": "biodiversity loss",
+              "score": 0.6
+            },
+            {
+              "name": "government policy",
+              "score": 0.6
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-4536f3e63993259e77df",
+      "kind": "comment",
+      "parent_id": "kg-post-536db1032fc607905729",
+      "mineral": "aluminium",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2025-06-03T22:18:41Z",
+      "score": 473,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "tariffs",
+            "trade deal",
+            "UK",
+            "aluminium",
+            "50%",
+            "25%"
+          ],
+          "themes": [
+            "trade policy",
+            "economic impact",
+            "economic"
+          ],
+          "concerns": [
+            {
+              "name": "economic benefits",
+              "score": 0.5
+            },
+            {
+              "name": "government policy",
+              "score": 0.5
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-536db1032fc607905729",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "aluminium",
+      "topic_label": "economic",
+      "title": "Aluminium post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2025-06-03T22:15:58Z",
+      "score": 1897,
+      "comment_count": 203,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 75.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "aluminium",
+            "tariffs",
+            "steel",
+            "Trump",
+            "UK"
+          ],
+          "themes": [
+            "trade policy",
+            "global economics",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-c36e651e17b34cc32fe0",
+      "kind": "comment",
+      "parent_id": "kg-post-81e6d2f72b419e78062c",
+      "mineral": "neodymium",
+      "topic_label": "geopolitics",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "China",
+      "created_at": "2025-06-02T11:42:49Z",
+      "score": 1,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "neodymium",
+            "dysprosium",
+            "critical minerals",
+            "tariffs",
+            "export restrictions",
+            "EVs",
+            "wind turbines",
+            "defense",
+            "China",
+            "US"
+          ],
+          "themes": [
+            "geopolitics",
+            "trade disputes"
+          ],
+          "concerns": [
+            {
+              "name": "government policy",
+              "score": 0.8
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-81e6d2f72b419e78062c",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "neodymium",
+      "topic_label": "economic",
+      "title": "Neodymium post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "China",
+      "created_at": "2025-06-02T11:42:48Z",
+      "score": 1,
+      "comment_count": 1,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 75.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "neodymium",
+            "dysprosium",
+            "minerals",
+            "tariffs",
+            "trade dispute",
+            "Trump",
+            "Xi Jinping",
+            "China",
+            "US",
+            "EVs",
+            "wind turbines",
+            "defense"
+          ],
+          "themes": [
+            "trade dispute",
+            "critical minerals shortage",
+            "economic"
+          ],
+          "concerns": [
+            {
+              "name": "government policy",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-04371c08a95e92805e48",
+      "kind": "comment",
+      "parent_id": "kg-post-5ca9acbc6b8721d42639",
+      "mineral": "manganese",
+      "topic_label": "technical",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "geology",
+      "created_at": "2025-05-31T05:47:57Z",
+      "score": 297,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "dendrites",
+            "fossils"
+          ],
+          "themes": [
+            "geology",
+            "mineralogy",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-5ca9acbc6b8721d42639",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "manganese",
+      "topic_label": "other",
+      "title": "Manganese post analysis · other",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "geology",
+      "created_at": "2025-05-31T05:44:36Z",
+      "score": 118,
+      "comment_count": 15,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 30.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "fossilized",
+            "plants",
+            "sandstone",
+            "flooring",
+            "slabs"
+          ],
+          "themes": [
+            "geology",
+            "materials",
+            "other"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-f9068d2d1568b8613d99",
+      "kind": "comment",
+      "parent_id": "kg-post-1c099f8242b63b2c6942",
+      "mineral": "tungsten",
+      "topic_label": "technical",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "metallurgy",
+      "created_at": "2025-05-30T22:50:43Z",
+      "score": 8,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "tungsten",
+            "density",
+            "stainless steel",
+            "wire",
+            "diameter"
+          ],
+          "themes": [
+            "material properties",
+            "density measurement",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-1c099f8242b63b2c6942",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "tungsten",
+      "topic_label": "technical",
+      "title": "Tungsten post analysis · technical",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "metallurgy",
+      "created_at": "2025-05-30T22:35:46Z",
+      "score": 4,
+      "comment_count": 26,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 75.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "tungsten",
+            "wire",
+            "stainless steel",
+            "hot wire table",
+            "magnetic",
+            "test"
+          ],
+          "themes": [
+            "material verification",
+            "product quality",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-ec7b91eb25457f928308",
+      "kind": "comment",
+      "parent_id": "kg-post-e8104f4e6c631ac480b4",
+      "mineral": "graphite",
+      "topic_label": "environmental",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "mining",
+      "created_at": "2025-05-23T07:42:59Z",
+      "score": 7,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "save the world",
+            "humans",
+            "world",
+            "us"
+          ],
+          "themes": [
+            "environmentalism",
+            "human impact",
+            "environmental"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-e8104f4e6c631ac480b4",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "graphite",
+      "topic_label": "geopolitical",
+      "title": "Graphite post analysis · geopolitical",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "mining",
+      "created_at": "2025-05-23T06:55:26Z",
+      "score": 0,
+      "comment_count": 5,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 20.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "critical minerals",
+            "rare earth elements",
+            "graphite",
+            "lithium",
+            "Ukraine"
+          ],
+          "themes": [
+            "geopolitics",
+            "resource extraction",
+            "geopolitical"
+          ],
+          "concerns": [
+            {
+              "name": "corruption",
+              "score": 0.5
+            },
+            {
+              "name": "foreign exploitation",
+              "score": 0.5
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-3717abd66da6d1480643",
+      "kind": "comment",
+      "parent_id": "kg-post-0495a767846724e78552",
+      "mineral": "bauxite",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Jamaica",
+      "created_at": "2025-04-25T23:05:17Z",
+      "score": 14,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "US tariffs",
+            "Jamaican economy",
+            "exports",
+            "imports",
+            "bauxite",
+            "aluminum ore",
+            "international trade",
+            "GDP"
+          ],
+          "themes": [
+            "Economic impact of tariffs",
+            "International trade dependence",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-0495a767846724e78552",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "bauxite",
+      "topic_label": "economic",
+      "title": "Bauxite post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Jamaica",
+      "created_at": "2025-04-25T20:56:53Z",
+      "score": 31,
+      "comment_count": 36,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "tariffs",
+            "bauxite",
+            "US",
+            "China",
+            "imports"
+          ],
+          "themes": [
+            "economic impact of tariffs",
+            "consumer goods",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-9c169d597ef995b10b3a",
+      "kind": "comment",
+      "parent_id": "kg-post-486f3ab7e16b4581850a",
+      "mineral": "zinc",
+      "topic_label": "mining-related",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "mining",
+      "created_at": "2025-04-24T22:56:06Z",
+      "score": 9,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "coal mining",
+            "lead mine",
+            "training",
+            "certificates",
+            "safety"
+          ],
+          "themes": [
+            "mining safety",
+            "training and certifications",
+            "mining-related"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-2192129df971212ea4f6",
+      "kind": "comment",
+      "parent_id": "kg-post-01b5f96427187fdd87dc",
+      "mineral": "lead",
+      "topic_label": "technical",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "mining",
+      "created_at": "2025-04-24T22:56:06Z",
+      "score": 9,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "lead mining",
+            "coal mining",
+            "training",
+            "certificates",
+            "safety"
+          ],
+          "themes": [
+            "mining safety",
+            "industry standards",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-486f3ab7e16b4581850a",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "zinc",
+      "topic_label": "technical",
+      "title": "Zinc post analysis · technical",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "mining",
+      "created_at": "2025-04-24T22:37:43Z",
+      "score": 7,
+      "comment_count": 9,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 30.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "Standard 11",
+            "lead mines",
+            "zinc mine",
+            "coal mines",
+            "mining regulations"
+          ],
+          "themes": [
+            "mining safety regulations",
+            "mining industry standards",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-01b5f96427187fdd87dc",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "lead",
+      "topic_label": "mining safety regulations",
+      "title": "Lead post analysis · mining safety regulations",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "mining",
+      "created_at": "2025-04-24T22:37:43Z",
+      "score": 6,
+      "comment_count": 9,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "lead mines",
+            "standard 11",
+            "coal mines",
+            "zinc mine",
+            "mining regulations"
+          ],
+          "themes": [
+            "mining safety regulations",
+            "mining industry practices"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-87b3b1ff0454ab4a6949",
+      "kind": "comment",
+      "parent_id": "kg-post-22529794a5ec965a50d8",
+      "mineral": "gold",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2025-04-07T16:56:11Z",
+      "score": 12154,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "pro-mining",
+          "keywords": [
+            "gold",
+            "mining",
+            "1200 tons",
+            "NY"
+          ],
+          "themes": [
+            "gold mining",
+            "economic"
+          ],
+          "concerns": [
+            {
+              "name": "economic benefits",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-22529794a5ec965a50d8",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "gold",
+      "topic_label": "geopolitics",
+      "title": "Gold post analysis · geopolitics",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2025-04-07T16:33:03Z",
+      "score": 60967,
+      "comment_count": 2482,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 90.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "Germany",
+            "gold",
+            "US",
+            "withdrawal"
+          ],
+          "themes": [
+            "geopolitics",
+            "gold reserves"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-91cbe781c4ff063fbbf3",
+      "kind": "comment",
+      "parent_id": "kg-post-7afba77915bfae0c09e8",
+      "mineral": "copper",
+      "topic_label": "environmental",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2025-03-15T22:57:52Z",
+      "score": 6338,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "copper mining",
+            "safety",
+            "profits",
+            "china",
+            "environmental damage"
+          ],
+          "themes": [
+            "safety concerns",
+            "environmental impact",
+            "environmental"
+          ],
+          "concerns": [
+            {
+              "name": "safety regulations",
+              "score": 0.8
+            },
+            {
+              "name": "working conditions",
+              "score": 0.7
+            },
+            {
+              "name": "environment",
+              "score": 0.5
+            },
+            {
+              "name": "foreign exploitation",
+              "score": 0.5
+            },
+            {
+              "name": "pollution",
+              "score": 0.4
+            },
+            {
+              "name": "air quality",
+              "score": 0.3
+            },
+            {
+              "name": "health",
+              "score": 0.3
+            },
+            {
+              "name": "water contamination",
+              "score": 0.3
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-7afba77915bfae0c09e8",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "copper",
+      "topic_label": "environmental",
+      "title": "Copper post analysis · environmental",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2025-03-15T22:41:29Z",
+      "score": 23848,
+      "comment_count": 590,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "copper mining",
+            "acidic waste spill",
+            "Zambia",
+            "Chinese-owned mine",
+            "environmental damage",
+            "river pollution"
+          ],
+          "themes": [
+            "environmental disaster",
+            "mining pollution",
+            "environmental"
+          ],
+          "concerns": [
+            {
+              "name": "environment",
+              "score": 1.0
+            },
+            {
+              "name": "pollution",
+              "score": 1.0
+            },
+            {
+              "name": "waste management",
+              "score": 1.0
+            },
+            {
+              "name": "water contamination",
+              "score": 1.0
+            },
+            {
+              "name": "biodiversity loss",
+              "score": 0.5
+            },
+            {
+              "name": "foreign exploitation",
+              "score": 0.5
+            },
+            {
+              "name": "health",
+              "score": 0.5
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-ad8d04a7ad627b8ce18c",
+      "kind": "comment",
+      "parent_id": "kg-post-fe22679e5b3d6caa5771",
+      "mineral": "nickel",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "canada",
+      "created_at": "2025-03-04T00:15:41Z",
+      "score": 1316,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "pro-mining",
+          "keywords": [
+            "nickel",
+            "mining",
+            "economy",
+            "electricity",
+            "Trump"
+          ],
+          "themes": [
+            "economic impact of mining",
+            "political threats",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-fe22679e5b3d6caa5771",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "nickel",
+      "topic_label": "political",
+      "title": "Nickel post analysis · political",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "canada",
+      "created_at": "2025-03-04T00:14:05Z",
+      "score": 3921,
+      "comment_count": 476,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 90.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "nickel",
+            "mining",
+            "Doug Ford",
+            "trade war",
+            "shipments",
+            "U.S."
+          ],
+          "themes": [
+            "politics",
+            "trade",
+            "political"
+          ],
+          "concerns": [
+            {
+              "name": "government policy",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-ac426910f4c347ed0a30",
+      "kind": "comment",
+      "parent_id": "kg-post-ad213d75c3fc708f6a81",
+      "mineral": "tantalum",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Rwanda",
+      "created_at": "2025-02-19T17:26:23Z",
+      "score": 5,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "Rwanda",
+            "Gold Refinery",
+            "refineries",
+            "investment"
+          ],
+          "themes": [
+            "economic development",
+            "mineral processing",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-ad213d75c3fc708f6a81",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "tantalum",
+      "topic_label": "economic",
+      "title": "Tantalum post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Rwanda",
+      "created_at": "2025-02-19T17:07:57Z",
+      "score": 8,
+      "comment_count": 11,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 90.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "pro-mining",
+          "keywords": [
+            "tantalum",
+            "refining",
+            "minerals",
+            "processing",
+            "jobs"
+          ],
+          "themes": [
+            "economic development",
+            "job creation",
+            "economic"
+          ],
+          "concerns": [
+            {
+              "name": "economic benefits",
+              "score": 1.0
+            },
+            {
+              "name": "local employment",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-fc0db964667894c9747d",
+      "kind": "comment",
+      "parent_id": "kg-post-45e0784936363b7b844b",
+      "mineral": "graphite",
+      "topic_label": "mining-related",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "technology",
+      "created_at": "2025-02-13T17:26:25Z",
+      "score": 316,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "pro-mining",
+          "keywords": [
+            "fantastic",
+            "news",
+            "graphite"
+          ],
+          "themes": [
+            "positive outlook",
+            "mining news",
+            "mining-related"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-45e0784936363b7b844b",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "graphite",
+      "topic_label": "environmental",
+      "title": "Graphite post analysis · environmental",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "technology",
+      "created_at": "2025-02-13T17:11:06Z",
+      "score": 2304,
+      "comment_count": 45,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "neutral",
+          "keywords": [
+            "lithium",
+            "graphite",
+            "EV batteries",
+            "recycling",
+            "recovery"
+          ],
+          "themes": [
+            "battery recycling",
+            "resource recovery",
+            "environmental"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-07890c0be5add32d7112",
+      "kind": "comment",
+      "parent_id": "kg-post-034011a41f505eeb07f1",
+      "mineral": "tin",
+      "topic_label": "other",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "China",
+      "created_at": "2025-01-21T22:30:21Z",
+      "score": 9,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [],
+          "themes": [
+            "other"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-034011a41f505eeb07f1",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "tin",
+      "topic_label": "technical",
+      "title": "Tin post analysis · technical",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "China",
+      "created_at": "2025-01-21T19:40:01Z",
+      "score": 57,
+      "comment_count": 22,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "neutral",
+          "keywords": [
+            "EUV lithography",
+            "China",
+            "tin",
+            "laser-induced discharge plasma",
+            "ASML",
+            "chipmaking",
+            "technology",
+            "breakthrough"
+          ],
+          "themes": [
+            "Technological advancement",
+            "Economic implications",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-93fcd7cee656f8f91f2c",
+      "kind": "comment",
+      "parent_id": "kg-post-cb98e4c19a8bd008536f",
+      "mineral": "neodymium",
+      "topic_label": "technical",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "chemistry",
+      "created_at": "2025-01-10T01:03:16Z",
+      "score": 69,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "neutral",
+          "keywords": [
+            "neodymium",
+            "metal",
+            "sulfuric acid",
+            "neodymium oxide",
+            "crystals"
+          ],
+          "themes": [
+            "chemistry experiment",
+            "crystal growth",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-cb98e4c19a8bd008536f",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "neodymium",
+      "topic_label": "technical",
+      "title": "Neodymium post analysis · technical",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "chemistry",
+      "created_at": "2025-01-10T00:49:34Z",
+      "score": 472,
+      "comment_count": 34,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "neodymium",
+            "sulfate",
+            "neodymium oxide",
+            "sulfuric acid"
+          ],
+          "themes": [
+            "chemical synthesis",
+            "neodymium processing",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-0b70a4e85008aa908e6b",
+      "kind": "comment",
+      "parent_id": "kg-post-6cd88e4d5a51f2b33d7e",
+      "mineral": "tungsten",
+      "topic_label": "political",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2024-12-12T06:19:54Z",
+      "score": 29,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "tariffs",
+            "China",
+            "Trump",
+            "inauguration"
+          ],
+          "themes": [
+            "politics",
+            "trade",
+            "political"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-6cd88e4d5a51f2b33d7e",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "tungsten",
+      "topic_label": "economic",
+      "title": "Tungsten post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2024-12-12T03:52:38Z",
+      "score": 193,
+      "comment_count": 90,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "tariffs",
+            "China",
+            "US",
+            "solar wafers",
+            "tungsten products"
+          ],
+          "themes": [
+            "trade war",
+            "economic sanctions",
+            "economic"
+          ],
+          "concerns": [
+            {
+              "name": "government policy",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-9713e186bfdad4a04a48",
+      "kind": "comment",
+      "parent_id": "kg-post-d2a0d29acd36c9288e33",
+      "mineral": "molybdenum",
+      "topic_label": "technical",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "mining",
+      "created_at": "2024-02-17T06:21:25Z",
+      "score": 1,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "steel",
+            "ceramic plates",
+            "bolt style clamps",
+            "heat resistance",
+            "metals"
+          ],
+          "themes": [
+            "material science",
+            "engineering",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-d2a0d29acd36c9288e33",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "molybdenum",
+      "topic_label": "technical",
+      "title": "Molybdenum post analysis · technical",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "mining",
+      "created_at": "2024-02-17T04:11:48Z",
+      "score": 3,
+      "comment_count": 1,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 30.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "brazing",
+            "oven",
+            "chromium-molybdenum",
+            "white iron",
+            "mild steel",
+            "copper",
+            "steel wire",
+            "alignment",
+            "vibration"
+          ],
+          "themes": [
+            "materials science",
+            "brazing techniques",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-f44428d5a0a7b42639dd",
+      "kind": "comment",
+      "parent_id": "kg-post-831814160df0e25acdd3",
+      "mineral": "electric car",
+      "topic_label": "mining-related",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2023-07-03T02:54:18Z",
+      "score": 9327,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "pro-mining",
+          "keywords": [
+            "phosphate",
+            "reserves",
+            "mining"
+          ],
+          "themes": [
+            "resource discovery",
+            "mining industry",
+            "mining-related"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-831814160df0e25acdd3",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "electric car",
+      "topic_label": "mining-related",
+      "title": "Electric Car post analysis · mining-related",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2023-07-03T01:38:58Z",
+      "score": 64051,
+      "comment_count": 3571,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "pro-mining",
+          "keywords": [
+            "phosphate rock",
+            "fertilizers",
+            "solar panels",
+            "electric car batteries",
+            "Norway"
+          ],
+          "themes": [
+            "resource discovery",
+            "energy transition",
+            "mining-related"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-35b98ba48ed6d24ad1c9",
+      "kind": "comment",
+      "parent_id": "kg-post-859bc9e20672c2e6e082",
+      "mineral": "zinc",
+      "topic_label": "technical",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2023-03-27T23:28:10Z",
+      "score": 357,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "neutral",
+          "keywords": [
+            "zinc ion batteries",
+            "grid storage",
+            "battery technology",
+            "inexpensive",
+            "advancement"
+          ],
+          "themes": [
+            "battery technology",
+            "energy storage",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-859bc9e20672c2e6e082",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "zinc",
+      "topic_label": "technical",
+      "title": "Zinc post analysis · technical",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2023-03-27T23:24:45Z",
+      "score": 1045,
+      "comment_count": 65,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 90.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "neutral",
+          "keywords": [
+            "zinc",
+            "batteries",
+            "electrolyte",
+            "high efficiency",
+            "sustainable"
+          ],
+          "themes": [
+            "battery technology",
+            "sustainability",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-771e20e182a9ab2ae524",
+      "kind": "comment",
+      "parent_id": "kg-post-9bd1a40531edf2181b9b",
+      "mineral": "rare earth",
+      "topic_label": "other",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2023-01-12T18:46:22Z",
+      "score": 35834,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "NATO"
+          ],
+          "themes": [
+            "International Relations",
+            "Politics",
+            "other"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-9bd1a40531edf2181b9b",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "rare earth",
+      "topic_label": "economic",
+      "title": "Rare Earth post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2023-01-12T17:55:03Z",
+      "score": 58078,
+      "comment_count": 2989,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "pro-mining",
+          "keywords": [
+            "rare earth elements",
+            "Sweden",
+            "deposits",
+            "discovery"
+          ],
+          "themes": [
+            "resource discovery",
+            "economic potential",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-bcdbf348ae3294357737",
+      "kind": "comment",
+      "parent_id": "kg-post-27a4cf8607692f198ba9",
+      "mineral": "lithium",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2022-12-24T06:50:40Z",
+      "score": 9237,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "lithium",
+            "Zimbabwe",
+            "export",
+            "bribery",
+            "nationalization",
+            "batteries",
+            "permit",
+            "minister"
+          ],
+          "themes": [
+            "government regulation",
+            "economic challenges",
+            "economic"
+          ],
+          "concerns": [
+            {
+              "name": "corruption",
+              "score": 0.8
+            },
+            {
+              "name": "government policy",
+              "score": 0.8
+            },
+            {
+              "name": "economic benefits",
+              "score": 0.5
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-27a4cf8607692f198ba9",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "lithium",
+      "topic_label": "economic",
+      "title": "Lithium post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2022-12-24T04:04:22Z",
+      "score": 51180,
+      "comment_count": 2675,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 95.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "lithium",
+            "Zimbabwe",
+            "batteries",
+            "electric vehicles",
+            "export ban",
+            "raw materials"
+          ],
+          "themes": [
+            "lithium mining policy",
+            "economic development",
+            "economic"
+          ],
+          "concerns": [
+            {
+              "name": "economic benefits",
+              "score": 0.5
+            },
+            {
+              "name": "local employment",
+              "score": 0.5
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-774ad049a39c32aa46fe",
+      "kind": "comment",
+      "parent_id": "kg-post-7769506b3b5004ae78b7",
+      "mineral": "manganese",
+      "topic_label": "other",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "geology",
+      "created_at": "2022-11-16T00:31:29Z",
+      "score": 31,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "manganese",
+            "sample",
+            "classroom"
+          ],
+          "themes": [
+            "education",
+            "material acquisition",
+            "other"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-7769506b3b5004ae78b7",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "manganese",
+      "topic_label": "geology",
+      "title": "Manganese post analysis · geology",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "geology",
+      "created_at": "2022-11-15T23:54:52Z",
+      "score": 624,
+      "comment_count": 50,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "manganese",
+            "nodules",
+            "sea floor"
+          ],
+          "themes": [
+            "oceanography",
+            "geology"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-08c52c495b0f5588888c",
+      "kind": "comment",
+      "parent_id": "kg-post-3ea03c213fac224dfc2d",
+      "mineral": "silver",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2022-07-12T22:38:50Z",
+      "score": 186,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "silver",
+            "price",
+            "mining",
+            "market",
+            "value"
+          ],
+          "themes": [
+            "silver price",
+            "market value",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-3ea03c213fac224dfc2d",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "silver",
+      "topic_label": "mining-related",
+      "title": "Silver post analysis · mining-related",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2022-07-12T21:38:52Z",
+      "score": 3302,
+      "comment_count": 60,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 95.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "silver",
+            "ingot",
+            "sanctioned",
+            "Russian assets",
+            "Ukraine",
+            "SBU",
+            "clandestine",
+            "international markets"
+          ],
+          "themes": [
+            "seizure of illegal goods",
+            "sanctions enforcement",
+            "mining-related"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-c444f329fa23ff76d14c",
+      "kind": "comment",
+      "parent_id": "kg-post-09b0ec08069c99e6a723",
+      "mineral": "bauxite",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2022-03-20T02:22:35Z",
+      "score": 363,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "refine",
+            "bauxite",
+            "cost"
+          ],
+          "themes": [
+            "economic feasibility",
+            "resource management",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-09b0ec08069c99e6a723",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "bauxite",
+      "topic_label": "geopolitics",
+      "title": "Bauxite post analysis · geopolitics",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2022-03-20T02:19:45Z",
+      "score": 9464,
+      "comment_count": 247,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 80.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "Australia",
+            "aluminium ores",
+            "Russia",
+            "exports",
+            "ban",
+            "illegal aggression",
+            "Ukraine"
+          ],
+          "themes": [
+            "Geopolitics",
+            "Trade sanctions"
+          ],
+          "concerns": [
+            {
+              "name": "government policy",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-25e5d3d51321facacdd2",
+      "kind": "comment",
+      "parent_id": "kg-post-7457cd8884c9278e2722",
+      "mineral": "hydrogen energy",
+      "topic_label": "other",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Futurology",
+      "created_at": "2021-10-25T13:33:07Z",
+      "score": 2464,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [],
+          "themes": [
+            "other"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-7457cd8884c9278e2722",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "hydrogen energy",
+      "topic_label": "technical",
+      "title": "Hydrogen Energy post analysis · technical",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Futurology",
+      "created_at": "2021-10-25T12:24:12Z",
+      "score": 42582,
+      "comment_count": 1835,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 60.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "neutral",
+          "keywords": [
+            "solar PV",
+            "wind",
+            "battery storage",
+            "electrolyzers",
+            "hydrogen"
+          ],
+          "themes": [
+            "renewable energy",
+            "energy transition",
+            "technical"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-86ce2f1c4f136e5e0f36",
+      "kind": "comment",
+      "parent_id": "kg-post-d8fd6d598c971de9c397",
+      "mineral": "iron",
+      "topic_label": "environmental",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2020-06-10T21:18:20Z",
+      "score": 7273,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "BHP",
+            "iron mining",
+            "site destruction",
+            "environmental damage"
+          ],
+          "themes": [
+            "environmental destruction",
+            "corporate irresponsibility",
+            "environmental"
+          ],
+          "concerns": [
+            {
+              "name": "environment",
+              "score": 0.8
+            },
+            {
+              "name": "pollution",
+              "score": 0.5
+            },
+            {
+              "name": "air quality",
+              "score": 0.3
+            },
+            {
+              "name": "biodiversity loss",
+              "score": 0.3
+            },
+            {
+              "name": "deforestation",
+              "score": 0.3
+            },
+            {
+              "name": "water contamination",
+              "score": 0.3
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-d8fd6d598c971de9c397",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "iron",
+      "topic_label": "environmental",
+      "title": "Iron post analysis · environmental",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2020-06-10T21:09:03Z",
+      "score": 48567,
+      "comment_count": 1463,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "BHP",
+            "Aboriginal sites",
+            "Pilbara",
+            "mine expansion",
+            "destruction",
+            "ancient sites"
+          ],
+          "themes": [
+            "Indigenous rights",
+            "environmental destruction",
+            "environmental"
+          ],
+          "concerns": [
+            {
+              "name": "indigenous rights",
+              "score": 0.9
+            },
+            {
+              "name": "community rights",
+              "score": 0.8
+            },
+            {
+              "name": "environment",
+              "score": 0.8
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-5ce85e38db86a5bd6c12",
+      "kind": "comment",
+      "parent_id": "kg-post-102b9721718259d6f393",
+      "mineral": "iron ore",
+      "topic_label": "social",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2020-05-26T15:16:25Z",
+      "score": 2500,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "iron ore mining",
+            "sacred site",
+            "Juukan Gorge",
+            "Rio Tinto",
+            "Aboriginal heritage",
+            "destruction",
+            "Western Australia",
+            "mining expansion",
+            "PKKP Aboriginal Corporation",
+            "outdated laws"
+          ],
+          "themes": [
+            "destruction of aboriginal heritage site",
+            "inadequate legal protection",
+            "social"
+          ],
+          "concerns": [
+            {
+              "name": "community rights",
+              "score": 1.0
+            },
+            {
+              "name": "government policy",
+              "score": 1.0
+            },
+            {
+              "name": "indigenous rights",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-102b9721718259d6f393",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "iron ore",
+      "topic_label": "destruction of cultural heritage",
+      "title": "Iron Ore post analysis · destruction of cultural heritage",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2020-05-26T15:00:57Z",
+      "score": 9534,
+      "comment_count": 823,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 90.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "Rio Tinto",
+            "iron ore",
+            "Aboriginal site",
+            "mining",
+            "destruction"
+          ],
+          "themes": [
+            "destruction of cultural heritage",
+            "mining expansion"
+          ],
+          "concerns": [
+            {
+              "name": "community rights",
+              "score": 1.0
+            },
+            {
+              "name": "indigenous rights",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-9d5699c87f0a75da6cc0",
+      "kind": "comment",
+      "parent_id": "kg-post-3cc7c1c628cdc779b913",
+      "mineral": "cobalt",
+      "topic_label": "mining-related",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2019-12-18T04:07:38Z",
+      "score": 3581,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "cobalt",
+            "Congolese cobalt",
+            "Canadian cobalt",
+            "companies",
+            "buying"
+          ],
+          "themes": [
+            "Cobalt sourcing",
+            "Ethical mining",
+            "mining-related"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-3cc7c1c628cdc779b913",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "cobalt",
+      "topic_label": "child labor in cobalt mining",
+      "title": "Cobalt post analysis · child labor in cobalt mining",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2019-12-18T03:44:28Z",
+      "score": 36822,
+      "comment_count": 1598,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 95.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "cobalt mining",
+            "child labor",
+            "illegal mining",
+            "lawsuit",
+            "Apple",
+            "Google",
+            "Microsoft",
+            "Dell",
+            "Tesla",
+            "Congo",
+            "Congolese families"
+          ],
+          "themes": [
+            "child labor in cobalt mining",
+            "corporate responsibility"
+          ],
+          "concerns": [
+            {
+              "name": "child labor",
+              "score": 1.0
+            },
+            {
+              "name": "working conditions",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-89de783c1721e624163c",
+      "kind": "comment",
+      "parent_id": "kg-post-e42da34fd95dd55a9993",
+      "mineral": "platinum",
+      "topic_label": "mining-related",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2019-04-30T16:25:36Z",
+      "score": 1376,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "neutral",
+          "keywords": [
+            "platinum mining",
+            "shaft",
+            "workers",
+            "water",
+            "food"
+          ],
+          "themes": [
+            "worker safety",
+            "mining operations",
+            "mining-related"
+          ],
+          "concerns": [
+            {
+              "name": "safety regulations",
+              "score": 0.2
+            },
+            {
+              "name": "working conditions",
+              "score": 0.2
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-e42da34fd95dd55a9993",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "platinum",
+      "topic_label": "mining-related",
+      "title": "Platinum post analysis · mining-related",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2019-04-30T15:16:31Z",
+      "score": 8498,
+      "comment_count": 395,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "platinum",
+            "mine",
+            "workers",
+            "trapped",
+            "South Africa"
+          ],
+          "themes": [
+            "mining accident",
+            "worker safety",
+            "mining-related"
+          ],
+          "concerns": [
+            {
+              "name": "safety regulations",
+              "score": 1.0
+            },
+            {
+              "name": "working conditions",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-4efa967d298af20ff610",
+      "kind": "comment",
+      "parent_id": "kg-post-ea5f9c9dec6a9b6cae33",
+      "mineral": "renewable energy",
+      "topic_label": "other",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Futurology",
+      "created_at": "2018-12-26T20:14:11Z",
+      "score": 25040,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "renewable energy",
+            "better world",
+            "nothing"
+          ],
+          "themes": [
+            "uncertainty about renewable energy",
+            "potential wasted effort",
+            "other"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-ea5f9c9dec6a9b6cae33",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "renewable energy",
+      "topic_label": "environmental",
+      "title": "Renewable Energy post analysis · environmental",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "Futurology",
+      "created_at": "2018-12-26T19:33:02Z",
+      "score": 149326,
+      "comment_count": 4937,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "anti-mining",
+          "keywords": [
+            "renewable energy",
+            "sustainable energy",
+            "climate catastrophe",
+            "oil companies",
+            "Elon Musk"
+          ],
+          "themes": [
+            "renewable energy transition",
+            "climate change mitigation",
+            "environmental"
+          ],
+          "concerns": [
+            {
+              "name": "sustainability",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-b99b4fb46413a3e9007c",
+      "kind": "comment",
+      "parent_id": "kg-post-d441920bf1ea04c957b3",
+      "mineral": "natural gas",
+      "topic_label": "political",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2017-11-03T00:49:39Z",
+      "score": 8546,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "Trump",
+            "corruption",
+            "symbol"
+          ],
+          "themes": [
+            "political commentary",
+            "criticism",
+            "political"
+          ],
+          "concerns": [
+            {
+              "name": "corruption",
+              "score": 1.0
+            },
+            {
+              "name": "government policy",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-d441920bf1ea04c957b3",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "natural gas",
+      "topic_label": "mining-related",
+      "title": "Natural Gas post analysis · mining-related",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2017-11-03T00:47:03Z",
+      "score": 78224,
+      "comment_count": 4071,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "Trump administration",
+            "corruption",
+            "oil",
+            "natural gas",
+            "revenue"
+          ],
+          "themes": [
+            "Government policy",
+            "Corruption in natural gas",
+            "mining-related"
+          ],
+          "concerns": [
+            {
+              "name": "corruption",
+              "score": 1.0
+            },
+            {
+              "name": "government policy",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-5ba66a738ae0e2c80eca",
+      "kind": "comment",
+      "parent_id": "kg-post-1cab937bb825a4d1c6c0",
+      "mineral": "molybdenum",
+      "topic_label": "mining-related",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "geology",
+      "created_at": "2017-08-04T16:55:53Z",
+      "score": 5,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "positive",
+          "stance": "pro-mining",
+          "keywords": [
+            "molybdenum",
+            "mining",
+            "chalco",
+            "trace metals",
+            "gold",
+            "silver"
+          ],
+          "themes": [
+            "mining",
+            "geology",
+            "mining-related"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-1cab937bb825a4d1c6c0",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "molybdenum",
+      "topic_label": "mining-related",
+      "title": "Molybdenum post analysis · mining-related",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "geology",
+      "created_at": "2017-08-04T09:10:47Z",
+      "score": 104,
+      "comment_count": 11,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "chalcopyrite",
+            "quartz",
+            "molybdenum",
+            "copper",
+            "mining"
+          ],
+          "themes": [
+            "geology",
+            "mining operations",
+            "mining-related"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-636f541b05173472a60c",
+      "kind": "comment",
+      "parent_id": "kg-post-0edbcab98c71071aec7f",
+      "mineral": "lead",
+      "topic_label": "other",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "environment",
+      "created_at": "2016-12-20T14:17:22Z",
+      "score": 479,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "lead mining",
+            "zip codes",
+            "affected areas",
+            "article",
+            "information"
+          ],
+          "themes": [
+            "lack of transparency",
+            "information access",
+            "other"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-0edbcab98c71071aec7f",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "lead",
+      "topic_label": "environmental pollution",
+      "title": "Lead post analysis · environmental pollution",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "environment",
+      "created_at": "2016-12-20T12:35:43Z",
+      "score": 4882,
+      "comment_count": 169,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 60.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "lead",
+            "levels",
+            "Flint",
+            "neighborhoods",
+            "pollution"
+          ],
+          "themes": [
+            "environmental pollution",
+            "public health"
+          ],
+          "concerns": [
+            {
+              "name": "health",
+              "score": 0.9
+            },
+            {
+              "name": "pollution",
+              "score": 0.9
+            },
+            {
+              "name": "environment",
+              "score": 0.8
+            },
+            {
+              "name": "water contamination",
+              "score": 0.8
+            },
+            {
+              "name": "air quality",
+              "score": 0.5
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-fd9f74a020230146cf19",
+      "kind": "comment",
+      "parent_id": "kg-post-5626373d6ff47320b8ce",
+      "mineral": "aluminium",
+      "topic_label": "other",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2016-09-10T13:11:11Z",
+      "score": 5984,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [],
+          "themes": [
+            "other"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-5626373d6ff47320b8ce",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "aluminium",
+      "topic_label": "economic",
+      "title": "Aluminium post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2016-09-10T12:54:17Z",
+      "score": 39234,
+      "comment_count": 2598,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "aluminum",
+            "mining",
+            "China",
+            "Mexico",
+            "billionaire"
+          ],
+          "themes": [
+            "aluminum reserves",
+            "international trade",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-7f6b1d3e85bd0e0f197a",
+      "kind": "comment",
+      "parent_id": "kg-post-da4e8dd748ed4e4e5148",
+      "mineral": "palladium",
+      "topic_label": "economic",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2014-11-27T05:31:16Z",
+      "score": 122,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "harsh penalties",
+            "housing market collapse",
+            "sociopaths",
+            "banking",
+            "consequences"
+          ],
+          "themes": [
+            "financial crime",
+            "moral condemnation",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-da4e8dd748ed4e4e5148",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "palladium",
+      "topic_label": "economic",
+      "title": "Palladium post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2014-11-27T01:58:42Z",
+      "score": 1403,
+      "comment_count": 142,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 95.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "neutral",
+          "keywords": [
+            "Goldman Sachs",
+            "HSBC",
+            "Standard Bank",
+            "BASF",
+            "platinum",
+            "palladium",
+            "price manipulation",
+            "lawsuit"
+          ],
+          "themes": [
+            "price manipulation",
+            "legal action",
+            "economic"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-3142464297df4079f7ca",
+      "kind": "comment",
+      "parent_id": "kg-post-8dfad9c2ae699a2f69b9",
+      "mineral": "tantalum",
+      "topic_label": "social",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2014-06-14T16:04:43Z",
+      "score": 9,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "Congo",
+            "massacres",
+            "ignored"
+          ],
+          "themes": [
+            "human rights",
+            "conflict minerals",
+            "social"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-8dfad9c2ae699a2f69b9",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "tantalum",
+      "topic_label": "social",
+      "title": "Tantalum post analysis · social",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "worldnews",
+      "created_at": "2014-06-14T13:06:24Z",
+      "score": 107,
+      "comment_count": 12,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 70.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "tantalum",
+            "blood minerals",
+            "electronics industry",
+            "conflict minerals",
+            "smartphone"
+          ],
+          "themes": [
+            "conflict minerals",
+            "ethical sourcing",
+            "social"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-comment-7c12481c412bd4847e1c",
+      "kind": "comment",
+      "parent_id": "kg-post-13cfefc3383aeb92ee4a",
+      "mineral": "tin",
+      "topic_label": "other",
+      "title": null,
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "China",
+      "created_at": "2013-04-30T08:03:06Z",
+      "score": 0,
+      "comment_count": null,
+      "analysis": {
+        "relevance": null,
+        "enrichment": {
+          "sentiment": "neutral",
+          "stance": "neutral",
+          "keywords": [
+            "Yereth",
+            "account",
+            "spam",
+            "gokunming"
+          ],
+          "themes": [
+            "online activity",
+            "potential harassment",
+            "other"
+          ],
+          "concerns": []
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    },
+    {
+      "id": "kg-post-13cfefc3383aeb92ee4a",
+      "kind": "post",
+      "parent_id": null,
+      "mineral": "tin",
+      "topic_label": "economic",
+      "title": "Tin post analysis · economic",
+      "body": "Original Reddit text is not included in the public Kaggle release. This view presents released metadata and model-derived labels only.",
+      "subreddit": "China",
+      "created_at": "2013-04-30T01:56:45Z",
+      "score": 14,
+      "comment_count": 2,
+      "analysis": {
+        "relevance": {
+          "relevant": true,
+          "confidence": 90.0,
+          "rationale": "Released model-derived relevance label; original source text is not included."
+        },
+        "enrichment": {
+          "sentiment": "negative",
+          "stance": "anti-mining",
+          "keywords": [
+            "tin mining",
+            "Gejiu",
+            "Yunnan",
+            "China",
+            "unemployment",
+            "social problems",
+            "economic decline",
+            "gutted economy"
+          ],
+          "themes": [
+            "economic consequences of mining decline",
+            "social impacts of industry decline",
+            "economic"
+          ],
+          "concerns": [
+            {
+              "name": "local employment",
+              "score": 1.0
+            }
+          ]
+        },
+        "reputation": null
+      },
+      "source_note": "Derived from the public Kaggle v2 metadata export. Source text and authors are absent; identifiers are repository-local hashes.",
+      "synthetic": false,
+      "content_available": false
+    }
+  ]
+}

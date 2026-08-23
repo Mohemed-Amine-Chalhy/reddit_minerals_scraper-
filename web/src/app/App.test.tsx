@@ -1,0 +1,107 @@
+import axe from 'axe-core';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, expect, it, vi } from 'vitest';
+import { DEMO_RECORDS } from '../data/fixtures';
+import { MAX_IMPORT_BYTES } from '../domain/importer';
+import { SyntheticFixtureResearchRepository } from '../domain/repository';
+import { renderApp } from '../test/renderApp';
+
+describe('MineralLens application', () => {
+  it('renders an accessible public research overview with configurable controls', async () => {
+    const user = userEvent.setup();
+    const { container } = renderApp('/');
+    expect(
+      await screen.findByRole('heading', { name: /from research data to signals/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Public dataset sample')).toBeVisible();
+    expect(screen.getByText('104')).toBeVisible();
+    await user.selectOptions(screen.getByLabelText('Mineral'), 'gold');
+    expect(screen.getByText('4')).toBeVisible();
+    await user.selectOptions(screen.getByLabelText('Date window'), '180');
+    const results = await axe.run(container, {
+      rules: { 'color-contrast': { enabled: false } },
+    });
+    expect(results.violations).toEqual([]);
+  });
+
+  it('uses URL-backed explorer filters and opens an analysis detail panel', async () => {
+    const user = userEvent.setup();
+    renderApp('/explorer?mineral=gold&recordType=post');
+    expect(await screen.findByRole('heading', { name: '2 records' })).toBeInTheDocument();
+    const inspect = screen.getAllByRole('button', { name: /inspect gold post metadata/i })[0];
+    if (!inspect) throw new Error('Expected a curated gold record.');
+    await user.click(inspect);
+    expect(await screen.findByRole('heading', { name: /gold post metadata/i })).toBeVisible();
+    expect(screen.getByText(/raw reddit text is not included/i)).toBeVisible();
+    expect(screen.getByText('Published analysis provenance')).toBeVisible();
+    expect(
+      screen.getByText(/model, prompt, schema, and latency metadata were not included/i),
+    ).toBeVisible();
+  });
+
+  it('rejects an oversized local export before reading it', async () => {
+    const user = userEvent.setup();
+    renderApp('/explorer');
+    await screen.findByRole('heading', { name: '104 records' });
+    const file = new File(['{}'], 'oversized.json', { type: 'application/json' });
+    Object.defineProperty(file, 'size', { value: MAX_IMPORT_BYTES + 1 });
+    const readFile = vi.fn(() => Promise.resolve('{}'));
+    Object.defineProperty(file, 'text', { value: readFile });
+
+    await user.upload(screen.getByLabelText('Inspect local export'), file);
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('larger than the 10 MB demo limit');
+    expect(readFile).not.toHaveBeenCalled();
+  });
+
+  it('labels a browser-local import and restores the public sample', async () => {
+    const user = userEvent.setup();
+    renderApp('/explorer');
+    await screen.findByRole('heading', { name: '104 records' });
+    const localRecord = DEMO_RECORDS[0];
+    if (!localRecord) throw new Error('Expected a regression fixture record.');
+
+    const fileText = JSON.stringify(localRecord);
+    const file = new File([fileText], 'local-export.json', { type: 'application/json' });
+    Object.defineProperty(file, 'text', { value: () => Promise.resolve(fileText) });
+    await user.upload(screen.getByLabelText('Inspect local export'), file);
+
+    expect(await screen.findByText('Local browser import')).toBeVisible();
+    expect(screen.getByText('Local browser preview')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'Restore research sample' }));
+    expect(await screen.findByText('Public dataset sample')).toBeVisible();
+    expect(screen.getByText('Bundled public Kaggle research sample')).toBeVisible();
+  });
+
+  it('labels replay as synthetic and states the research review status truthfully', async () => {
+    renderApp('/engineering');
+    expect(
+      await screen.findByText(/according to the project owner.*advanced pre-publication review/i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/no claim of acceptance or peer review/i)).toBeVisible();
+    expect(screen.getByText(/one modern research interface/i)).toBeVisible();
+  });
+
+  it('configures and controls a deterministic pipeline replay', async () => {
+    const user = userEvent.setup();
+    renderApp('/pipeline');
+    expect(
+      await screen.findByRole('heading', { name: /reliability is visible/i }),
+    ).toBeInTheDocument();
+
+    await user.selectOptions(screen.getByLabelText('Scenario'), 'retry');
+    await user.click(screen.getByRole('button', { name: 'Start replay' }));
+    expect(screen.getAllByText('Reading bounded synthetic provider records.')).toHaveLength(2);
+    await user.click(screen.getByRole('button', { name: 'Reset' }));
+    expect(screen.getByText('Select a scenario and start the replay.')).toBeVisible();
+  });
+
+  it('keeps synthetic run history inside an explicitly injected fixture', async () => {
+    renderApp('/pipeline', new SyntheticFixtureResearchRepository());
+
+    expect(await screen.findByText('Synthetic fixture')).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Synthetic run fixtures' })).toBeVisible();
+    expect(screen.getByText('run-1')).toBeVisible();
+  });
+});

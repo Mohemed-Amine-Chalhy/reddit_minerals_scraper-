@@ -36,6 +36,29 @@ The Dockerfile pins its Python and `uv` bases by both readable tag and immutable
 registry digest. Review automated digest updates like dependency changes; never
 remove the digest while preparing a release.
 
+## Web delivery modes
+
+MineralLens supports two deliberate delivery shapes:
+
+1. The GitHub Pages workflow builds the React application with
+   `VITE_DATA_MODE=public-sample`. It is a credential-free portfolio deployment
+   with the deterministic, repository-safe public Kaggle sample and no backend.
+2. The Dockerfile's `web-runtime` target builds the same client and serves it
+   beside `/api/v1` from a non-root FastAPI process. The default Docker target
+   remains the batch CLI runtime for scheduled pipeline work.
+
+Build and run the combined SPA/API image locally:
+
+```shell
+docker build --target web-runtime -t minerallens-web:0.1.0 .
+docker run --rm --read-only -p 8000:8000 minerallens-web:0.1.0
+```
+
+Verify `http://127.0.0.1:8000/api/v1/health`, the generated API documentation at
+`/api/v1/docs`, and client-side history fallback on every public route. The web
+process is read-only and uses its deterministic packaged-sample repository;
+provider collection and analysis continue to run through explicit CLI commands.
+
 ## Local or virtual-machine deployment
 
 Install `uv`, check out the release tag, and create the locked environment:

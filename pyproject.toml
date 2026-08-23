@@ -5,16 +5,17 @@ build-backend = "hatchling.build"
 [project]
 name = "reddit-minerals-scraper"
 version = "0.1.0"
-description = "A production-oriented pipeline for reproducible analysis of mineral discussions on Reddit."
+description = "MineralLens: a full-stack research platform for reproducible analysis of critical-mineral discourse."
 readme = "README.md"
 authors = [
   { name = "Mohamed Amine Chalhy" },
 ]
-keywords = ["data-engineering", "nlp", "pydantic", "reddit", "research", "sqlite"]
+keywords = ["data-engineering", "fastapi", "nlp", "react", "reddit", "research-software", "sqlite", "typescript"]
 requires-python = ">=3.12,<3.14"
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Environment :: Console",
+  "Environment :: Web Environment",
   "Intended Audience :: Science/Research",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
@@ -28,6 +29,12 @@ dependencies = [
   "praw>=8,<9",
   "pydantic>=2.11,<3",
   "pydantic-settings>=2.10,<3",
+]
+
+[project.optional-dependencies]
+web = [
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.34,<1",
 ]
 
 [project.urls]
@@ -45,6 +52,8 @@ build = [
 ]
 dev = [
   "detect-secrets>=1.5,<2",
+  "fastapi>=0.115,<1",
+  "httpx>=0.28,<1",
   "mypy>=1.17,<2",
   "nbformat>=5.10,<6",
   "nbstripout>=0.8,<1",
@@ -54,6 +63,10 @@ dev = [
   "pytest>=8.4,<10",
   "pytest-cov>=6.2,<8",
   "ruff>=0.12,<1",
+]
+media = [
+  "imageio-ffmpeg>=0.6,<0.7",
+  "pillow>=12.3,<13",
 ]
 notebooks = [
   "ipykernel>=6.30,<8",
@@ -67,6 +80,7 @@ packages = ["src/reddit_minerals"]
 
 [tool.hatch.build.targets.wheel.force-include]
 "configs/subreddit_mapping.json" = "reddit_minerals/defaults/subreddit_mapping.json"
+"src/reddit_minerals/web/data/kaggle_sample.json" = "reddit_minerals/web/data/kaggle_sample.json"
 
 [tool.hatch.build.targets.sdist]
 include = [
@@ -91,6 +105,11 @@ include = [
   "/README.md",
   "/pyproject.toml",
   "/uv.lock",
+]
+exclude = [
+  "/docs/media/*.mp4",
+  "/docs/media/*.png",
+  "/docs/media/*.webm",
 ]
 
 [tool.uv]

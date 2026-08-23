@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software in research, please cite it using this metadata."
-title: "Reddit Minerals Pipeline"
+title: "MineralLens: A Critical-Mineral Discourse Research Platform"
 type: software
 authors:
   - family-names: "Chalhy"
@@ -8,11 +8,16 @@ authors:
 repository-code: "https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-"
 version: "0.1.0"
 abstract: >-
-  A typed, reproducible pipeline for collecting approved public Reddit content
-  about minerals and running schema-validated analysis over it.
+  A full-stack, typed research platform for collecting and exploring public
+  critical-mineral discourse through a reproducible Python pipeline, a
+  read-only FastAPI adapter, and a React and TypeScript interface.
 keywords:
   - data engineering
+  - FastAPI
   - natural language processing
   - Reddit
+  - React
+  - research software
   - minerals
   - SQLite
+  - TypeScript

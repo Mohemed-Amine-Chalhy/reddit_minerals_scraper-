@@ -2,15 +2,20 @@
 
 ## Scope
 
-The application is a scheduled batch CLI. It collects a bounded set of public
-Reddit submissions and comments for configured minerals, stores canonical
-records in SQLite, optionally requests structured analysis from Gemini, and
-exports snapshots for research. It is not a web service, social-listening stream,
-or population-representative survey system.
+The system combines a scheduled batch engine with a read-only web product. The
+engine collects a bounded set of public Reddit submissions and comments for
+configured minerals, stores canonical records in SQLite, optionally requests
+structured analysis from Gemini, and exports snapshots for research. MineralLens
+adds a typed FastAPI presentation adapter and React interface. It is not a live
+social-listening stream or a population-representative survey system.
 
 ## Components
 
 ```text
+React SPA <---- /api/v1 ---- FastAPI read adapter ---- public-sample repository
+    |
+    +---- browser-only JSON / JSONL import
+
 CLI / scheduler
       |
       v
@@ -31,11 +36,26 @@ scrape pipeline       analysis pipelines
         +-------+--------+
         |                |
         v                v
-  status/deletion   JSON/JSONL export
-                             |
-                             v
-                    optional notebooks
+  status/deletion   JSON/JSONL export ---- browser / optional notebooks
 ```
+
+### Web product
+
+`reddit_minerals.web.create_app()` constructs an import-safe FastAPI adapter
+over an injected `ReadRepository`. The public v1 API is GET-only, bounded, and
+strictly typed. Its default repository loads a deterministic 104-record,
+metadata-only sample derived from the owner’s public Kaggle dataset. It does not
+construct provider clients, read credentials, or mutate operational SQLite
+state. The packaged sample omits raw text, authors, and source identifiers; the
+repository exposes those absences rather than fabricating values. When built
+assets exist, FastAPI serves the React SPA without allowing its history fallback
+to shadow `/api` routes.
+
+The React client validates API and local-file boundaries with Zod. Compatible
+exports selected by the viewer remain in browser memory; invalid imports are
+atomic failures and never replace the active dataset. The source label remains
+visible so API delivery, bundled public-sample delivery, local imports, and
+explicit synthetic replay cannot be confused.
 
 ### CLI
 
