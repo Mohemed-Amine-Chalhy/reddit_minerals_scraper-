@@ -8,89 +8,126 @@ repos:
     hooks:
       - id: check-merge-conflict
         name: check merge conflict markers
-        entry: uv run --locked --no-build-isolation check-merge-conflict
+        entry: uv run --locked --extra web --no-build-isolation check-merge-conflict
         language: system
         types: [text]
 
       - id: check-json
         name: validate JSON
-        entry: uv run --locked --no-build-isolation check-json
+        entry: uv run --locked --extra web --no-build-isolation check-json
         language: system
         types: [json]
         exclude: \.ipynb$
 
       - id: check-toml
         name: validate TOML
-        entry: uv run --locked --no-build-isolation check-toml
+        entry: uv run --locked --extra web --no-build-isolation check-toml
         language: system
         types: [toml]
 
       - id: check-yaml
         name: validate YAML
-        entry: uv run --locked --no-build-isolation check-yaml
+        entry: uv run --locked --extra web --no-build-isolation check-yaml
         language: system
         types: [yaml]
 
       - id: check-added-large-files
         name: reject newly added large files
-        entry: uv run --locked --no-build-isolation check-added-large-files --maxkb=1000
+        entry: uv run --locked --extra web --no-build-isolation check-added-large-files --maxkb=1000
         language: system
 
       - id: detect-private-key
         name: detect private keys
-        entry: uv run --locked --no-build-isolation detect-private-key
+        entry: uv run --locked --extra web --no-build-isolation detect-private-key
         language: system
         types: [text]
 
       - id: detect-secrets
         name: detect committed secrets
-        entry: uv run --locked --no-build-isolation detect-secrets-hook
+        entry: uv run --locked --extra web --no-build-isolation detect-secrets-hook
         language: system
         types: [text]
         exclude: ^uv\.lock$
 
       - id: validate-env-example
         name: validate environment template
-        entry: uv run --locked --no-build-isolation python scripts/validate_env_example.py
+        entry: uv run --locked --extra web --no-build-isolation python scripts/validate_env_example.py
         language: system
         pass_filenames: false
         files: ^(\.env\.example|scripts/validate_env_example\.py)$
 
       - id: validate-documentation
         name: validate local documentation links
-        entry: uv run --locked --no-build-isolation python scripts/check_docs.py
+        entry: uv run --locked --extra web --no-build-isolation python scripts/check_docs.py
         language: system
         pass_filenames: false
         files: ^(README|CONTRIBUTING|SECURITY|CHANGELOG)\.md$|^(docs|notebooks)/.*\.md$|^scripts/check_docs\.py$
 
       - id: ruff-check
         name: Ruff lint
-        entry: uv run --locked --no-build-isolation ruff check --force-exclude
+        entry: uv run --locked --extra web --no-build-isolation ruff check --force-exclude
         language: system
         types_or: [python, pyi, jupyter]
 
       - id: ruff-format
         name: Ruff format
-        entry: uv run --locked --no-build-isolation ruff format --check --force-exclude
+        entry: uv run --locked --extra web --no-build-isolation ruff format --check --force-exclude
         language: system
         types_or: [python, pyi, jupyter]
 
       - id: validate-notebooks
         name: validate clean notebooks
-        entry: uv run --locked --no-build-isolation python scripts/check_notebooks.py
+        entry: uv run --locked --extra web --no-build-isolation python scripts/check_notebooks.py
         language: system
         types: [jupyter]
 
+      - id: web-prettier
+        name: web Prettier
+        entry: pnpm --dir web run format:check
+        language: system
+        pass_filenames: false
+        files: ^web/
+
+      - id: web-eslint
+        name: web ESLint
+        entry: pnpm --dir web run lint
+        language: system
+        pass_filenames: false
+        files: ^web/
+
+      - id: web-typecheck
+        name: web TypeScript
+        entry: pnpm --dir web run typecheck
+        language: system
+        pass_filenames: false
+        files: ^web/
+
       - id: mypy
         name: strict mypy
-        entry: uv run --locked --no-build-isolation mypy src/reddit_minerals
+        entry: uv run --locked --extra web --no-build-isolation mypy src/reddit_minerals
         language: system
         pass_filenames: false
         stages: [pre-push]
 
       - id: pytest
         name: offline test suite
-        entry: uv run --locked --no-build-isolation pytest
+        entry: uv run --locked --extra web --no-build-isolation python scripts/run_tests.py
         language: system
         pass_filenames: false
+        stages: [pre-push]
+
+      - id: web-test
+        name: web coverage suite
+        entry: pnpm --dir web run test:coverage
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
+
+      - id: web-build
+        name: web production build
+        entry: pnpm --dir web run build
+        language: system
+        pass_filenames: false
+        always_run: true
         stages: [pre-push]

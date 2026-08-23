@@ -3,6 +3,7 @@ param()
 
 $ErrorActionPreference = "Stop"
 $RepositoryRoot = Split-Path -Parent $PSScriptRoot
+$env:UV_CACHE_DIR = Join-Path $RepositoryRoot ".uv-cache"
 
 if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
     throw "uv is required. Run scripts/bootstrap.ps1 first."

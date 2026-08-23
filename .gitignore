@@ -13,7 +13,10 @@ __pycache__/
 *$py.class
 .mypy_cache/
 .pytest_cache/
+.pytest-*/
 .ruff_cache/
+/.cache/
+/.release-media/
 .coverage
 .coverage.*
 coverage.xml
@@ -24,8 +27,20 @@ build/
 dist/
 *.egg-info/
 
+# Web dependencies, build output, and browser-test artifacts
+web/node_modules/
+web/dist/
+web/coverage/
+web/playwright-report/
+web/test-results/
+docs/media/walkthrough-1080p.mp4
+docs/media/walkthrough-master.webm
+.uv-cache/
+.dataset-cache/
+.pnpm-store/
+
 # Application state and generated data
-data/
+/data/
 logs/
 *.db
 *.db-shm

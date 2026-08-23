@@ -3,6 +3,7 @@ set -Eeuo pipefail
 
 repository_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repository_root"
+export UV_CACHE_DIR="$repository_root/.uv-cache"
 
 if ! command -v uv >/dev/null 2>&1; then
   echo "uv is required. Run scripts/bootstrap.sh first." >&2

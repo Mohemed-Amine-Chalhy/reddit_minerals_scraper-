@@ -26,6 +26,7 @@ def main() -> int:
                 uv=Path(uv),
                 artifact=artifact,
                 work_directory=temporary_root / f"artifact-{index}",
+                uv_cache=repository_root / ".uv-cache",
             )
     return 0
 
@@ -39,11 +40,18 @@ def _single_artifact(directory: Path, pattern: str) -> Path:
     return matches[0].resolve()
 
 
-def _check_artifact(*, uv: Path, artifact: Path, work_directory: Path) -> None:
+def _check_artifact(
+    *,
+    uv: Path,
+    artifact: Path,
+    work_directory: Path,
+    uv_cache: Path,
+) -> None:
     environment = os.environ.copy()
     for name in tuple(environment):
         if name.startswith("RMS_") or name in {"PYTHONPATH", "PYTHONHOME", "VIRTUAL_ENV"}:
             environment.pop(name, None)
+    environment["UV_CACHE_DIR"] = str(uv_cache)
 
     work_directory.mkdir(parents=True)
     virtual_environment = work_directory / "venv"
@@ -55,7 +63,7 @@ def _check_artifact(*, uv: Path, artifact: Path, work_directory: Path) -> None:
     python = _venv_executable(virtual_environment, "python")
     cli = _venv_executable(virtual_environment, "reddit-minerals")
     _run(
-        [str(uv), "pip", "install", "--python", str(python), str(artifact)],
+        [str(uv), "pip", "install", "--python", str(python), f"{artifact}[web]"],
         cwd=work_directory,
         environment=environment,
     )
@@ -81,7 +89,14 @@ def _check_artifact(*, uv: Path, artifact: Path, work_directory: Path) -> None:
                 "from importlib.resources import files; "
                 "package = files('reddit_minerals'); "
                 "assert package.joinpath('py.typed').is_file(); "
-                "assert package.joinpath('defaults/subreddit_mapping.json').is_file()"
+                "assert package.joinpath('defaults/subreddit_mapping.json').is_file(); "
+                "sample = package.joinpath('web/data/kaggle_sample.json'); "
+                "assert sample.is_file(); "
+                "from reddit_minerals.web import create_app; "
+                "from reddit_minerals.web.repository import KaggleSampleReadRepository; "
+                "repository = KaggleSampleReadRepository(); "
+                "assert len(repository.snapshot().records) == 104; "
+                "assert create_app(repository=repository).title == 'MineralLens API'"
             ),
         ],
         cwd=work_directory,
