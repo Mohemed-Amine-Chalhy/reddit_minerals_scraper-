@@ -49,7 +49,7 @@ repos:
           --exclude-lines 3A299CEC89CB091E9AD9E8F4158FD264A761C92BD9CA5B37B94924D99C3D7407
         language: system
         types: [text]
-        exclude: ^uv\.lock$
+        exclude: ^(?:uv\.lock|web/pnpm-lock\.yaml)$
 
       - id: validate-env-example
         name: validate environment template

@@ -1,0 +1,4 @@
+allowBuilds:
+  esbuild: true
+enableGlobalVirtualStore: false
+verifyDepsBeforeRun: error
