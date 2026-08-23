@@ -1,11 +1,13 @@
 .git
 .github
+.dataset-cache
 .mypy_cache
+.pnpm-store
 .pytest_cache
 .ruff_cache
 .venv
 build
-data
+/data
 dist
 evaluation
 htmlcov
@@ -13,6 +15,9 @@ logs
 notebooks
 scripts
 tests
+web/coverage
+web/dist
+web/node_modules
 
 .coverage*
 .env

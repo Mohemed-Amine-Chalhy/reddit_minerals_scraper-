@@ -43,6 +43,8 @@ jobs:
 
       - name: Run pre-commit quality and secret checks
         if: runner.os == 'Linux' && matrix.python-version == '3.12'
+        env:
+          SKIP: web-prettier,web-eslint,web-typecheck
         run: uv run --locked --no-build-isolation pre-commit run --all-files --show-diff-on-failure
 
       - name: Run strict type checking
@@ -81,11 +83,58 @@ jobs:
           path: dist/
           if-no-files-found: error
 
-  container:
-    name: Build non-root container
-    needs: quality
+  web-quality:
+    name: Web quality (Node 24.19.0)
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: web
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: "24.19.0"
+
+      - name: Activate pinned pnpm
+        run: |
+          npm install --global pnpm@11.19.0
+          pnpm --version
+
+      - name: Install frozen frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check frontend formatting
+        run: pnpm format:check
+
+      - name: Lint frontend
+        run: pnpm lint
+
+      - name: Type-check frontend
+        run: pnpm typecheck
+
+      - name: Test frontend with coverage
+        run: pnpm test:coverage
+
+      - name: Build frontend
+        run: pnpm build
+
+      - name: Upload frontend distribution
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: web-dist
+          path: web/dist/
+          if-no-files-found: error
+
+  container:
+    name: Build non-root containers
+    needs: [quality, web-quality]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Check out repository
@@ -94,28 +143,83 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
 
-      - name: Build container without publishing
+      - name: Build CLI container without publishing
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
         with:
           context: .
           push: false
           load: true
           tags: reddit-minerals-scraper:ci
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=cli-container
+          cache-to: type=gha,mode=max,scope=cli-container
 
-      - name: Exercise container entrypoint
+      - name: Exercise CLI container entrypoint
         run: docker run --rm --read-only reddit-minerals-scraper:ci --help
 
-      - name: Verify non-root runtime identity
+      - name: Verify CLI non-root runtime identity
         run: >-
           docker run --rm --entrypoint python reddit-minerals-scraper:ci
           -c "import os; assert os.getuid() == 10001, os.getuid()"
 
-      - name: Scan container for actionable vulnerabilities
+      - name: Scan CLI container for actionable vulnerabilities
         uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # 0.35.0
         with:
           image-ref: reddit-minerals-scraper:ci
+          scanners: vuln
+          vuln-type: os,library
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+
+      - name: Build web container without publishing
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: .
+          target: web-runtime
+          push: false
+          load: true
+          tags: reddit-minerals-web:ci
+          cache-from: type=gha,scope=web-container
+          cache-to: type=gha,mode=max,scope=web-container
+
+      - name: Exercise web container
+        shell: bash
+        run: |
+          set -euo pipefail
+          container_id="$(docker run --detach --read-only --publish 127.0.0.1:8000:8000 reddit-minerals-web:ci)"
+          cleanup() {
+            docker rm --force "${container_id}" >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+
+          ready=0
+          for _attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8000/api/v1/health > /tmp/web-health.json; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          if [ "${ready}" -ne 1 ]; then
+            docker logs "${container_id}"
+            exit 1
+          fi
+          grep --quiet '"synthetic":false' /tmp/web-health.json
+          grep --quiet '"public_sample":true' /tmp/web-health.json
+          curl --fail --silent --show-error http://127.0.0.1:8000/ --output /tmp/web-index.html
+          curl --fail --silent --show-error http://127.0.0.1:8000/explorer --output /tmp/web-fallback.html
+          grep --quiet '<div id="root"></div>' /tmp/web-index.html
+          grep --quiet '<div id="root"></div>' /tmp/web-fallback.html
+
+      - name: Verify web non-root runtime identity
+        run: >-
+          docker run --rm --entrypoint python reddit-minerals-web:ci
+          -c "import os; assert os.getuid() == 10001, os.getuid()"
+
+      - name: Scan web container for actionable vulnerabilities
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # 0.35.0
+        with:
+          image-ref: reddit-minerals-web:ci
           scanners: vuln
           vuln-type: os,library
           severity: HIGH,CRITICAL
