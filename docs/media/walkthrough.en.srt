@@ -1,0 +1,38 @@
+1
+00:00:00,400 --> 00:00:04,600
+MineralLens. Research tooling developed during a Mines Nancy internship.
+
+2
+00:00:05,400 --> 00:00:14,600
+A read-only interface connects 104 curated public records to transparent,
+model-derived research signals.
+
+3
+00:00:15,400 --> 00:00:24,600
+Distributions summarize this bounded sample. Model-derived concerns are
+signals, not verified events.
+
+4
+00:00:25,400 --> 00:00:36,600
+Browse labels and provenance while preserving the public dataset boundary.
+Original Reddit text and authors are not included.
+
+5
+00:00:37,400 --> 00:00:48,600
+A clearly labelled synthetic replay demonstrates bounded retry and
+revision-safe writes without contacting providers.
+
+6
+00:00:49,400 --> 00:00:57,600
+Typed contracts, deterministic fixtures, tests, and resumable stages make
+the system inspectable from edge to core.
+
+7
+00:00:58,400 --> 00:01:05,600
+Tests, cross-platform continuous integration, strict typing, and
+source-linked decisions make quality visible.
+
+8
+00:01:06,400 --> 00:01:10,600
+The associated manuscript is in advanced pre-publication review, according
+to the project owner.

@@ -18,6 +18,7 @@ should inject secrets through the scheduler or container secret mechanism.
 | `RMS_DATABASE_PATH` | `data/reddit_minerals.sqlite3` | Canonical SQLite file. Use an absolute mounted path in containers. |
 | `RMS_SUBREDDIT_MAPPING_PATH` | `configs/subreddit_mapping.json` | Non-empty JSON object mapping mineral names to subreddit lists. Installed wheels fall back to their bundled copy when this is unset. |
 | `RMS_LOG_LEVEL` | `INFO` | `DEBUG`, `INFO`, `WARNING`, `ERROR`, or `CRITICAL`. Logs remain content-safe at every level. |
+| `RMS_WEB_ASSET_DIR` | `web/dist` | Optional absolute or working-directory-relative path to the built MineralLens SPA. FastAPI serves API-only mode when the directory is absent. |
 
 Relative paths resolve from the process working directory, so scheduled and
 container deployments should either set the working directory to the repository
@@ -134,6 +135,20 @@ uv run reddit-minerals validate-config
 
 Validation proves the file shape, not that each subreddit exists, is accessible,
 or is relevant. Review the mapping and research rationale separately.
+
+## Web build inputs
+
+The browser application has two public build-time settings:
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `VITE_BASE_PATH` | `/` | URL base used for assets and client-side routing. The Pages workflow sets the repository subpath. |
+| `VITE_DATA_MODE` | API-first | Set to `public-sample` for a fully static build that skips the API probe and uses the bundled public Kaggle sample. `synthetic` is reserved for explicit regression work. |
+
+All `VITE_*` values are embedded in downloadable browser assets. They must never
+contain Reddit, Gemini, database, or deployment credentials. The default local
+and container build requests relative `/api/v1` routes and visibly falls back to
+the same bundled, repository-safe public sample if the API is unavailable.
 
 ## Secret rotation
 

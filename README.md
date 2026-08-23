@@ -1,204 +1,196 @@
-# Reddit Minerals Pipeline
+# MineralLens
 
 [![CI](https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-/actions/workflows/ci.yml/badge.svg)](https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-/actions/workflows/codeql.yml/badge.svg)](https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-/actions/workflows/codeql.yml)
 ![Python 3.12 and 3.13](https://img.shields.io/badge/Python-3.12%20%7C%203.13-3776AB?logo=python&logoColor=white)
+![React and TypeScript](https://img.shields.io/badge/React%20%2B%20TypeScript-strict-61DAFB?logo=react&logoColor=08110F)
 
-A production-oriented Python batch pipeline for collecting bounded public Reddit
-discussions about minerals and running schema-validated analysis over them. It is
-typed, resumable, offline-testable, and built around transactional SQLite.
+**Trace mineral discourse from source to signal.**
 
-I developed this system from an initial research prototype during my internship
-at [Mines Nancy](https://mines-nancy.univ-lorraine.fr/en/). The portfolio version
-shows the engineering work required to turn exploratory scripts into a
-maintainable data product. Maintained by
+MineralLens is a full-stack research intelligence application for exploring how
+critical minerals are discussed online. A modern React interface sits on a
+typed FastAPI adapter and a resumable Python analysis engine with transactional
+SQLite storage, schema-validated provider output, and deterministic offline
+execution.
+
+[Open the portfolio demo](https://mohemed-amine-chalhy.github.io/reddit_minerals_scraper-/)
+· [Web application guide](docs/web-app.md)
+· [API documentation](http://127.0.0.1:8000/api/v1/docs)
+
+> **Data provenance:** the public interface uses a deterministic 104-record
+> metadata sample derived from the owner’s
+> [public Kaggle dataset](https://www.kaggle.com/datasets/mohamedaminechalhy/reddit-mining-stance)
+> (version 2: 1,042,563 released post/comment rows across 26 mineral topics).
+> The release omits original Reddit text and authors; MineralLens preserves that
+> boundary. Sentiment, stance, relevance, themes, and concerns are model-derived
+> research signals—not ground-truth labels or manuscript-wide findings.
+
+[![MineralLens command center](docs/media/minerallens-overview.png)](https://mohemed-amine-chalhy.github.io/reddit_minerals_scraper-/)
+
+### 71-second product walkthrough
+
+[![Watch the MineralLens walkthrough](docs/media/walkthrough-thumbnail.png)](https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-/releases/download/v0.1.0-rc.1/walkthrough-1080p.mp4)
+
+[Watch the 1080p H.264 walkthrough](https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-/releases/download/v0.1.0-rc.1/walkthrough-1080p.mp4)
+· [English captions](docs/media/walkthrough.en.srt)
+· [Reproduction guide](docs/media/README.md)
+
+## Research context
+
+The underlying research tooling was developed during my internship at
+[Mines Nancy](https://mines-nancy.univ-lorraine.fr/en/) for the project
+**Reputational Risk of Critical Metals**. The associated research manuscript is
+currently in advanced pre-publication review, according to the project owner;
+it is not described here as accepted, peer-reviewed, or published.
+
+The formal internship supervisor evaluation praised the quality of the results,
+the impressive workload, the completeness of the contribution, and the strong
+written structure. MineralLens presents the engineering behind that work as an
+inspectable, reproducible product while keeping private documents and
+unpublished research data out of the repository.
+
+Built and maintained by
 [Mohamed Amine Chalhy](https://github.com/Mohemed-Amine-Chalhy).
 
-## Engineering at a glance
+## Product tour
 
-| Signal | Verified evidence |
+| Surface | What it demonstrates |
 | --- | --- |
-| Reliability | Idempotent upserts, explicit work states, resumable batches, atomic exports, durable deletion tombstones, and crash reconciliation |
-| Concurrency | One tracked writer per database plus optimistic revision checks that reject stale in-flight analysis results |
-| Quality | 260 deterministic offline tests, 95.64% branch coverage, strict mypy, Ruff, and pre-commit/pre-push gates |
-| Portability | Python 3.12 and 3.13 exercised on Linux and Windows in CI |
-| Delivery | Locked `uv` environment, wheel and source-distribution install tests, pinned CI actions, and a non-root container |
-| Security | Secret scanning, CodeQL, dependency/container audits, parameterized SQL, bounded untrusted input, and content-safe logs |
+| Command Center | Mineral-level KPIs, sentiment, stance, concerns, provenance, and recent activity |
+| Research Explorer | URL-backed search and filters, responsive records, local JSON/JSONL import, and analysis detail |
+| Pipeline | Collection-to-export stage visibility and an explicitly synthetic reliability replay |
+| Engineering | Internship case study, architecture, reliability decisions, test evidence, and implementation links |
+| FastAPI | Versioned read contracts, strict response models, bounded pagination, sanitized errors, and OpenAPI |
 
-## 60-second offline demo
+The interface is responsive, keyboard operable, reduced-motion aware, and safe
+to run without provider credentials. A local compatible export is parsed in
+browser memory and is never uploaded to the API.
 
-Bootstrap once, then exercise the real services, database, analysis state, and
-export path with deterministic synthetic provider adapters:
+## Engineering evidence
 
-```powershell
-.\scripts\bootstrap.ps1
-uv run reddit-minerals demo
-```
-
-```bash
-./scripts/bootstrap.sh
-uv run reddit-minerals demo
-```
-
-The demo uses no credentials and makes no network calls. It creates an isolated
-temporary workspace, runs collection and all analysis stages through the same
-interfaces used by the live adapters, exports JSONL, prints a compact summary,
-and cleans up its temporary artifacts.
-
-Pass `--output-dir demo-output` to retain an isolated run directory containing
-the SQLite database and JSONL export for inspection.
+| Signal | Verified implementation |
+| --- | --- |
+| Full stack | Strict TypeScript/React client, Zod boundary validation, typed FastAPI DTOs, and an injected read-repository seam |
+| Reliability | Idempotent upserts, explicit work states, resumable batches, bounded retries, atomic exports, and stale-result rejection |
+| Quality | 277 passing Python tests, 2 expected Windows symlink skips, 95.04% total Python coverage, 19 passing frontend tests, strict mypy, Ruff, ESLint, Vitest, and pre-commit/pre-push gates |
+| Portability | Python 3.12/3.13 on Linux and Windows, pinned Node 24, locked `uv` and pnpm environments, and platform scripts |
+| Delivery | Static GitHub Pages demo, production SPA/API container target, non-root runtime, immutable base images, and health checks |
+| Security | Secret scanning, CodeQL for Python and JavaScript/TypeScript, dependency/container audits, bounded untrusted input, and content-safe logs |
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    CLI["CLI / scheduler"] --> CFG["Validated RMS_* settings"]
-    CFG --> SCRAPE["ScrapeService"]
-    CFG --> ANALYSIS["AnalysisService"]
-    REDDIT["Reddit adapter"] --> SCRAPE
-    GEMINI["Gemini adapter"] --> ANALYSIS
-    DEMO["Synthetic demo adapters"] -.->|same protocols| SCRAPE
-    DEMO -.->|same protocols| ANALYSIS
-    SCRAPE --> DB[("Transactional SQLite")]
-    ANALYSIS --> DB
-    DB --> STATUS["Status / deletion"]
-    DB --> EXPORT["Atomic JSON / JSONL export"]
-    EXPORT --> NOTEBOOKS["Optional notebooks"]
+    VIEWER["Researcher / reviewer"] --> SPA["MineralLens React SPA"]
+    SPA -->|"validated /api/v1 DTOs"| API["FastAPI read adapter"]
+    SPA -->|"browser-only import"| LOCAL["JSON / JSONL export"]
+    API --> SAMPLE["Bundled public research sample"]
+
+    CLI["CLI / scheduler"] --> SERVICES["Scrape + analysis services"]
+    REDDIT["Reddit adapter"] --> SERVICES
+    GEMINI["Gemini adapter"] --> SERVICES
+    OFFLINE["Synthetic adapters"] -. "same protocols" .-> SERVICES
+    SERVICES --> DB[("Transactional SQLite")]
+    DB --> LOCAL
 ```
 
-SQLite is the canonical operational state. Provider clients implement narrow
-protocols; orchestration depends on those protocols rather than SDK objects.
-Generated exports and notebooks are downstream views, never checkpoints.
+The web layer is an adapter, not a second analysis engine. Provider clients and
+synthetic clients implement the same narrow protocols; SQLite remains the
+canonical operational state; exported files and the UI are downstream views.
 
-## Engineering decisions
+See [architecture and failure semantics](docs/architecture.md), the
+[web application contract](docs/web-app.md), and the
+[schema-v3 data model](docs/data-model.md).
 
-| Challenge | Decision | Evidence |
-| --- | --- | --- |
-| Provider SDK churn and live-test risk | Ports/adapters with injected Reddit and analysis clients | [Provider protocols](src/reddit_minerals/clients/base.py), [offline end-to-end test](tests/test_smoke.py) |
-| Partial provider failures | Explicit work-state machine with transactional content/state updates | [Scrape service](src/reddit_minerals/services/scrape.py), [analysis service](src/reddit_minerals/services/analysis.py) |
-| Overlapping jobs and late AI responses | Cross-process operation lock plus source/config/dependency revisions checked at commit time | [SQLite storage](src/reddit_minerals/storage/database.py), [race coverage](tests/test_database.py) |
-| Rate limits and outages | Classified failures, exponential backoff with jitter, and run-wide deadlines | [Retry implementation](src/reddit_minerals/retry.py), [failure tests](tests/test_retry_observability.py) |
-| Untrusted provider output | Strict Pydantic models, bounded fields, schema validation, and explicit blocked/invalid states | [Domain models](src/reddit_minerals/models.py), [client tests](tests/test_clients.py) |
-| Packaging and environment drift | Checked-in lockfile, isolated wheel/sdist installation, multi-platform CI, and immutable container bases | [CI workflow](.github/workflows/ci.yml), [artifact verifier](scripts/check_artifacts.py) |
-
-See [architecture and failure semantics](docs/architecture.md) and the
-[schema-v3 data model](docs/data-model.md) for the full design.
-
-## What it provides
-
-- Read-only Reddit application authentication with bounded post/comment
-  collection and explicit mineral selection.
-- Separate relevance, enrichment, and reputation-analysis stages with validated
-  provider responses and model/prompt/schema provenance.
-- Transactional storage, refresh windows, resumable states, status reporting,
-  content deletion, and legacy-data migration.
-- Structured UTC logging, safe configuration summaries, bounded retries,
-  non-zero failure exits, and snapshot-consistent exports.
-- Output-free parameterized notebooks for optional downstream exploration.
-
-## Live-provider quick start
+## Run MineralLens locally
 
 ### Requirements
 
 - Python 3.12 or 3.13
 - [`uv`](https://docs.astral.sh/uv/)
-- A Reddit API application for live collection
-- A Gemini API key and explicitly selected model for live analysis
+- Node.js 24 (pinned in `.node-version`)
+- pnpm 11.19.0
 
-Copy `.env.example` to `.env` and provide only the credentials required by the
-commands you intend to run:
+Bootstrap the locked Python and web workspaces:
 
-```dotenv
-RMS_REDDIT_CLIENT_ID=replace-me
-RMS_REDDIT_CLIENT_SECRET=replace-me
-RMS_REDDIT_USER_AGENT=script:reddit-minerals-scraper:<version> (by u/<account>)
-RMS_GEMINI_API_KEY=replace-me
-RMS_GEMINI_MODEL=replace-with-an-evaluated-model-id
+```powershell
+.\scripts\bootstrap-web.ps1
+.\scripts\dev-web.ps1
 ```
 
-Validate settings without contacting either provider:
+```bash
+./scripts/bootstrap-web.sh
+./scripts/dev-web.sh
+```
+
+Open `http://127.0.0.1:5173`. Vite proxies `/api` to FastAPI on port `8000`.
+When the API is unavailable, the client falls back visibly to the same bundled,
+repository-safe public sample rather than hiding the delivery failure.
+
+For a production-style local build:
+
+```shell
+pnpm --dir web build
+uv run --locked --extra web uvicorn reddit_minerals.web.app:create_app --factory --host 127.0.0.1 --port 8000
+```
+
+FastAPI serves `web/dist` and the versioned API together at
+`http://127.0.0.1:8000`.
+
+## Credential-free pipeline demo
+
+The CLI demo exercises the real services, state machine, SQLite transactions,
+analysis identities, and export path with deterministic provider adapters:
+
+```shell
+uv run reddit-minerals demo
+```
+
+It uses no credentials and makes no network calls. Pass
+`--output-dir demo-output` to retain the isolated database and JSONL export,
+then load that export through the Research Explorer to test browser-local
+inspection.
+
+## Live-provider workflow
+
+Live collection and analysis remain deliberately explicit CLI operations. Copy
+`.env.example` to `.env`, provide only the credentials required for the command,
+and validate configuration without contacting a provider:
 
 ```shell
 uv run reddit-minerals validate-config
-```
-
-Preview a bounded scrape, then run it:
-
-```shell
 uv run reddit-minerals scrape --mineral gold --max-posts 10 --max-comments 25 --dry-run
 uv run reddit-minerals scrape --mineral gold --max-posts 10 --max-comments 25
-```
-
-Run analyses and inspect progress:
-
-```shell
 uv run reddit-minerals relevance --mineral gold --limit 100
 uv run reddit-minerals enrich --mineral gold --limit 100
 uv run reddit-minerals reputation --mineral gold --limit 100
 uv run reddit-minerals status
-```
-
-Export a versioned research snapshot:
-
-```shell
 uv run reddit-minerals export --mineral gold --format jsonl --output exports/gold.jsonl
 ```
 
-Exports never replace an existing destination unless `--overwrite` is explicit,
-and they refuse the live database and its SQLite/operation sidecars.
+Exports are snapshot-consistent and refuse to overwrite an existing destination
+unless `--overwrite` is explicit. Use `uv run reddit-minerals COMMAND --help`
+for the authoritative option reference.
 
-## Command overview
+## API surface
 
-| Command | Purpose | Provider access |
-| --- | --- | --- |
-| `demo` | Run the complete pipeline with deterministic synthetic adapters | None |
-| `validate-config` | Validate settings and subreddit mapping | None |
-| `scrape` | Collect or refresh posts and comments | Reddit |
-| `relevance` | Classify mineral relevance | Gemini |
-| `enrich` | Extract typed topics, sentiment, stance, and concerns | Gemini |
-| `reputation` | Estimate documented content-level indicators | Gemini |
-| `status` | Report record, work-state, and run counts | None |
-| `export` | Write a JSON or JSONL snapshot | None |
-| `delete-content` | Preview or delete content and derivatives | None |
-| `migrate-legacy` | Preview or import legacy JSON-array files | None |
+| Route | Purpose |
+| --- | --- |
+| `GET /api/v1/health` | Readiness plus explicit source/read-only state |
+| `GET /api/v1/meta` | Product version, provenance, minerals, and totals |
+| `GET /api/v1/dashboard` | Chart-ready aggregate metrics with an optional mineral filter |
+| `GET /api/v1/snapshot` | One bounded, provenance-complete dataset transfer for first-party clients |
+| `GET /api/v1/records` | Bounded pagination, search, filters, and sorting |
+| `GET /api/v1/records/{id}` | One record with analysis detail and source note |
+| `GET /api/v1/runs` | Read-only run summaries; empty for the public sample so history is never fabricated |
+| `GET /api/v1/config` | Non-secret UI capabilities and filter values |
 
-Use `uv run reddit-minerals COMMAND --help` as the authoritative option
-reference. See [configuration](docs/configuration.md) for every environment
-variable.
+The public adapter is GET-only and cannot construct Reddit/Gemini clients or
+start provider work. Its OpenAPI schema is available at `/api/v1/docs`.
 
-## Repository layout
+## Development gates
 
-```text
-src/reddit_minerals/   Typed application package, provider ports, and CLI
-tests/                 Unit, integration, failure-path, and race tests
-configs/               Validated mineral-to-subreddit mapping
-scripts/               Idempotent setup, quality, packaging, and smoke checks
-notebooks/             Optional output-free exploration notebooks
-docs/                  Architecture, data model, operations, and methodology
-```
-
-The credential-bearing prototype entry points and output-bearing exploratory
-notebooks were removed. Only the package CLI is supported; legacy JSON data can
-be imported with `migrate-legacy`.
-
-## Documentation
-
-- [Documentation index](docs/README.md)
-- [Architecture and data flow](docs/architecture.md)
-- [Data model and migrations](docs/data-model.md)
-- [Configuration reference](docs/configuration.md)
-- [Operations runbook](docs/operations.md)
-- [Deployment and rollback](docs/deployment.md)
-- [Methodology and evaluation](docs/methodology.md)
-- [Data-safety guarantees](docs/data-safety.md)
-- [Legacy migration](docs/migration.md)
-- [Troubleshooting](docs/troubleshooting.md)
-- [Contributing](CONTRIBUTING.md), [security](SECURITY.md), and
-  [citation metadata](CITATION.cff)
-
-## Development checks
-
-Run the same complete gate used for release preparation:
+Run the complete repository gate:
 
 ```powershell
 .\scripts\check.ps1
@@ -208,10 +200,51 @@ Run the same complete gate used for release preparation:
 ./scripts/check.sh
 ```
 
-Tests are offline by default and never contact Reddit or Gemini. The full check
-also builds, installs, and exercises the wheel and source distribution outside
-the repository.
+For a focused web pass:
 
-No collected datasets, Reddit user profiles, credentials, databases, exports, or
-notebook outputs are tracked in the current tree. Live commands should always use
-your own provider credentials and deliberately bounded inputs.
+```powershell
+.\scripts\check-web.ps1
+```
+
+```bash
+./scripts/check-web.sh
+```
+
+The gates validate lockfiles, formatting, linting, strict Python and TypeScript
+types, frontend and backend tests with coverage, documentation links, notebooks,
+secret patterns, package artifacts, dependency advisories, offline smoke paths,
+and production builds.
+
+## Repository map
+
+```text
+web/                         React, TypeScript, Zod, Vitest, and product UI
+src/reddit_minerals/web/     FastAPI factory, strict DTOs, repository, public sample
+src/reddit_minerals/         Pipeline engine, providers, storage, CLI
+tests/web/                   API contracts, isolation, errors, SPA fallback
+tests/                       Engine unit, integration, failure, and race tests
+configs/                     Validated mineral-to-subreddit mapping
+scripts/                     Cross-platform bootstrap, dev, quality, and smoke tools
+docs/                        Architecture, research method, operations, and web guides
+notebooks/                   Optional output-free export exploration
+```
+
+## Documentation
+
+- [Documentation index](docs/README.md)
+- [Web application](docs/web-app.md)
+- [Public sample provenance and local imports](docs/demo-data.md)
+- [Architecture](docs/architecture.md)
+- [Data model](docs/data-model.md)
+- [Configuration](docs/configuration.md)
+- [Operations](docs/operations.md)
+- [Deployment and rollback](docs/deployment.md)
+- [Methodology and evaluation](docs/methodology.md)
+- [Data-safety guarantees](docs/data-safety.md)
+- [Walkthrough storyboard](docs/walkthrough.md)
+- [Contributing](CONTRIBUTING.md) and [security](SECURITY.md)
+
+No credentials, databases, raw Reddit text, Reddit authors, notebook outputs,
+manuscript files, or evaluation documents are tracked. The only derived dataset
+asset is the documented, identifier-hashed public metadata sample used by the
+product interface.
