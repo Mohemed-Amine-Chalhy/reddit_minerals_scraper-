@@ -51,6 +51,53 @@ agent is descriptive. A 403/404 can also mean a private, banned, quarantined,
 removed, or mistyped subreddit or content item. Do not bypass restrictions or
 switch identities to evade a limit.
 
+## Live Reddit is missing from the Pipeline page
+
+The static Pages build never has a provider backend. On a local or self-hosted
+FastAPI instance, set `RMS_LIVE_REDDIT_ENABLED=true` in the server process
+environment, restart both development processes, and inspect
+`GET /api/v1/live/capabilities`. Do not use a `VITE_*` variable: frontend values
+are public build inputs and cannot enable the Python worker safely.
+
+Enabling live mode requires a random `RMS_LIVE_ACCESS_TOKEN` with at least 32
+characters. Server mode is advertised only when all three `RMS_REDDIT_*` values
+are valid. One-run mode additionally requires
+`RMS_LIVE_REDDIT_ALLOW_BYO_CREDENTIALS=true`. The shared deployment token is not
+a user-account system; keep one-run mode disabled on anonymous, non-HTTPS, or
+otherwise untrusted deployments.
+
+## Live job creation returns `401`
+
+Enter the exact `RMS_LIVE_ACCESS_TOKEN` configured in the FastAPI process. It is
+not the Reddit client secret and not a previous job token. Restart FastAPI after
+rotating it. The UI clears the entry after submission, so a rejected attempt
+requires re-entry without exposing the value in a URL or browser store.
+
+## A live job cannot be opened, cancelled, or fetched
+
+Keep the creation response's opaque token in process/page memory and send it in
+`X-Live-Job-Token` for every job-specific request. A missing, invalid, expired,
+or cross-job token intentionally receives no credential or job detail. Never put
+the token in a URL, issue, screenshot, log, or support message.
+
+A terminal job or snapshot may already have passed
+`RMS_LIVE_JOB_RETENTION_SECONDS` or been removed as the oldest terminal job while
+enforcing the `RMS_LIVE_JOB_MAX_RETAINED` total registry cap. Retention cleanup is irreversible; retain a needed
+research snapshot separately under explicit access and deletion controls.
+
+If the UI reports that terminal cleanup failed, keep the page open and use its
+retry action. The job token remains in page memory until deletion succeeds. The
+idle expiry sweeper remains a fallback, but explicit successful deletion gives
+the clearest operator confirmation.
+
+## Live cancellation remains `cancel_requested`
+
+Cancellation is cooperative. PRAW or Reddit can be completing an in-flight
+bounded request before the worker observes the request and stops scheduling new
+work. Continue polling within the configured operation timeout. Do not kill the
+API, delete files from `RMS_LIVE_JOB_ROOT`, or remove SQLite sidecars while a job
+may still own them.
+
 ## Reddit rate limits, timeouts, or incomplete posts
 
 Lower `--max-posts`, `--max-comments`, and placeholder-expansion limits; avoid

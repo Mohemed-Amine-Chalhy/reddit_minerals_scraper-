@@ -19,6 +19,7 @@ should inject secrets through the scheduler or container secret mechanism.
 | `RMS_SUBREDDIT_MAPPING_PATH` | `configs/subreddit_mapping.json` | Non-empty JSON object mapping mineral names to subreddit lists. Installed wheels fall back to their bundled copy when this is unset. |
 | `RMS_LOG_LEVEL` | `INFO` | `DEBUG`, `INFO`, `WARNING`, `ERROR`, or `CRITICAL`. Logs remain content-safe at every level. |
 | `RMS_WEB_ASSET_DIR` | `web/dist` | Optional absolute or working-directory-relative path to the built MineralLens SPA. FastAPI serves API-only mode when the directory is absent. |
+| `RMS_LIVE_JOB_ROOT` | `data/live_jobs` | Parent for isolated live-job databases. Use a private writable mounted path outside the static asset tree. |
 
 Relative paths resolve from the process working directory, so scheduled and
 container deployments should either set the working directory to the repository
@@ -36,6 +37,47 @@ Use a read-only script/application registration. The user agent should identify
 the application, version, and a reachable Reddit
 account, for example `script:reddit-minerals-scraper:0.1.0 (by u/account)`. This project
 does not need or accept a Reddit username/password login flow.
+
+PRAW, the Python Reddit API Wrapper, exchanges these application credentials
+internally. MineralLens does not require a pre-generated bearer token. Rotate
+any credential that appeared in a legacy script or reachable Git history before
+using live mode; never reuse an exposed account password.
+
+## Live web collection
+
+| Variable | Default | Validation and purpose |
+| --- | --- | --- |
+| `RMS_LIVE_REDDIT_ENABLED` | `false` | Enables the FastAPI live-job capability. It remains absent from static Pages and disabled by default everywhere. |
+| `RMS_LIVE_REDDIT_ALLOW_BYO_CREDENTIALS` | `false` | Allows Reddit credentials submitted for one run. Enable it only behind HTTPS; use identity-aware access control for multi-user deployments. |
+| `RMS_LIVE_ACCESS_TOKEN` | none | Random value of at least 32 characters required whenever live mode is enabled. Authorizes `POST /api/v1/live/jobs`; it is distinct from Reddit and per-job tokens. |
+| `RMS_LIVE_JOB_ROOT` | `data/live_jobs` | Exclusively locked parent directory for isolated per-job SQLite state. One live app process may own a root. |
+| `RMS_LIVE_JOB_MAX_WORKERS` | `1` | Concurrent live workers; integer from 1–4. |
+| `RMS_LIVE_JOB_MAX_ACTIVE` | `4` | Aggregate queued/running job cap; integer from 1–16. |
+| `RMS_LIVE_JOB_RETENTION_SECONDS` | `3600` | Terminal-job lifetime; integer from 1–86,400 seconds. |
+| `RMS_LIVE_JOB_MAX_RETAINED` | `100` | Total tracked-job registry cap; integer from 1–1,000 and at least `RMS_LIVE_JOB_MAX_ACTIVE`. Oldest terminal jobs are purged first when capacity is needed. |
+
+Server credential mode is offered only when all three `RMS_REDDIT_*` settings
+pass validation. Provided mode is offered only when both live flags are true.
+Capability responses expose booleans and safe bounds, never credential values.
+Provided credentials are request-only `SecretStr` values: they are captured by
+the work closure but are never written to job metadata, SQLite, responses, or
+logs. Job creation requires the deployment value in `X-Live-Access-Token` and a
+browser-generated 32-byte random `X-Live-Job-Token`. FastAPI echoes the job token
+and requires it for every subsequent job request; retrying an identical creation
+with the same token is idempotent while that job remains retained.
+
+FastAPI always exposes the capability contract, even when disabled. Its general
+configuration response sets `features.live_collection`, `features.mutation`, and
+`providers_enabled` only when live mode is enabled and `credential_modes`
+contains at least one usable mode. This prevents an enabled flag with incomplete
+server credentials from being presented as a working collector.
+
+The job root can contain collected Reddit text. Keep it out of the repository,
+frontend assets, synchronized folders, and static hosting. Restrict filesystem
+access to the FastAPI service identity and set retention deliberately. Each job
+directory carries a non-secret ownership marker; startup and expiry cleanup
+recursively remove only exact, marked MineralLens job directories. See the
+[live collection guide](live-reddit.md) for local setup and canary commands.
 
 ## Gemini
 
@@ -92,6 +134,15 @@ RMS_LOG_LEVEL=INFO
 RMS_REDDIT_CLIENT_ID=replace-me
 RMS_REDDIT_CLIENT_SECRET=replace-me
 RMS_REDDIT_USER_AGENT=script:reddit-minerals-scraper:0.1.0 (by u/replace-me)
+
+RMS_LIVE_REDDIT_ENABLED=false
+RMS_LIVE_REDDIT_ALLOW_BYO_CREDENTIALS=false
+RMS_LIVE_ACCESS_TOKEN=
+RMS_LIVE_JOB_ROOT=data/live_jobs
+RMS_LIVE_JOB_MAX_WORKERS=1
+RMS_LIVE_JOB_MAX_ACTIVE=4
+RMS_LIVE_JOB_RETENTION_SECONDS=3600
+RMS_LIVE_JOB_MAX_RETAINED=100
 
 RMS_GEMINI_API_KEY=replace-me
 RMS_GEMINI_MODEL=replace-with-an-evaluated-model-id

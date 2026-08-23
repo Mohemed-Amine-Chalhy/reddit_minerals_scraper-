@@ -170,11 +170,11 @@ export function EngineeringPage() {
 
       <section className="quality-strip" aria-label="Verified engineering quality">
         <article>
-          <strong>296</strong>
+          <strong>351</strong>
           <span>passing Python + frontend tests</span>
         </article>
         <article>
-          <strong>95.04%</strong>
+          <strong>92.40%</strong>
           <span>total Python coverage</span>
         </article>
         <article>

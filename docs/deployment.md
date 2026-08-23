@@ -44,8 +44,10 @@ MineralLens supports two deliberate delivery shapes:
    `VITE_DATA_MODE=public-sample`. It is a credential-free portfolio deployment
    with the deterministic, repository-safe public Kaggle sample and no backend.
 2. The Dockerfile's `web-runtime` target builds the same client and serves it
-   beside `/api/v1` from a non-root FastAPI process. The default Docker target
-   remains the batch CLI runtime for scheduled pipeline work.
+   beside `/api/v1` from a non-root FastAPI process. Its public-sample routes
+   remain read-only; an operator may separately enable bounded live collection.
+   The default Docker target remains the batch CLI runtime for scheduled
+   pipeline work.
 
 Build and run the combined SPA/API image locally:
 
@@ -55,9 +57,26 @@ docker run --rm --read-only -p 8000:8000 minerallens-web:0.1.0
 ```
 
 Verify `http://127.0.0.1:8000/api/v1/health`, the generated API documentation at
-`/api/v1/docs`, and client-side history fallback on every public route. The web
-process is read-only and uses its deterministic packaged-sample repository;
-provider collection and analysis continue to run through explicit CLI commands.
+`/api/v1/docs`, and client-side history fallback on every public route. With
+default settings the web process uses only its deterministic packaged-sample
+repository. Live collection requires `RMS_LIVE_REDDIT_ENABLED=true`, a random
+`RMS_LIVE_ACCESS_TOKEN`, valid server credentials or the independently enabled
+one-run mode, and a private writable `RMS_LIVE_JOB_ROOT`. Gemini analysis
+continues to run through explicit
+CLI commands and is never implied by enabling the web collector.
+
+The Pages build has no backend and cannot support Live Reddit. Do not put
+provider values in `VITE_*`, Pages variables, frontend assets, or a static form.
+FastAPI requires the deployment token for job creation and caps active work. For
+a multi-user live deployment, terminate HTTPS and add identity-aware
+authorization and per-user rate controls; shared deployment/job tokens are not
+accounts or roles.
+
+Run exactly one FastAPI process per `RMS_LIVE_JOB_ROOT`. The live manager owns an
+OS-level exclusive root lock and a second worker/process sharing that path fails
+startup closed. If the deployment deliberately uses multiple processes, assign
+distinct private job roots and accept that their in-memory jobs/tokens are not
+shared; do not load-balance a job across them without sticky routing.
 
 ## Local or virtual-machine deployment
 
@@ -106,11 +125,23 @@ or use individual secret injection instead. Do not bake `.env`, data, exports,
 Git history, test caches, or credentials into the image. Run one writer container
 per SQLite database.
 
+The image defaults `RMS_LIVE_JOB_ROOT` to `/data/live_jobs`, so the `/data` bind
+above also supplies writable storage for an enabled live web container. If you
+override that setting, mount the replacement path explicitly. Size the storage
+for the bounded worker count, maximum request size, retention seconds, and
+tracked-job registry cap. Keep it separate from `web/dist`, never bake it into an image,
+and verify that time/count expiry and authenticated terminal deletion remove
+database, WAL, and shared-memory sidecars. Startup removes only unreachable
+exact 32-hex job directories carrying the non-secret MineralLens ownership
+marker. Unmarked folders are preserved, but never mix unrelated operator data
+into this root.
+
 ## Staged rollout
 
 1. Deploy the new package/image in staging with a copied or synthetic database.
 2. Run offline status, migration, deletion, and export tests.
-3. Run a one-mineral, low-limit Reddit/Gemini canary using staging credentials.
+3. Run the one-mineral, low-limit CLI canary and, when live web mode is enabled,
+   `scripts/live-reddit-canary.*` using staging credentials.
 4. Back up production and stop its scheduler.
 5. Apply the release to production; allow any schema migration to finish once.
 6. Run `validate-config`, `status --json`, and integrity checks.

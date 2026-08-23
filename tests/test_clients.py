@@ -17,6 +17,7 @@ from reddit_minerals.clients.reddit import (
     PrawRedditClient,
     _absolute_permalink,
     _classify_reddit_error,
+    _ManagedRequestor,
 )
 from reddit_minerals.errors import (
     ContentBlockedError,
@@ -72,6 +73,7 @@ class FakePrawRoot:
         self.read_only = False
         self.listings: dict[str, FakeListing] = {}
         self.submissions: dict[str, object] = {}
+        self.close_calls = 0
 
     def subreddit(self, name: str) -> FakeListing:
         return self.listings[name]
@@ -86,7 +88,12 @@ def _install_fake_praw(monkeypatch: pytest.MonkeyPatch, root: FakePrawRoot) -> d
 
     def constructor(**kwargs: Any) -> FakePrawRoot:
         captured.update(kwargs)
+        requestor_kwargs = kwargs["requestor_kwargs"]
+        requestor_kwargs["close_handle"].close = _record_close
         return root
+
+    def _record_close() -> None:
+        root.close_calls += 1
 
     module.Reddit = constructor  # type: ignore[attr-defined]
     module.models = SimpleNamespace(MoreComments=type("MoreComments", (), {}))  # type: ignore[attr-defined]
@@ -103,15 +110,20 @@ def test_praw_client_configures_application_only_read_mode(monkeypatch: pytest.M
         user_agent="descriptive-agent/1.0",
         replace_more_limit=4,
     )
-    assert captured == {
+    assert {key: value for key, value in captured.items() if key != "requestor_kwargs"} == {
         "client_id": "id",
         "client_secret": _PROVIDER_TEST_VALUE,
         "user_agent": "descriptive-agent/1.0",
         "check_for_async": False,
-        "requestor_kwargs": {"timeout": 30.0},
+        "requestor_class": _ManagedRequestor,
     }
+    assert captured["requestor_kwargs"]["timeout"] == 30.0
+    assert captured["requestor_kwargs"]["close_handle"].close is not None
     assert root.read_only is True
     assert client._replace_more_limit == 4
+    client.close()
+    client.close()
+    assert root.close_calls == 1
 
 
 @pytest.mark.parametrize(
@@ -169,6 +181,29 @@ def test_praw_constructor_type_error_is_a_configuration_failure(
             user_agent="offline-agent/1.0",
             replace_more_limit=1,
         )
+
+
+def test_praw_constructor_failure_closes_a_requestor_created_through_public_seam(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    closed: list[bool] = []
+    module = ModuleType("praw")
+
+    def constructor(**kwargs: Any) -> object:
+        kwargs["requestor_kwargs"]["close_handle"].close = lambda: closed.append(True)
+        raise TypeError("failure after requestor creation")
+
+    module.Reddit = constructor  # type: ignore[attr-defined]
+    module.models = SimpleNamespace(MoreComments=type("MoreComments", (), {}))  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "praw", module)
+    with pytest.raises(ProviderConfigurationError, match="configuration"):
+        PrawRedditClient(
+            client_id="id",
+            client_secret=_PROVIDER_TEST_VALUE,
+            user_agent="offline-agent/1.0",
+            replace_more_limit=1,
+        )
+    assert closed == [True]
 
 
 def test_praw_search_materializes_and_converts_posts(monkeypatch: pytest.MonkeyPatch) -> None:

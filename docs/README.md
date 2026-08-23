@@ -8,6 +8,8 @@ documentation and code disagree; fix the documentation in the same change.
 
 - [Web application](web-app.md): product architecture, API contract, local
   development, production build, and verification.
+- [Live Reddit collection](live-reddit.md): PRAW credentials, feature flags,
+  bounded web jobs, cancellation, retention, and the low-limit canary.
 - [Public sample and local imports](demo-data.md): reproducible Kaggle provenance,
   metadata boundaries, synthetic replay, browser-only JSON/JSONL handling, and
   truthful source labels.

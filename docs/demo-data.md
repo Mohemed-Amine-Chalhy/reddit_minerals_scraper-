@@ -14,6 +14,7 @@ available only for regression tests and the explicitly labelled pipeline replay.
 | CLI offline demo | Exercise real services, transactions, state transitions, and export code | Small synthetic run | None | Temporary by default; optional isolated directory |
 | Browser-local import | Inspect a compatible file explicitly selected by the viewer | At most 5,000 records | None; the file never reaches FastAPI | Browser memory until reset/reload |
 | Live CLI dataset | Run bounded collection and analysis with configured adapters | Operator-selected bounds | Explicit Reddit/Gemini access | Operator-selected SQLite database and exports |
+| Live web job | Run access-gated, bounded Reddit collection on an explicitly enabled FastAPI backend | Server-enforced request and active-job bounds | Explicit Reddit access; no implicit Gemini call | Isolated job database until deletion/retention expiry; Explorer snapshot in browser memory |
 
 The public release contains 15,779 post rows and 1,026,784 comment rows dated
 from 2008-02-19 through 2025-08-27. It includes subreddit, mineral, timestamp,
@@ -120,7 +121,9 @@ The active source label is a product contract:
 - `Synthetic pipeline export` means a local file is recognized as output from
   `reddit-minerals demo`; and
 - `Local imported dataset` means the viewer selected another compatible file
-  whose origin the application cannot independently establish.
+  whose origin the application cannot independently establish; and
+- `Live Reddit job` means an enabled local or self-hosted FastAPI backend
+  collected the bounded snapshot for this session.
 
 The Pipeline page has no fabricated history for the public sample. Its replay is
 separately and persistently labelled synthetic because it demonstrates retry,

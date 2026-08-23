@@ -1,11 +1,13 @@
 import axe from 'axe-core';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { DEMO_RECORDS } from '../data/fixtures';
 import { MAX_IMPORT_BYTES } from '../domain/importer';
 import { SyntheticFixtureResearchRepository } from '../domain/repository';
 import { renderApp } from '../test/renderApp';
+
+afterEach(() => vi.unstubAllGlobals());
 
 describe('MineralLens application', () => {
   it('renders an accessible public research overview with configurable controls', async () => {
@@ -95,6 +97,46 @@ describe('MineralLens application', () => {
     expect(screen.getAllByText('Reading bounded synthetic provider records.')).toHaveLength(2);
     await user.click(screen.getByRole('button', { name: 'Reset' }));
     expect(screen.getByText('Select a scenario and start the replay.')).toBeVisible();
+  });
+
+  it('keeps live controls hidden when the backend capability is disabled', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () =>
+        Promise.resolve({
+          enabled: false,
+          provider: 'reddit',
+          library: 'PRAW',
+          server_credentials_configured: false,
+          byo_credentials_allowed: false,
+          credential_modes: [],
+          creation_access_token_required: true,
+          creation_access_token_header: 'X-Live-Access-Token',
+          access_token_header: 'X-Live-Job-Token',
+          time_filters: ['week'],
+          defaults: {
+            time_filter: 'week',
+            max_posts_per_mineral: 2,
+            max_comments_per_post: 3,
+          },
+          limits: {
+            max_targets: 10,
+            max_subreddits_per_target: 20,
+            max_posts_per_mineral: 100,
+            max_comments_per_post: 500,
+            max_records_per_job: 10_000,
+            max_active_jobs: 2,
+            retention_seconds: 900,
+          },
+        }),
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    renderApp('/pipeline');
+    expect(await screen.findByRole('heading', { name: /reliability is visible/i })).toBeVisible();
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalled());
+    expect(screen.queryByRole('button', { name: /live reddit/i })).not.toBeInTheDocument();
   });
 
   it('keeps synthetic run history inside an explicitly injected fixture', async () => {

@@ -4,10 +4,14 @@ from __future__ import annotations
 
 import math
 import time
-from collections.abc import Iterable, Sequence
+from collections.abc import Callable, Iterable, Sequence
+from contextlib import suppress
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Any, overload
+
+from prawcore import Requestor
+from requests import Session
 
 from reddit_minerals.errors import (
     PermanentProviderError,
@@ -25,6 +29,34 @@ _TIME_FILTERS = frozenset({"hour", "day", "week", "month", "year", "all"})
 
 class _RedditDeadlineExceeded(TimeoutError):
     """Internal deadline signal that must not be classified as a provider fault."""
+
+
+@dataclass(slots=True)
+class _RequestorCloseHandle:
+    close: Callable[[], None] | None = None
+
+
+class _ManagedRequestor(Requestor):
+    """Capture PRAWcore cleanup through PRAW's public requestor extension seam."""
+
+    def __init__(
+        self,
+        *,
+        close_handle: _RequestorCloseHandle,
+        oauth_url: str = "https://oauth.reddit.com",
+        reddit_url: str = "https://www.reddit.com",
+        session: Session | None = None,
+        timeout: float = 16.0,
+        user_agent: str,
+    ) -> None:
+        super().__init__(
+            oauth_url=oauth_url,
+            reddit_url=reddit_url,
+            session=session,
+            timeout=timeout,
+            user_agent=user_agent,
+        )
+        close_handle.close = self.close
 
 
 @dataclass(frozen=True, slots=True)
@@ -73,21 +105,37 @@ class PrawRedditClient:
                 "PRAW is not installed; synchronize the project environment"
             ) from exc
 
+        close_handle = _RequestorCloseHandle()
         try:
             self._reddit: Any = praw.Reddit(
                 client_id=client_id,
                 client_secret=client_secret,
                 user_agent=user_agent,
                 check_for_async=False,
-                requestor_kwargs={"timeout": request_timeout_seconds},
+                requestor_class=_ManagedRequestor,
+                requestor_kwargs={
+                    "timeout": request_timeout_seconds,
+                    "close_handle": close_handle,
+                },
             )
         except (TypeError, ValueError) as exc:
+            _close_requestor_handle(close_handle)
             raise ProviderConfigurationError("Reddit client configuration was rejected") from exc
         except Exception as exc:
+            _close_requestor_handle(close_handle)
             raise _classify_reddit_error(exc) from exc
         self._reddit.read_only = True
         self._replace_more_limit = replace_more_limit
         self._more_comments_type: type[Any] = praw.models.MoreComments
+        self._close_requestor = close_handle.close
+
+    def close(self) -> None:
+        """Close PRAWcore's owned HTTP session and release pooled connections."""
+
+        close_requestor = self._close_requestor
+        self._close_requestor = None
+        if close_requestor is not None:
+            close_requestor()
 
     def search_posts(
         self,
@@ -224,6 +272,16 @@ def _absolute_permalink(permalink: str) -> str:
     if permalink.startswith(("http://", "https://")):
         return permalink
     return f"https://www.reddit.com{permalink}"
+
+
+def _close_requestor_handle(handle: _RequestorCloseHandle) -> None:
+    close_requestor = handle.close
+    handle.close = None
+    if close_requestor is None:
+        return
+    # Preserve the constructor's sanitized provider error if cleanup itself fails.
+    with suppress(Exception):
+        close_requestor()
 
 
 def _classify_reddit_error(exc: Exception) -> Exception:

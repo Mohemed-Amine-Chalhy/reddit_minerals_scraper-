@@ -18,6 +18,7 @@ import {
 type DateWindow = 'all' | '90' | '180';
 
 function dateWindowStart(records: readonly { content: { created_at: string } }[], days: number) {
+  if (!records.length) return '';
   const latest = Math.max(...records.map((record) => Date.parse(record.content.created_at)));
   return new Date(latest - days * 86_400_000).toISOString().slice(0, 10);
 }
@@ -43,24 +44,31 @@ export function OverviewPage() {
   if (error || !snapshot)
     return <ErrorState message={error ?? 'No research snapshot was loaded.'} />;
 
+  const isLiveSnapshot = snapshot.delivery === 'live';
   const insights = filtered.filter((record) => record.record_type === 'post').slice(0, 3);
   const stages = [
     { label: 'Collected', value: summary.records },
     {
       label: 'Relevant',
-      value: filtered.filter((record) => record.analyses.relevance?.result?.relevant).length,
+      value: isLiveSnapshot
+        ? 'not run'
+        : filtered.filter((record) => record.analyses.relevance?.result?.relevant).length,
     },
     {
       label: 'Enriched',
-      value: filtered.filter((record) => record.analyses.enrichment?.status === 'complete').length,
+      value: isLiveSnapshot
+        ? 'not run'
+        : filtered.filter((record) => record.analyses.enrichment?.status === 'complete').length,
     },
     {
       label: 'Perception',
-      value: filtered.some((record) => record.analyses.reputation)
-        ? filtered.filter((record) => record.analyses.reputation?.status === 'complete').length
-        : 'not published',
+      value: isLiveSnapshot
+        ? 'not run'
+        : filtered.some((record) => record.analyses.reputation)
+          ? filtered.filter((record) => record.analyses.reputation?.status === 'complete').length
+          : 'not published',
     },
-    { label: 'Export-ready', value: filtered.length },
+    { label: isLiveSnapshot ? 'Explorer-ready' : 'Export-ready', value: filtered.length },
   ];
 
   return (
@@ -69,7 +77,11 @@ export function OverviewPage() {
         <PageHeader
           eyebrow="Mineral discourse · engineered for traceability"
           title="From research data to signals you can inspect."
-          description="Explore a typed, resumable research pipeline through a curated public metadata sample with explicit provenance. Raw Reddit text and authors are not included."
+          description={
+            isLiveSnapshot
+              ? 'Review the bounded raw Reddit snapshot collected for this browser session. Source content is available, while every analysis field remains explicitly ungenerated.'
+              : 'Explore a typed, resumable research pipeline through a curated public metadata sample with explicit provenance. Raw Reddit text and authors are not included.'
+          }
           actions={
             <>
               <Link className="button primary" to="/explorer">
@@ -139,14 +151,16 @@ export function OverviewPage() {
         />
         <MetricCard
           label="Relevant post labels"
-          value={`${summary.relevantPercent}%`}
-          detail="released model-derived decisions"
+          value={isLiveSnapshot ? '—' : `${summary.relevantPercent}%`}
+          detail={
+            isLiveSnapshot ? 'not run for this raw collection' : 'released model-derived decisions'
+          }
           tone="teal"
         />
         <MetricCard
           label="Analysis completion"
-          value={`${summary.completeAnalysesPercent}%`}
-          detail="across available stages"
+          value={isLiveSnapshot ? '—' : `${summary.completeAnalysesPercent}%`}
+          detail={isLiveSnapshot ? 'no analysis was generated' : 'across available stages'}
           tone="blue"
         />
         <MetricCard
@@ -154,7 +168,9 @@ export function OverviewPage() {
           value={summary.averagePerception === null ? '—' : `${summary.averagePerception}/100`}
           detail={
             summary.averagePerception === null
-              ? 'not included in this release'
+              ? isLiveSnapshot
+                ? 'not run for this raw collection'
+                : 'not included in this release'
               : 'model-derived content-level average'
           }
         />
@@ -213,10 +229,17 @@ export function OverviewPage() {
               <article className="insight-card" key={`${record.mineral}-${record.content.id}`}>
                 <div className="insight-topline">
                   <span className="mineral-chip">{record.mineral}</span>
-                  <span>{enrichment?.sentiment ?? 'pending'}</span>
+                  <span>
+                    {enrichment?.sentiment ?? (isLiveSnapshot ? 'not analyzed' : 'pending')}
+                  </span>
                 </div>
                 <h3>{recordTitle(record)}</h3>
-                <p>{enrichment?.topic_classification ?? 'Awaiting enrichment'}</p>
+                <p>
+                  {enrichment?.topic_classification ??
+                    (isLiveSnapshot
+                      ? 'Raw Reddit record · no topic inferred'
+                      : 'Awaiting enrichment')}
+                </p>
                 <Link to={`/explorer?mineral=${encodeURIComponent(record.mineral)}`}>
                   Inspect related records <span aria-hidden="true">↗</span>
                 </Link>

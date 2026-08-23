@@ -12,11 +12,13 @@ export function AppShell() {
   const { snapshot } = useResearch();
   const badge = !snapshot
     ? 'Research dataset'
-    : snapshot.provenance.kind === 'public-research-sample'
-      ? 'Public dataset sample'
-      : snapshot.provenance.kind === 'local-import'
-        ? 'Local browser import'
-        : 'Synthetic fixture';
+    : snapshot.provenance.kind === 'live-reddit'
+      ? 'Live Reddit snapshot'
+      : snapshot.provenance.kind === 'public-research-sample'
+        ? 'Public dataset sample'
+        : snapshot.provenance.kind === 'local-import'
+          ? 'Local browser import'
+          : 'Synthetic fixture';
 
   return (
     <div className="app-shell">
@@ -67,7 +69,11 @@ export function AppShell() {
       </main>
       <footer className="site-footer">
         <span>MineralLens · deterministic research interface</span>
-        <span>No credentials · no live provider calls</span>
+        <span>
+          {snapshot?.provenance.kind === 'live-reddit'
+            ? 'Job access cleared · raw collection only'
+            : 'No credentials · no live provider calls'}
+        </span>
       </footer>
     </div>
   );
