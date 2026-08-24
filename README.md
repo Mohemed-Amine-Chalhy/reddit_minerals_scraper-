@@ -5,25 +5,31 @@
 ![Python 3.12 and 3.13](https://img.shields.io/badge/Python-3.12%20%7C%203.13-3776AB?logo=python&logoColor=white)
 ![React and TypeScript](https://img.shields.io/badge/React%20%2B%20TypeScript-strict-61DAFB?logo=react&logoColor=08110F)
 
-**Trace mineral discourse from source to signal.**
+**Critical-minerals research intelligence.**
 
-MineralLens is a full-stack research intelligence application for exploring how
-critical minerals are discussed online. A modern React interface sits on a
-typed FastAPI adapter and a resumable Python analysis engine with transactional
-SQLite storage, schema-validated provider output, and deterministic offline
-execution.
+## From public discourse to decision-ready evidence
 
-[Open the portfolio demo](https://mohemed-amine-chalhy.github.io/reddit_minerals_scraper-/)
+MineralLens is a full-stack system for collecting, analyzing, and exploring how
+critical minerals are discussed online. Its strict TypeScript and React client,
+typed FastAPI contracts, and resumable Python engine connect bounded Reddit
+collection to schema-validated analysis, transactional SQLite state, and
+inspectable research outputs.
+
+[Explore the static review surface](https://mohemed-amine-chalhy.github.io/reddit_minerals_scraper-/)
 · [Web application guide](docs/web-app.md)
 · [API documentation](http://127.0.0.1:8000/api/v1/docs)
 
-> **Data provenance:** the public interface uses a deterministic 104-record
-> metadata sample derived from the owner’s
-> [public Kaggle dataset](https://www.kaggle.com/datasets/mohamedaminechalhy/reddit-mining-stance)
-> (version 2: 1,042,563 released post/comment rows across 26 mineral topics).
-> The release omits original Reddit text and authors; MineralLens preserves that
-> boundary. Sentiment, stance, relevance, themes, and concerns are model-derived
-> research signals—not ground-truth labels or manuscript-wide findings.
+**1.04M published dataset records · 26 mineral topics · 351 passing tests ·
+92.40% Python coverage**
+
+> **Published research data:** the pipeline produced the owner’s
+> [public Kaggle dataset](https://www.kaggle.com/datasets/mohamedaminechalhy/reddit-mining-stance),
+> whose version 2 contains 1,042,563 released post/comment rows across 26
+> mineral topics. The static GitHub Pages review surface uses a deterministic
+> 104-record metadata sample from that release; it does not load the million-row
+> dataset into the browser. The release omits original Reddit text and authors.
+> Sentiment, stance, relevance, themes, and concerns are model-derived research
+> signals rather than ground-truth labels or manuscript-wide findings.
 
 [![MineralLens command center](docs/media/minerallens-overview.png)](https://mohemed-amine-chalhy.github.io/reddit_minerals_scraper-/)
 
@@ -37,36 +43,37 @@ execution.
 
 ## Research context
 
-The underlying research tooling was developed during my internship at
-[Mines Nancy](https://mines-nancy.univ-lorraine.fr/en/) for the project
-**Reputational Risk of Critical Metals**. The associated research manuscript is
-currently in advanced pre-publication review, according to the project owner;
-it is not described here as accepted, peer-reviewed, or published.
+MineralLens grew from an industrial-engineering foundation at
+[EMINES, Mohammed VI Polytechnic University](https://www.um6p.ma/) into the
+international **Reputational Risk of Critical Metals** research internship at
+[Mines Nancy](https://mines-nancy.univ-lorraine.fr/en/). The resulting
+methodology produced the public million-row dataset and now supports an
+associated manuscript in advanced review.
 
-The formal internship supervisor evaluation praised the quality of the results,
-the impressive workload, the completeness of the contribution, and the strong
-written structure. MineralLens presents the engineering behind that work as an
-inspectable, reproducible product while keeping private documents and
-unpublished research data out of the repository.
+The application makes that research path inspectable end to end: provider
+boundaries, resumable state, analysis contracts, operational evidence, and the
+interface used to explore the results all live in one versioned system.
 
 Built and maintained by
 [Mohamed Amine Chalhy](https://github.com/Mohemed-Amine-Chalhy).
 
-## Product tour
+## Product surfaces
 
-| Surface | What it demonstrates |
-| --- | --- |
-| Command Center | Mineral-level KPIs, sentiment, stance, concerns, provenance, and recent activity |
-| Research Explorer | URL-backed search and filters, responsive records, local JSON/JSONL import, and analysis detail |
-| Pipeline | Offline reliability replay plus optional bounded Live Reddit jobs on an operator-enabled backend |
-| Engineering | Internship case study, architecture, reliability decisions, test evidence, and implementation links |
-| FastAPI | Versioned read contracts, strict response models, bounded pagination, sanitized errors, and OpenAPI |
+| Surface           | Capability                                                                                          |
+| ----------------- | --------------------------------------------------------------------------------------------------- |
+| Command Center    | Mineral-level KPIs, sentiment, stance, concerns, provenance, and recent activity                    |
+| Research Explorer | URL-backed search and filters, responsive records, local JSON/JSONL import, and analysis detail     |
+| Pipeline          | Deterministic reliability replay plus bounded Live Reddit jobs on an enabled backend                |
+| Engineering       | System architecture, reliability decisions, measured quality evidence, and implementation links     |
+| FastAPI           | Versioned read contracts, strict response models, bounded pagination, sanitized errors, and OpenAPI |
 
 The interface is responsive, keyboard operable, reduced-motion aware, and safe
 to run without provider credentials. A local compatible export is parsed in
 browser memory and is never uploaded to the API. A trusted local or self-hosted
 FastAPI instance can additionally expose disabled-by-default, bounded Live
-Reddit jobs; the static Pages portfolio never accepts credentials.
+Reddit jobs with progress, cooperative cancellation, and direct Explorer
+handoff. The static GitHub Pages review surface remains a credential-free
+demonstration of the published-data and offline-replay paths.
 
 ## Engineering evidence
 

@@ -75,20 +75,20 @@ export function OverviewPage() {
     <div className="page overview-page">
       <section className="hero-section">
         <PageHeader
-          eyebrow="Mineral discourse · engineered for traceability"
-          title="From research data to signals you can inspect."
+          eyebrow="Critical-minerals research intelligence"
+          title="Public discourse, engineered into inspectable evidence."
           description={
             isLiveSnapshot
-              ? 'Review the bounded raw Reddit snapshot collected for this browser session. Source content is available, while every analysis field remains explicitly ungenerated.'
-              : 'Explore a typed, resumable research pipeline through a curated public metadata sample with explicit provenance. Raw Reddit text and authors are not included.'
+              ? 'Shape a bounded Reddit collection, watch the job advance, and move the completed snapshot directly into an analysis-ready workspace.'
+              : 'Explore a curated, provenance-rich window into a published 1.04M-record research dataset spanning 26 mineral topics—and the system that collected, structured, and analyzed it.'
           }
           actions={
             <>
               <Link className="button primary" to="/explorer">
-                Explore the dataset
+                Explore the signals
               </Link>
               <Link className="button secondary" to="/engineering">
-                Inspect the system
+                See the engineering
               </Link>
             </>
           }

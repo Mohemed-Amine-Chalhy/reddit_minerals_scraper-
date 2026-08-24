@@ -1,16 +1,27 @@
 # MineralLens frontend
 
-MineralLens is a React and TypeScript research interface for the Reddit
-Minerals Pipeline. Its default public experience is a deterministic,
-metadata-only sample from the published Kaggle dataset; an explicitly enabled
-backend can additionally offer bounded, user-initiated Reddit collection.
+**Critical-minerals research intelligence—from public discourse to
+decision-ready evidence.**
+
+MineralLens is the strict TypeScript and React client for a full-stack research
+system spanning typed FastAPI contracts, a resumable Python analysis engine,
+transactional SQLite state, and bounded Reddit collection. The pipeline
+produced a public Kaggle dataset with 1,042,563 released post/comment rows across
+26 mineral topics. The default browser experience uses a deterministic
+104-record metadata sample from that release; it does not load the full dataset.
+
+An enabled FastAPI backend adds bounded, user-initiated Live Reddit jobs with
+progress, cooperative cancellation, and direct result handoff to Explorer. The
+GitHub Pages deployment remains a static review and demonstration surface for
+the published sample and deterministic pipeline replay.
 
 ## Data sources
 
-At startup the app requests the read-only `/api/v1` portfolio endpoints. API
+At startup the app requests the read-oriented `/api/v1` research endpoints. API
 responses are validated with Zod and adapted into the same internal snapshot
 used by the UI. If the API is unavailable—such as on a static GitHub Pages
-deployment—the app transparently uses bundled deterministic fixtures.
+deployment—the app transparently uses the bundled deterministic 104-record
+public sample.
 
 When the backend advertises `live_collection`, the Pipeline page adds a **Live
 Reddit** source alongside its offline execution replay. The live form maps each

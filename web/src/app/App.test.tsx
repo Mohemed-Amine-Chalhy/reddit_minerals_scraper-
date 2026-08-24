@@ -14,7 +14,9 @@ describe('MineralLens application', () => {
     const user = userEvent.setup();
     const { container } = renderApp('/');
     expect(
-      await screen.findByRole('heading', { name: /from research data to signals/i }),
+      await screen.findByRole('heading', {
+        name: /public discourse, engineered into inspectable evidence/i,
+      }),
     ).toBeInTheDocument();
     expect(screen.getByText('Public dataset sample')).toBeVisible();
     expect(screen.getByText('104')).toBeVisible();
