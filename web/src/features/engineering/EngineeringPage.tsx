@@ -1,4 +1,5 @@
 import { PageHeader } from '../../components/PageHeader';
+import { CampusContext } from './CampusContext';
 
 const repositoryRoot =
   'https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-/blob/main/';
@@ -53,9 +54,9 @@ export function EngineeringPage() {
   return (
     <div className="page engineering-page">
       <PageHeader
-        eyebrow="Engineering case study"
-        title="Research software with production-grade boundaries."
-        description="The system makes collection, model analysis, persistence, failure recovery, and provenance independently inspectable instead of hiding them inside one script."
+        eyebrow="Critical-minerals research intelligence"
+        title="From public discourse to decision-ready evidence."
+        description="MineralLens connects bounded Reddit acquisition, schema-constrained analysis, resumable transactional workflows, and a strict typed interface—so every research signal remains inspectable from source to delivery."
         actions={
           <a
             className="button primary"
@@ -68,38 +69,7 @@ export function EngineeringPage() {
         }
       />
 
-      <section className="context-grid">
-        <article className="context-card featured">
-          <p className="eyebrow">Research context</p>
-          <h2>A software system supporting mineral-discourse research.</h2>
-          <p>
-            The pipeline supported research undertaken during an internship at{' '}
-            <a href="https://mines-nancy.univ-lorraine.fr/en/" target="_blank" rel="noreferrer">
-              Mines Nancy
-            </a>
-            . It provides a reproducible path from bounded public discussions to validated,
-            provenance-aware analysis records.
-          </p>
-          <p>
-            According to the project owner, the associated manuscript is currently in advanced
-            pre-publication review. No claim of acceptance or peer review is made here.
-          </p>
-        </article>
-        <article className="context-card">
-          <p className="eyebrow">Portfolio interface</p>
-          <h2>Built on the export boundary.</h2>
-          <p>
-            MineralLens is a portfolio presentation layer over the pipeline’s versioned export
-            contract. It combines a curated public research sample, a typed read-only API, and local
-            export inspection in one modern research interface.
-          </p>
-          <div className="context-tags">
-            <span>React + TypeScript</span>
-            <span>Schema validated</span>
-            <span>Static deployable</span>
-          </div>
-        </article>
-      </section>
+      <CampusContext />
 
       <section className="architecture-panel panel">
         <div className="section-heading">
@@ -162,29 +132,10 @@ export function EngineeringPage() {
             <article className="architecture-node node-web">
               <small>07</small>
               <strong>MineralLens</strong>
-              <span>read-only portfolio view</span>
+              <span>typed research interface</span>
             </article>
           </div>
         </div>
-      </section>
-
-      <section className="quality-strip" aria-label="Verified engineering quality">
-        <article>
-          <strong>351</strong>
-          <span>passing Python + frontend tests</span>
-        </article>
-        <article>
-          <strong>92.40%</strong>
-          <span>total Python coverage</span>
-        </article>
-        <article>
-          <strong>2 × 2</strong>
-          <span>Python versions × operating systems</span>
-        </article>
-        <article>
-          <strong>strict</strong>
-          <span>mypy + typed package boundary</span>
-        </article>
       </section>
 
       <section className="decision-section">

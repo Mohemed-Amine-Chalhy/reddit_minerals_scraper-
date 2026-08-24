@@ -68,11 +68,11 @@ export function AppShell() {
         <Outlet />
       </main>
       <footer className="site-footer">
-        <span>MineralLens · deterministic research interface</span>
+        <span>MineralLens · critical-minerals research intelligence</span>
         <span>
           {snapshot?.provenance.kind === 'live-reddit'
-            ? 'Job access cleared · raw collection only'
-            : 'No credentials · no live provider calls'}
+            ? 'Live snapshot loaded · ready for exploration'
+            : 'Static dataset mode · live collection available with the backend'}
         </span>
       </footer>
     </div>

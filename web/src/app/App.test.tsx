@@ -1,5 +1,5 @@
 import axe from 'axe-core';
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { DEMO_RECORDS } from '../data/fixtures';
@@ -14,7 +14,9 @@ describe('MineralLens application', () => {
     const user = userEvent.setup();
     const { container } = renderApp('/');
     expect(
-      await screen.findByRole('heading', { name: /from research data to signals/i }),
+      await screen.findByRole('heading', {
+        name: /public discourse, engineered into inspectable evidence/i,
+      }),
     ).toBeInTheDocument();
     expect(screen.getByText('Public dataset sample')).toBeVisible();
     expect(screen.getByText('104')).toBeVisible();
@@ -76,13 +78,57 @@ describe('MineralLens application', () => {
     expect(screen.getByText('Bundled public Kaggle research sample')).toBeVisible();
   });
 
-  it('labels replay as synthetic and states the research review status truthfully', async () => {
-    renderApp('/engineering');
+  it('presents the engineering case study and illustrated campus context accessibly', async () => {
+    const { container } = renderApp('/engineering');
+
     expect(
-      await screen.findByText(/according to the project owner.*advanced pre-publication review/i),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/no claim of acceptance or peer review/i)).toBeVisible();
-    expect(screen.getByText(/one modern research interface/i)).toBeVisible();
+      await screen.findByRole('heading', {
+        level: 1,
+        name: /from public discourse to decision-ready evidence/i,
+      }),
+    ).toBeVisible();
+
+    const campusImage = screen.getByRole('img');
+    expect(campusImage).toHaveAccessibleName(/um6p/i);
+    expect(campusImage).toHaveAccessibleName(/benguerir|campus/i);
+    expect(campusImage.getAttribute('src')).toContain('um6p-campus-context-v1');
+
+    const campusFigure = campusImage.closest('figure');
+    if (!campusFigure) throw new Error('Expected the campus illustration to use a figure.');
+    const campusCaption = campusFigure.querySelector('figcaption');
+    if (!campusCaption) throw new Error('Expected the campus illustration to have a caption.');
+    expect(campusCaption).toBeVisible();
+    expect(campusCaption).toHaveTextContent(/original illustrated (?:um6p )?campus context/i);
+
+    const projectJourney = screen.getByRole('list', { name: /project journey/i });
+    const routeStops = within(projectJourney).getAllByRole('listitem');
+    expect(routeStops).toHaveLength(3);
+    expect(routeStops[0]).toHaveTextContent(/emines\s*·\s*um6p/i);
+    expect(routeStops[0]).toHaveTextContent(/benguerir,?\s*morocco/i);
+    expect(routeStops[1]).toHaveTextContent(/mines nancy/i);
+    expect(routeStops[1]).toHaveTextContent(/nancy,?\s*france/i);
+    expect(routeStops[2]).toHaveTextContent(/minerallens/i);
+
+    const repositoryCta = screen.getByRole('link', { name: /browse the repository/i });
+    expect(repositoryCta).toHaveAttribute(
+      'href',
+      'https://github.com/Mohemed-Amine-Chalhy/reddit_minerals_scraper-',
+    );
+    expect(repositoryCta).toHaveAttribute('target', '_blank');
+    expect(repositoryCta.getAttribute('rel')?.split(/\s+/u)).toContain('noreferrer');
+
+    const externalLinks = screen
+      .getAllByRole('link')
+      .filter((link) => link.getAttribute('target') === '_blank');
+    expect(externalLinks.length).toBeGreaterThan(0);
+    for (const link of externalLinks) {
+      expect(link.getAttribute('rel')?.split(/\s+/u)).toContain('noreferrer');
+    }
+
+    const results = await axe.run(container, {
+      rules: { 'color-contrast': { enabled: false } },
+    });
+    expect(results.violations).toEqual([]);
   });
 
   it('configures and controls a deterministic pipeline replay', async () => {
