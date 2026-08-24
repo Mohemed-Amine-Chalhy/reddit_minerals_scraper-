@@ -278,7 +278,7 @@ export class LiveApiError extends Error {
 }
 
 function safeApiMessage(status: number): string {
-  if (status === 401 || status === 403) return 'The live request was not authorized.';
+  if (status === 401 || status === 403) return 'The deployment key or job token was rejected.';
   if (status === 409) return 'This collection job cannot perform that action now.';
   if (status === 422) return 'Check the collection configuration and try again.';
   if (status === 429) return 'Live collection is busy. Wait briefly, then try again.';

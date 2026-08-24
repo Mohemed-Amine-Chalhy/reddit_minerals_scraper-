@@ -776,7 +776,7 @@ export function LiveCollectionPanel({
                   spellCheck={false}
                   onChange={(event) => setCreationAccessToken(event.target.value)}
                 />
-                <small>Authorizes one job submission; it is not the Reddit client secret.</small>
+                <small>Used for one job submission; it is not the Reddit client secret.</small>
               </label>
               <label>
                 Credential mode

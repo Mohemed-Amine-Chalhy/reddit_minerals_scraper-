@@ -270,7 +270,7 @@ describe('LiveCollectionPanel', () => {
     const user = userEvent.setup();
     const spies = clientSpies();
     spies.createJob.mockRejectedValue(
-      new LiveApiError('The live request was not authorized.', 401),
+      new LiveApiError('The deployment key or job token was rejected.', 401),
     );
     const providedOnly = capabilities({
       server_credentials_configured: false,
@@ -288,7 +288,7 @@ describe('LiveCollectionPanel', () => {
     await user.click(screen.getByRole('button', { name: 'Start live collection' }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent(
-      'The live request was not authorized.',
+      'The deployment key or job token was rejected.',
     );
     expect(screen.getByLabelText('Client ID')).toHaveValue('');
     expect(screen.getByLabelText('Client secret')).toHaveValue('');
