@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling==1.32.0"]
+requires = ["hatchling==1.32.4"]
 build-backend = "hatchling.build"
 
 [project]
@@ -50,7 +50,7 @@ reddit-minerals = "reddit_minerals.cli:main"
 [dependency-groups]
 build = [
   "editables>=0.5,<1",
-  "hatchling==1.32.0",
+  "hatchling==1.32.4",
 ]
 dev = [
   "detect-secrets>=1.5,<2",
